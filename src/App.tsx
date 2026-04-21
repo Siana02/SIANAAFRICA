@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import {
@@ -6,9 +6,23 @@ import {
   Leaf,
   Globe,
   ArrowRight,
-  Sparkles,
+  Menu,
+  X,
 } from 'lucide-react'
+import Preloader from './Preloader'
+import heroImg1 from './assets/Maasaiwomanholdingdragonfruit.png'
+import heroImg2 from './assets/hero.png'
+import heroImg3 from './assets/sianaafrica1.jpg'
+import heroImg4 from './assets/Sianaafrica2.jpg'
 import './App.css'
+
+/* Images rotate through the hero slideshow. `pos` fine-tunes focal point. */
+const heroSlides = [
+  { src: heroImg1, pos: 'center 12%' },
+  { src: heroImg2, pos: 'center center' },
+  { src: heroImg3, pos: 'center center' },
+  { src: heroImg4, pos: 'center center' },
+]
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -45,90 +59,192 @@ const pillars = [
   },
 ]
 
+const navLinks = [
+  { label: 'Home', href: '#' },
+  { label: 'About', href: '#mission' },
+  { label: 'Our Work', href: '#mission' },
+  { label: 'Blog', href: '#' },
+  { label: 'Contact', href: '#contact' },
+]
+
+/* Slideshow timing — module-level so they're easy to tune */
+const SLIDE_HOLD = 7    // seconds each image is visible before crossfade begins
+const SLIDE_FADE = 1.5  // crossfade duration in seconds
+
 /* ─── App ──────────────────────────────────────────────────── */
 export default function App() {
-  const heroRef = useRef<HTMLDivElement>(null)
+  const [preloaderDone, setPreloaderDone] = useState(false)
+  const [navScrolled, setNavScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
+
   const missionRef = useRef<HTMLDivElement>(null)
   const pillarsRef = useRef<HTMLDivElement>(null)
 
-  /* GSAP animations */
+  /* ── Lock body scroll when preloader or mobile menu is open ── */
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      /* Hero entrance */
-      gsap.from('.hero__eyebrow', { y: 30, opacity: 0, duration: 0.8, ease: 'power3.out', delay: 0.2 })
-      gsap.from('.hero__title',   { y: 40, opacity: 0, duration: 0.9, ease: 'power3.out', delay: 0.4 })
-      gsap.from('.hero__description', { y: 30, opacity: 0, duration: 0.8, ease: 'power3.out', delay: 0.6 })
-      gsap.from('.hero__actions', { y: 20, opacity: 0, duration: 0.7, ease: 'power3.out', delay: 0.8 })
+    document.body.style.overflow = !preloaderDone || menuOpen ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [preloaderDone, menuOpen])
 
-      /* Mission section scroll-trigger */
-      gsap.from(missionRef.current, {
-        scrollTrigger: { trigger: missionRef.current, start: 'top 80%' },
-        y: 50,
-        opacity: 0,
-        duration: 0.9,
-        ease: 'power3.out',
-      })
+  /* ── Nav scroll detection ── */
+  useEffect(() => {
+    const onScroll = () => setNavScrolled(window.scrollY > 60)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
-      /* Pillar cards stagger */
-      gsap.from('.pillar-card', {
-        scrollTrigger: { trigger: pillarsRef.current, start: 'top 80%' },
-        y: 60,
-        opacity: 0,
-        duration: 0.7,
-        stagger: 0.15,
-        ease: 'power3.out',
-      })
+  /* ── Hero + scroll animations (fire once preloader finishes) ── */
+  const handlePreloaderComplete = useCallback(() => {
+    // ── Background slideshow ──────────────────────────────────
+    // Each slide holds for SLIDE_HOLD seconds, then crossfades over SLIDE_FADE seconds.
+    // Alternating slides zoom in / zoom out for cinematic depth.
+    const slides = gsap.utils.toArray<HTMLElement>('.hero__slide')
+    gsap.set(slides, { opacity: 0 })
+    gsap.set(slides[0], { opacity: 1, scale: 1 })
 
-      /* Palette swatches pop-in */
-      gsap.from('.swatch', {
-        scrollTrigger: { trigger: '.palette-grid', start: 'top 85%' },
-        scale: 0.8,
-        opacity: 0,
-        duration: 0.5,
-        stagger: 0.07,
-        ease: 'back.out(1.7)',
-      })
+    let current = 0
+    const cycleSlide = () => {
+      const prev = current
+      current = (current + 1) % slides.length
+      const zoomIn = current % 2 === 0  // alternate direction per slide
+
+      gsap.set(slides[current], { opacity: 0, scale: zoomIn ? 1 : 1.1 })
+      gsap.to(slides[current], { opacity: 1, duration: SLIDE_FADE, ease: 'power2.inOut' })
+      gsap.to(slides[prev], { opacity: 0, duration: SLIDE_FADE, ease: 'power2.inOut' })
+      // Slow continuous zoom across full display window
+      gsap.to(slides[current], { scale: zoomIn ? 1.1 : 1, duration: SLIDE_HOLD + SLIDE_FADE, ease: 'none' })
+      gsap.delayedCall(SLIDE_HOLD, cycleSlide)
+    }
+
+    // Kick off slide 0 zoom immediately, queue first transition
+    gsap.to(slides[0], { scale: 1.1, duration: SLIDE_HOLD + SLIDE_FADE, ease: 'none' })
+    gsap.delayedCall(SLIDE_HOLD, cycleSlide)
+
+    // ── Hero text entrance (staggered) ────────────────────────
+    const tl = gsap.timeline()
+    tl.from('.hero__eyebrow',     { y: 22, opacity: 0, duration: 0.65, ease: 'power3.out' })
+      .from('.hero__title',       { y: 38, opacity: 0, duration: 0.85, ease: 'power3.out' }, '-=0.3')
+      .from('.hero__description', { y: 22, opacity: 0, duration: 0.7,  ease: 'power3.out' }, '-=0.4')
+      .from('.hero__actions',     { y: 16, opacity: 0, duration: 0.65, ease: 'power3.out' }, '-=0.35')
+
+    // ── Scroll-triggered section animations ───────────────────
+    gsap.from(missionRef.current, {
+      scrollTrigger: { trigger: missionRef.current, start: 'top 80%' },
+      y: 50, opacity: 0, duration: 0.9, ease: 'power3.out',
+    })
+    gsap.from('.pillar-card', {
+      scrollTrigger: { trigger: pillarsRef.current, start: 'top 80%' },
+      y: 60, opacity: 0, duration: 0.7, stagger: 0.15, ease: 'power3.out',
+    })
+    gsap.from('.swatch', {
+      scrollTrigger: { trigger: '.palette-grid', start: 'top 85%' },
+      scale: 0.8, opacity: 0, duration: 0.5, stagger: 0.07, ease: 'back.out(1.7)',
     })
 
-    return () => ctx.revert()
+    setPreloaderDone(true)
   }, [])
 
   return (
     <>
+      {/* ── Preloader ── */}
+      {!preloaderDone && <Preloader onComplete={handlePreloaderComplete} />}
+
       {/* ── Navigation ── */}
-      <nav className="nav" aria-label="Main navigation">
+      <nav
+        className={`nav${navScrolled ? ' nav--scrolled' : ''}`}
+        aria-label="Main navigation"
+      >
         <div className="container nav__inner">
-          <a href="#" className="nav__logo">SIANA Africa</a>
-          <ul className="nav__links">
-            <li><a href="#mission">Mission</a></li>
-            <li><a href="#design">Design</a></li>
-            <li><a href="#contact">Contact</a></li>
+          <a href="#" className="nav__logo">SIANA AFRICA</a>
+
+          {/* Desktop links */}
+          <ul className="nav__links" role="list">
+            {navLinks.map((l) => (
+              <li key={l.label}><a href={l.href}>{l.label}</a></li>
+            ))}
           </ul>
+
+          {/* Desktop CTA */}
+          <a href="#contact" className="btn btn--coral btn--sm nav__cta">
+            Donate Now
+          </a>
+
+          {/* Mobile hamburger */}
+          <button
+            className="nav__hamburger"
+            onClick={() => setMenuOpen(true)}
+            aria-label="Open menu"
+            aria-expanded={menuOpen}
+          >
+            <Menu size={24} />
+          </button>
         </div>
       </nav>
 
+      {/* ── Mobile menu overlay ── */}
+      <div
+        className={`nav__overlay${menuOpen ? ' nav__overlay--open' : ''}`}
+        aria-modal="true"
+        role="dialog"
+        aria-label="Navigation menu"
+      >
+        <button
+          className="nav__overlay-close"
+          onClick={() => setMenuOpen(false)}
+          aria-label="Close menu"
+        >
+          <X size={26} />
+        </button>
+        <ul className="nav__overlay-links" role="list">
+          {navLinks.map((l) => (
+            <li key={l.label}>
+              <a href={l.href} onClick={() => setMenuOpen(false)}>{l.label}</a>
+            </li>
+          ))}
+        </ul>
+        <a href="#contact" className="btn btn--coral nav__overlay-cta" onClick={() => setMenuOpen(false)}>
+          Donate Now <ArrowRight size={16} />
+        </a>
+      </div>
+
       {/* ── Hero ── */}
-      <section className="hero" ref={heroRef} aria-labelledby="hero-title">
-        <div className="container">
+      <section className="hero" aria-labelledby="hero-title">
+        {/* Cycling full-bleed background slides */}
+        <div className="hero__slides" aria-hidden="true">
+          {heroSlides.map((slide, i) => (
+            <div
+              key={i}
+              className="hero__slide"
+              style={{ backgroundImage: `url(${slide.src})`, backgroundPosition: slide.pos }}
+            />
+          ))}
+        </div>
+
+        {/* Cinematic left-to-right dark gradient — keeps text readable */}
+        <div className="hero__gradient" aria-hidden="true" />
+        {/* Bottom vignette for depth */}
+        <div className="hero__vignette" aria-hidden="true" />
+
+        {/* Text layer */}
+        <div className="container hero__body">
           <div className="hero__content">
-            <p className="hero__eyebrow">
-              <Sparkles size={14} />
-              Kenya · Community · Impact
-            </p>
+            <p className="hero__eyebrow">OUR MISSION</p>
             <h1 className="hero__title" id="hero-title">
               Empowering Women.<br />
-              <em>Preserving Culture.</em>
+              Preserving Culture.<br />
+              <em>Promoting Sustainability Across Kenya.</em>
             </h1>
             <p className="hero__description">
-              SIANA Africa is a grassroots organisation promoting sustainability,
-              cultural preservation, and women's empowerment across Kenya.
+              SIANA Africa is a grassroots organisation devoted to uplifting women,
+              honouring Kenya's living heritage, and championing sustainable communities
+              for generations to come.
             </p>
             <div className="hero__actions">
-              <a href="#mission" className="btn btn--primary">
-                Our Mission <ArrowRight size={16} />
+              <a href="#mission" className="btn btn--coral">
+                Support Our Work <ArrowRight size={16} />
               </a>
-              <a href="#design" className="btn btn--outline">
-                Design System
+              <a href="#mission" className="btn btn--ghost">
+                Join the Movement
               </a>
             </div>
           </div>
