@@ -60,18 +60,22 @@ const pillars = [
 ]
 
 const navLinks = [
-  { label: 'Home',     href: '#' },
-  { label: 'About',    href: '#mission' },
+  { label: 'Home', href: '#' },
+  { label: 'About', href: '#mission' },
   { label: 'Our Work', href: '#mission' },
-  { label: 'Blog',     href: '#' },
-  { label: 'Contact',  href: '#contact' },
+  { label: 'Blog', href: '#' },
+  { label: 'Contact', href: '#contact' },
 ]
+
+/* Slideshow timing — module-level so they're easy to tune */
+const SLIDE_HOLD = 7    // seconds each image is visible before crossfade begins
+const SLIDE_FADE = 1.5  // crossfade duration in seconds
 
 /* ─── App ──────────────────────────────────────────────────── */
 export default function App() {
   const [preloaderDone, setPreloaderDone] = useState(false)
-  const [navScrolled, setNavScrolled]     = useState(false)
-  const [menuOpen, setMenuOpen]           = useState(false)
+  const [navScrolled, setNavScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   const missionRef = useRef<HTMLDivElement>(null)
   const pillarsRef = useRef<HTMLDivElement>(null)
@@ -92,11 +96,8 @@ export default function App() {
   /* ── Hero + scroll animations (fire once preloader finishes) ── */
   const handlePreloaderComplete = useCallback(() => {
     // ── Background slideshow ──────────────────────────────────
-    // Each slide holds for HOLD seconds, then crossfades over FADE seconds.
+    // Each slide holds for SLIDE_HOLD seconds, then crossfades over SLIDE_FADE seconds.
     // Alternating slides zoom in / zoom out for cinematic depth.
-    const HOLD = 7    // seconds each slide is visible before crossfade begins
-    const FADE = 1.5  // crossfade duration in seconds
-
     const slides = gsap.utils.toArray<HTMLElement>('.hero__slide')
     gsap.set(slides, { opacity: 0 })
     gsap.set(slides[0], { opacity: 1, scale: 1 })
@@ -108,16 +109,16 @@ export default function App() {
       const zoomIn = current % 2 === 0  // alternate direction per slide
 
       gsap.set(slides[current], { opacity: 0, scale: zoomIn ? 1 : 1.1 })
-      gsap.to(slides[current], { opacity: 1, duration: FADE, ease: 'power2.inOut' })
-      gsap.to(slides[prev],    { opacity: 0, duration: FADE, ease: 'power2.inOut' })
+      gsap.to(slides[current], { opacity: 1, duration: SLIDE_FADE, ease: 'power2.inOut' })
+      gsap.to(slides[prev], { opacity: 0, duration: SLIDE_FADE, ease: 'power2.inOut' })
       // Slow continuous zoom across full display window
-      gsap.to(slides[current], { scale: zoomIn ? 1.1 : 1, duration: HOLD + FADE, ease: 'none' })
-      gsap.delayedCall(HOLD, cycleSlide)
+      gsap.to(slides[current], { scale: zoomIn ? 1.1 : 1, duration: SLIDE_HOLD + SLIDE_FADE, ease: 'none' })
+      gsap.delayedCall(SLIDE_HOLD, cycleSlide)
     }
 
     // Kick off slide 0 zoom immediately, queue first transition
-    gsap.to(slides[0], { scale: 1.1, duration: HOLD + FADE, ease: 'none' })
-    gsap.delayedCall(HOLD, cycleSlide)
+    gsap.to(slides[0], { scale: 1.1, duration: SLIDE_HOLD + SLIDE_FADE, ease: 'none' })
+    gsap.delayedCall(SLIDE_HOLD, cycleSlide)
 
     // ── Hero text entrance (staggered) ────────────────────────
     const tl = gsap.timeline()

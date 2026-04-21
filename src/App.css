@@ -584,9 +584,9 @@
   margin-bottom: 1.25rem;
 }
 
-.pillar-card__icon--green  { background: var(--color-mist);                       color: var(--color-forest); }
-.pillar-card__icon--coral  { background: rgba(227, 110, 91, 0.12);                 color: var(--color-coral); }
-.pillar-card__icon--rose   { background: rgba(201, 90, 123, 0.12);                 color: var(--color-rose); }
+.pillar-card__icon--green { background: var(--color-mist); color: var(--color-forest); }
+.pillar-card__icon--coral { background: rgba(227, 110, 91, 0.12); color: var(--color-coral); }
+.pillar-card__icon--rose  { background: rgba(201, 90, 123, 0.12); color: var(--color-rose); }
 
 .pillar-card__title {
   font-family: var(--font-heading);
