@@ -1,73 +1,37 @@
-# React + TypeScript + Vite
+# SIANA Africa
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Empowering Women. Preserving Culture. Promoting Sustainability Across Kenya.**
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Framework**: [React 19](https://react.dev/) + [Vite 8](https://vite.dev/) (TypeScript)
+- **Animation**: [GSAP](https://gsap.com/) with ScrollTrigger
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Fonts**: [Playfair Display](https://fonts.google.com/specimen/Playfair+Display) (headings) · [Inter](https://fonts.google.com/specimen/Inter) (body)
 
-## React Compiler
+## Colour Palette
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| Token            | Hex       | Usage              |
+| ---------------- | --------- | ------------------ |
+| `--color-forest` | `#4C5D43` | Primary / Hero bg  |
+| `--color-sage`   | `#A8B69A` | Secondary / Borders|
+| `--color-mist`   | `#E7F0E5` | Section backgrounds|
+| `--color-linen`  | `#F7F3EF` | Page background    |
+| `--color-coral`  | `#E36E5B` | CTA / Accent 1     |
+| `--color-rose`   | `#C95A7B` | Accent 2           |
+| `--color-charcoal`| `#282B2B`| Text / Footer bg   |
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Build
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run build
+npm run preview
 ```
+
