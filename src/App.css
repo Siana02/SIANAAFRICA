@@ -99,8 +99,7 @@
   transition:
     background 0.35s ease,
     backdrop-filter 0.35s ease,
-    border-bottom-color 0.35s ease;
-  border-bottom: 1px solid transparent;
+    border-bottom 0.35s ease;
 }
 
 .nav--scrolled {
@@ -110,7 +109,7 @@
 
   background: rgba(247, 243, 239, 0.94);
   backdrop-filter: blur(14px);
-  border-bottom-color: rgba(168, 182, 154, 0.45);
+  border-bottom: 1px solid rgba(168, 182, 154, 0.45);
 }
 
 .nav__inner {
@@ -152,6 +151,7 @@
   letter-spacing: 0.07em;
   text-transform: uppercase;
   position: relative;
+  overflow: hidden;   /* clip ::after so it never bleeds outside the link */
   /* lift + color change on hover */
   transition: color 0.25s ease, transform 0.25s ease;
 }
@@ -161,21 +161,22 @@
   transform: translateY(-1px);
 }
 
-/* Underline slides in from the right on hover */
+/* Underline grows left → right on hover */
 .nav__links a::after {
   content: '';
   position: absolute;
-  bottom: -3px;
+  bottom: -2px;
   left: 0;
   width: 100%;
   height: 1px;
   background: currentColor;
-  transform: translateX(110%);
+  transform: scaleX(0);
+  transform-origin: left center;
   transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .nav__links a:hover::after {
-  transform: translateX(0);
+  transform: scaleX(1);
 }
 
 /* Donate Now – desktop */
@@ -291,6 +292,12 @@
   will-change: transform, opacity;
 }
 
+/* Only the first slide is visible before GSAP takes over —
+   prevents all 4 images stacking during preloader phase */
+.hero__slide:nth-child(n+2) {
+  opacity: 0;
+}
+
 /* ── Cinematic gradient overlays ───────────────────────── */
 
 /* Left-side dark fade — makes text pop against any image */
@@ -326,7 +333,9 @@
 .hero__body {
   position: relative;
   z-index: 2;
-  padding-block: 9rem 5rem;
+  /* vh-responsive: keeps content well inside the viewport on any screen height */
+  padding-block: clamp(5rem, 14vh, 9rem) clamp(3rem, 7vh, 5rem);
+  align-self: center;
 }
 
 .hero__content {
@@ -514,6 +523,15 @@
 @media (max-width: 480px) {
   .hero__body  { padding-block: 6rem 3rem; }
   .hero__title { font-size: clamp(1.75rem, 7.5vw, 2.3rem); }
+}
+
+/* Landscape / short-viewport — prevent CTA buttons from being cut off */
+@media (max-height: 650px) {
+  .hero__body { padding-block: clamp(4rem, 10vh, 6rem) clamp(1.5rem, 4vh, 3rem); }
+  .hero__eyebrow   { margin-bottom: 0.75rem; }
+  .hero__title     { font-size: clamp(1.5rem, 3.8vw, 2.2rem); margin-bottom: 1rem; }
+  .hero__description { font-size: 0.92rem; line-height: 1.6; margin-bottom: 1.5rem; }
+  .hero__actions   { gap: 0.65rem; }
 }
 
 /* ═══════════════════════════════════════════════════════════
