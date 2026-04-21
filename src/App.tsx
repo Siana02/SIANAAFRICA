@@ -10,8 +10,19 @@ import {
   X,
 } from 'lucide-react'
 import Preloader from './Preloader'
-import heroImage from './assets/Maasaiwomanholdingdragonfruit.png'
+import heroImg1 from './assets/Maasaiwomanholdingdragonfruit.png'
+import heroImg2 from './assets/hero.png'
+import heroImg3 from './assets/sianaafrica1.jpg'
+import heroImg4 from './assets/Sianaafrica2.jpg'
 import './App.css'
+
+/* Images rotate through the hero slideshow. `pos` fine-tunes focal point. */
+const heroSlides = [
+  { src: heroImg1, pos: 'center 12%' },
+  { src: heroImg2, pos: 'center center' },
+  { src: heroImg3, pos: 'center center' },
+  { src: heroImg4, pos: 'center center' },
+]
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -80,17 +91,42 @@ export default function App() {
 
   /* ── Hero + scroll animations (fire once preloader finishes) ── */
   const handlePreloaderComplete = useCallback(() => {
-    // Kick off hero entrance animations immediately (preloader is already opacity 0)
+    // ── Background slideshow ──────────────────────────────────
+    // Each slide holds for HOLD seconds, then crossfades over FADE seconds.
+    // Alternating slides zoom in / zoom out for cinematic depth.
+    const HOLD = 7    // seconds each slide is visible before crossfade begins
+    const FADE = 1.5  // crossfade duration in seconds
+
+    const slides = gsap.utils.toArray<HTMLElement>('.hero__slide')
+    gsap.set(slides, { opacity: 0 })
+    gsap.set(slides[0], { opacity: 1, scale: 1 })
+
+    let current = 0
+    const cycleSlide = () => {
+      const prev = current
+      current = (current + 1) % slides.length
+      const zoomIn = current % 2 === 0  // alternate direction per slide
+
+      gsap.set(slides[current], { opacity: 0, scale: zoomIn ? 1 : 1.1 })
+      gsap.to(slides[current], { opacity: 1, duration: FADE, ease: 'power2.inOut' })
+      gsap.to(slides[prev],    { opacity: 0, duration: FADE, ease: 'power2.inOut' })
+      // Slow continuous zoom across full display window
+      gsap.to(slides[current], { scale: zoomIn ? 1.1 : 1, duration: HOLD + FADE, ease: 'none' })
+      gsap.delayedCall(HOLD, cycleSlide)
+    }
+
+    // Kick off slide 0 zoom immediately, queue first transition
+    gsap.to(slides[0], { scale: 1.1, duration: HOLD + FADE, ease: 'none' })
+    gsap.delayedCall(HOLD, cycleSlide)
+
+    // ── Hero text entrance (staggered) ────────────────────────
     const tl = gsap.timeline()
-    tl.from('.hero__eyebrow',    { y: 28, opacity: 0, duration: 0.7, ease: 'power3.out' })
-      .from('.hero__title',      { y: 40, opacity: 0, duration: 0.9, ease: 'power3.out' }, '-=0.35')
-      .from('.hero__description',{ y: 28, opacity: 0, duration: 0.75, ease: 'power3.out' }, '-=0.45')
-      .from('.hero__actions',    { y: 20, opacity: 0, duration: 0.7,  ease: 'power3.out' }, '-=0.4')
+    tl.from('.hero__eyebrow',     { y: 22, opacity: 0, duration: 0.65, ease: 'power3.out' })
+      .from('.hero__title',       { y: 38, opacity: 0, duration: 0.85, ease: 'power3.out' }, '-=0.3')
+      .from('.hero__description', { y: 22, opacity: 0, duration: 0.7,  ease: 'power3.out' }, '-=0.4')
+      .from('.hero__actions',     { y: 16, opacity: 0, duration: 0.65, ease: 'power3.out' }, '-=0.35')
 
-    // Image subtle zoom
-    gsap.from('.hero__image', { scale: 1.07, duration: 1.6, ease: 'power2.out' })
-
-    // Scroll-triggered section animations
+    // ── Scroll-triggered section animations ───────────────────
     gsap.from(missionRef.current, {
       scrollTrigger: { trigger: missionRef.current, start: 'top 80%' },
       y: 50, opacity: 0, duration: 0.9, ease: 'power3.out',
@@ -172,14 +208,30 @@ export default function App() {
 
       {/* ── Hero ── */}
       <section className="hero" aria-labelledby="hero-title">
-        {/* Left — text content */}
-        <div className="hero__left">
+        {/* Cycling full-bleed background slides */}
+        <div className="hero__slides" aria-hidden="true">
+          {heroSlides.map((slide, i) => (
+            <div
+              key={i}
+              className="hero__slide"
+              style={{ backgroundImage: `url(${slide.src})`, backgroundPosition: slide.pos }}
+            />
+          ))}
+        </div>
+
+        {/* Cinematic left-to-right dark gradient — keeps text readable */}
+        <div className="hero__gradient" aria-hidden="true" />
+        {/* Bottom vignette for depth */}
+        <div className="hero__vignette" aria-hidden="true" />
+
+        {/* Text layer */}
+        <div className="container hero__body">
           <div className="hero__content">
             <p className="hero__eyebrow">OUR MISSION</p>
             <h1 className="hero__title" id="hero-title">
               Empowering Women.<br />
               Preserving Culture.<br />
-              <em>Promoting Sustainability<br className="hero__br--md" /> Across Kenya.</em>
+              <em>Promoting Sustainability Across Kenya.</em>
             </h1>
             <p className="hero__description">
               SIANA Africa is a grassroots organisation devoted to uplifting women,
@@ -195,17 +247,6 @@ export default function App() {
               </a>
             </div>
           </div>
-        </div>
-
-        {/* Right — image */}
-        <div className="hero__right" aria-hidden="true">
-          <img
-            src={heroImage}
-            alt="Maasai woman holding dragon fruit"
-            className="hero__image"
-            loading="eager"
-          />
-          <div className="hero__image-overlay" />
         </div>
       </section>
 

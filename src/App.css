@@ -151,11 +151,31 @@
   color: var(--nav-link);
   letter-spacing: 0.07em;
   text-transform: uppercase;
-  transition: color 0.25s ease;
+  position: relative;
+  /* lift + color change on hover */
+  transition: color 0.25s ease, transform 0.25s ease;
 }
 
 .nav__links a:hover {
   color: var(--nav-link-hover);
+  transform: translateY(-1px);
+}
+
+/* Underline slides in from the right on hover */
+.nav__links a::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: translateX(110%);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav__links a:hover::after {
+  transform: translateX(0);
 }
 
 /* Donate Now – desktop */
@@ -243,75 +263,94 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   HERO
+   HERO — full-bleed cinematic slideshow
    ═══════════════════════════════════════════════════════════ */
 
 .hero {
-  min-height: 100svh;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  overflow: hidden;
-}
-
-/* Left — text panel */
-.hero__left {
-  background: #1b1e1b;
   position: relative;
+  height: 100svh;
+  min-height: 600px;
+  overflow: hidden;
   display: flex;
   align-items: center;
-  padding: 9rem 3.5rem 4rem clamp(1.5rem, 5vw, 5rem);
-  overflow: hidden;
 }
 
-/* Subtle forest radial glow bottom-left */
-.hero__left::before {
-  content: '';
+/* ── Background slide stack ────────────────────────────── */
+
+.hero__slides {
   position: absolute;
-  bottom: -10%;
-  left: -10%;
-  width: 70%;
-  aspect-ratio: 1;
-  background: radial-gradient(ellipse at center, rgba(76, 93, 67, 0.28) 0%, transparent 70%);
+  inset: 0;
+  z-index: 0;
+}
+
+.hero__slide {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  /* background-position set via inline style per slide */
+  will-change: transform, opacity;
+}
+
+/* ── Cinematic gradient overlays ───────────────────────── */
+
+/* Left-side dark fade — makes text pop against any image */
+.hero__gradient {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    105deg,
+    rgba(8, 10, 8, 0.88) 0%,
+    rgba(8, 10, 8, 0.68) 32%,
+    rgba(8, 10, 8, 0.22) 58%,
+    transparent 75%
+  );
   pointer-events: none;
 }
 
-/* Vertical decorative line top-left */
-.hero__left::after {
-  content: '';
+/* Bottom vignette adds depth and grounds the section */
+.hero__vignette {
   position: absolute;
-  top: 0;
-  left: clamp(1.5rem, 5vw, 5rem);
-  width: 1px;
-  height: 5rem;
-  background: linear-gradient(to bottom, var(--color-sage), transparent);
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to top,
+    rgba(8, 10, 8, 0.45) 0%,
+    transparent 28%
+  );
   pointer-events: none;
+}
+
+/* ── Text layer ────────────────────────────────────────── */
+
+.hero__body {
+  position: relative;
+  z-index: 2;
+  padding-block: 9rem 5rem;
 }
 
 .hero__content {
-  position: relative;
-  z-index: 1;
-  max-width: 540px;
+  max-width: 580px;
 }
 
 /* Eyebrow label */
 .hero__eyebrow {
   display: inline-block;
   font-family: var(--font-body);
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 600;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--color-sage);
   margin: 0 0 1.5rem;
-  padding: 0;
 }
 
 /* Main headline */
 .hero__title {
   font-family: var(--font-heading);
-  font-size: clamp(2.1rem, 3.8vw, 3.4rem);
+  font-size: clamp(2.2rem, 4.2vw, 3.6rem);
   font-weight: 700;
-  line-height: 1.12;
+  line-height: 1.1;
   color: var(--color-linen);
   margin: 0 0 1.75rem;
 }
@@ -321,16 +360,12 @@
   color: var(--color-sage);
 }
 
-/* Line break only on medium+ screens */
-.hero__br--md { display: none; }
-@media (min-width: 1024px) { .hero__br--md { display: inline; } }
-
 /* Subtext */
 .hero__description {
   font-family: var(--font-body);
   font-size: 1.05rem;
-  line-height: 1.75;
-  color: rgba(231, 240, 229, 0.65);
+  line-height: 1.8;
+  color: rgba(231, 240, 229, 0.62);
   margin: 0 0 2.75rem;
   max-width: 460px;
 }
@@ -342,92 +377,67 @@
   flex-wrap: wrap;
 }
 
-/* Right — image panel */
-.hero__right {
-  position: relative;
-  overflow: hidden;
-}
-
-.hero__image {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 8%;
-  display: block;
-  will-change: transform;
-}
-
-/* Soft left-edge gradient to blend with text panel */
-.hero__image-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to right,
-    rgba(27, 30, 27, 0.55) 0%,
-    rgba(27, 30, 27, 0.1) 30%,
-    transparent 55%
-  );
-  pointer-events: none;
-}
-
 /* ═══════════════════════════════════════════════════════════
-   BUTTONS
+   BUTTONS — sleek pill design
    ═══════════════════════════════════════════════════════════ */
 
 .btn {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.8rem 1.85rem;
-  border-radius: 0.4rem;
+  padding: 0.75rem 1.9rem;
+  border-radius: 100px;          /* full pill */
   font-family: var(--font-body);
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   font-weight: 600;
+  letter-spacing: 0.04em;
   cursor: pointer;
-  border: 2px solid transparent;
+  border: 1.5px solid transparent;
   text-decoration: none;
   transition:
     background 0.25s ease,
     color 0.25s ease,
     border-color 0.25s ease,
-    box-shadow 0.25s ease,
-    transform 0.2s ease;
+    box-shadow 0.3s ease,
+    transform 0.25s ease;
 }
 
-.btn:hover  { transform: scale(1.03); }
-.btn:active { transform: scale(0.98); }
+.btn:hover  { transform: translateY(-2px); }
+.btn:active { transform: translateY(0); transition-duration: 0.1s; }
 
 /* Coral – primary CTA */
 .btn--coral {
   background: var(--color-coral);
   color: #fff;
   border-color: var(--color-coral);
-  box-shadow: 0 4px 18px rgba(227, 110, 91, 0.30);
+  box-shadow: 0 4px 18px rgba(227, 110, 91, 0.28);
 }
 
 .btn--coral:hover {
-  background: #d45e4a;
-  border-color: #d45e4a;
+  background: #d15a47;
+  border-color: #d15a47;
   color: #fff;
-  box-shadow: 0 6px 24px rgba(227, 110, 91, 0.45);
+  box-shadow:
+    0 8px 28px rgba(227, 110, 91, 0.48),
+    0 0 0 3px rgba(227, 110, 91, 0.14);
 }
 
-/* Ghost – secondary CTA */
+/* Ghost – secondary CTA (glass-morphism-lite) */
 .btn--ghost {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
   color: var(--color-linen);
-  border-color: rgba(168, 182, 154, 0.55);
+  border-color: rgba(255, 255, 255, 0.22);
 }
 
 .btn--ghost:hover {
-  background: rgba(168, 182, 154, 0.12);
-  border-color: var(--color-sage);
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.4);
   color: var(--color-linen);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
 }
 
-/* Legacy aliases (used in other sections) */
+/* Legacy aliases (used in non-hero sections) */
 .btn--primary {
   background: var(--color-coral);
   color: #fff;
@@ -454,8 +464,8 @@
 
 /* Small variant (nav CTA) */
 .btn--sm {
-  padding: 0.55rem 1.2rem;
-  font-size: 0.82rem;
+  padding: 0.5rem 1.15rem;
+  font-size: 0.8rem;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -463,51 +473,47 @@
    ═══════════════════════════════════════════════════════════ */
 
 @media (max-width: 900px) {
-  /* Hero stacks vertically — image takes ~52vw so it reads as a distinct panel
-     without overshadowing the text content below on typical phone widths */
-  .hero {
-    grid-template-columns: 1fr;
-    grid-template-rows: 52vw auto;
-    min-height: 100svh;
-  }
-
-  .hero__right { order: -1; }   /* image first */
-  .hero__image { object-position: center 5%; }
-  .hero__image-overlay {
+  /* ── Hero: full-bleed stays, gradient strengthens for readability ── */
+  .hero__gradient {
     background: linear-gradient(
-      to bottom,
-      transparent 60%,
-      rgba(27, 30, 27, 0.4) 100%
+      115deg,
+      rgba(8, 10, 8, 0.94) 0%,
+      rgba(8, 10, 8, 0.80) 45%,
+      rgba(8, 10, 8, 0.45) 72%,
+      transparent 100%
     );
   }
 
-  .hero__left {
-    padding: 2.5rem 1.5rem 4rem;
-    align-items: flex-start;
+  .hero__body    { padding-block: 7rem 3.5rem; }
+  .hero__content { max-width: 100%; }
+  .hero__title   { font-size: clamp(1.9rem, 6.5vw, 2.8rem); }
+  .hero__description {
+    font-size: 0.96rem;
+    max-width: 100%;
   }
 
-  .hero__left::after { display: none; }
+  /* Stack CTA buttons, full-width for easy tapping */
+  .hero__actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .hero__actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
 
-  .hero__title { font-size: clamp(1.9rem, 6vw, 2.75rem); }
-
-  .hero__description { font-size: 0.97rem; }
-
-  .hero__actions { gap: 0.75rem; }
-  .hero__actions .btn { width: 100%; justify-content: center; }
-
-  /* Nav */
-  .nav__links { display: none; }
-  .nav__cta   { display: none; }
+  /* ── Nav ── */
+  .nav__links     { display: none; }
+  .nav__cta       { display: none; }
   .nav__hamburger { display: flex; }
 
-  /* Nav logo colour on mobile (hero is dark regardless of scroll) */
+  /* Nav logo stays linen: hero is always a dark image on mobile */
   .nav { --nav-logo: var(--color-linen); }
 }
 
 @media (max-width: 480px) {
-  .hero { grid-template-rows: 60vw auto; }
-  .hero__left { padding: 2rem 1.25rem 3.5rem; }
-  .hero__title { font-size: clamp(1.75rem, 7vw, 2.4rem); }
+  .hero__body  { padding-block: 6rem 3rem; }
+  .hero__title { font-size: clamp(1.75rem, 7.5vw, 2.3rem); }
 }
 
 /* ═══════════════════════════════════════════════════════════
