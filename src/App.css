@@ -463,7 +463,8 @@
    ═══════════════════════════════════════════════════════════ */
 
 @media (max-width: 900px) {
-  /* Hero stacks vertically */
+  /* Hero stacks vertically — image takes ~52vw so it reads as a distinct panel
+     without overshadowing the text content below on typical phone widths */
   .hero {
     grid-template-columns: 1fr;
     grid-template-rows: 52vw auto;

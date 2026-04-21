@@ -87,8 +87,8 @@ export default function Preloader({ onComplete }: PreloaderProps) {
           </span>
         </div>
 
-        {/* Brand name */}
-        <h1 className="preloader__brand">SIANA AFRICA</h1>
+        {/* Brand name — intentionally not h1; the real h1 lives in the hero section */}
+        <p className="preloader__brand">SIANA AFRICA</p>
         <p className="preloader__tagline">Empowering · Preserving · Sustaining</p>
 
         {/* Minimal loading indicator */}
