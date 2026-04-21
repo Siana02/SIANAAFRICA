@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import {
@@ -6,8 +6,11 @@ import {
   Leaf,
   Globe,
   ArrowRight,
-  Sparkles,
+  Menu,
+  X,
 } from 'lucide-react'
+import Preloader from './Preloader'
+import heroImage from './assets/Maasaiwomanholdingdragonfruit.png'
 import './App.css'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -45,93 +48,164 @@ const pillars = [
   },
 ]
 
+const navLinks = [
+  { label: 'Home',     href: '#' },
+  { label: 'About',    href: '#mission' },
+  { label: 'Our Work', href: '#mission' },
+  { label: 'Blog',     href: '#' },
+  { label: 'Contact',  href: '#contact' },
+]
+
 /* ─── App ──────────────────────────────────────────────────── */
 export default function App() {
-  const heroRef = useRef<HTMLDivElement>(null)
+  const [preloaderDone, setPreloaderDone] = useState(false)
+  const [navScrolled, setNavScrolled]     = useState(false)
+  const [menuOpen, setMenuOpen]           = useState(false)
+
   const missionRef = useRef<HTMLDivElement>(null)
   const pillarsRef = useRef<HTMLDivElement>(null)
 
-  /* GSAP animations */
+  /* ── Lock body scroll when preloader or mobile menu is open ── */
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      /* Hero entrance */
-      gsap.from('.hero__eyebrow', { y: 30, opacity: 0, duration: 0.8, ease: 'power3.out', delay: 0.2 })
-      gsap.from('.hero__title',   { y: 40, opacity: 0, duration: 0.9, ease: 'power3.out', delay: 0.4 })
-      gsap.from('.hero__description', { y: 30, opacity: 0, duration: 0.8, ease: 'power3.out', delay: 0.6 })
-      gsap.from('.hero__actions', { y: 20, opacity: 0, duration: 0.7, ease: 'power3.out', delay: 0.8 })
+    document.body.style.overflow = !preloaderDone || menuOpen ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [preloaderDone, menuOpen])
 
-      /* Mission section scroll-trigger */
-      gsap.from(missionRef.current, {
-        scrollTrigger: { trigger: missionRef.current, start: 'top 80%' },
-        y: 50,
-        opacity: 0,
-        duration: 0.9,
-        ease: 'power3.out',
-      })
+  /* ── Nav scroll detection ── */
+  useEffect(() => {
+    const onScroll = () => setNavScrolled(window.scrollY > 60)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
-      /* Pillar cards stagger */
-      gsap.from('.pillar-card', {
-        scrollTrigger: { trigger: pillarsRef.current, start: 'top 80%' },
-        y: 60,
-        opacity: 0,
-        duration: 0.7,
-        stagger: 0.15,
-        ease: 'power3.out',
-      })
+  /* ── Hero + scroll animations (fire once preloader finishes) ── */
+  const handlePreloaderComplete = useCallback(() => {
+    // Kick off hero entrance animations immediately (preloader is already opacity 0)
+    const tl = gsap.timeline()
+    tl.from('.hero__eyebrow',    { y: 28, opacity: 0, duration: 0.7, ease: 'power3.out' })
+      .from('.hero__title',      { y: 40, opacity: 0, duration: 0.9, ease: 'power3.out' }, '-=0.35')
+      .from('.hero__description',{ y: 28, opacity: 0, duration: 0.75, ease: 'power3.out' }, '-=0.45')
+      .from('.hero__actions',    { y: 20, opacity: 0, duration: 0.7,  ease: 'power3.out' }, '-=0.4')
 
-      /* Palette swatches pop-in */
-      gsap.from('.swatch', {
-        scrollTrigger: { trigger: '.palette-grid', start: 'top 85%' },
-        scale: 0.8,
-        opacity: 0,
-        duration: 0.5,
-        stagger: 0.07,
-        ease: 'back.out(1.7)',
-      })
+    // Image subtle zoom
+    gsap.from('.hero__image', { scale: 1.07, duration: 1.6, ease: 'power2.out' })
+
+    // Scroll-triggered section animations
+    gsap.from(missionRef.current, {
+      scrollTrigger: { trigger: missionRef.current, start: 'top 80%' },
+      y: 50, opacity: 0, duration: 0.9, ease: 'power3.out',
+    })
+    gsap.from('.pillar-card', {
+      scrollTrigger: { trigger: pillarsRef.current, start: 'top 80%' },
+      y: 60, opacity: 0, duration: 0.7, stagger: 0.15, ease: 'power3.out',
+    })
+    gsap.from('.swatch', {
+      scrollTrigger: { trigger: '.palette-grid', start: 'top 85%' },
+      scale: 0.8, opacity: 0, duration: 0.5, stagger: 0.07, ease: 'back.out(1.7)',
     })
 
-    return () => ctx.revert()
+    setPreloaderDone(true)
   }, [])
 
   return (
     <>
+      {/* ── Preloader ── */}
+      {!preloaderDone && <Preloader onComplete={handlePreloaderComplete} />}
+
       {/* ── Navigation ── */}
-      <nav className="nav" aria-label="Main navigation">
+      <nav
+        className={`nav${navScrolled ? ' nav--scrolled' : ''}`}
+        aria-label="Main navigation"
+      >
         <div className="container nav__inner">
-          <a href="#" className="nav__logo">SIANA Africa</a>
-          <ul className="nav__links">
-            <li><a href="#mission">Mission</a></li>
-            <li><a href="#design">Design</a></li>
-            <li><a href="#contact">Contact</a></li>
+          <a href="#" className="nav__logo">SIANA AFRICA</a>
+
+          {/* Desktop links */}
+          <ul className="nav__links" role="list">
+            {navLinks.map((l) => (
+              <li key={l.label}><a href={l.href}>{l.label}</a></li>
+            ))}
           </ul>
+
+          {/* Desktop CTA */}
+          <a href="#contact" className="btn btn--coral btn--sm nav__cta">
+            Donate Now
+          </a>
+
+          {/* Mobile hamburger */}
+          <button
+            className="nav__hamburger"
+            onClick={() => setMenuOpen(true)}
+            aria-label="Open menu"
+            aria-expanded={menuOpen}
+          >
+            <Menu size={24} />
+          </button>
         </div>
       </nav>
 
+      {/* ── Mobile menu overlay ── */}
+      <div
+        className={`nav__overlay${menuOpen ? ' nav__overlay--open' : ''}`}
+        aria-modal="true"
+        role="dialog"
+        aria-label="Navigation menu"
+      >
+        <button
+          className="nav__overlay-close"
+          onClick={() => setMenuOpen(false)}
+          aria-label="Close menu"
+        >
+          <X size={26} />
+        </button>
+        <ul className="nav__overlay-links" role="list">
+          {navLinks.map((l) => (
+            <li key={l.label}>
+              <a href={l.href} onClick={() => setMenuOpen(false)}>{l.label}</a>
+            </li>
+          ))}
+        </ul>
+        <a href="#contact" className="btn btn--coral nav__overlay-cta" onClick={() => setMenuOpen(false)}>
+          Donate Now <ArrowRight size={16} />
+        </a>
+      </div>
+
       {/* ── Hero ── */}
-      <section className="hero" ref={heroRef} aria-labelledby="hero-title">
-        <div className="container">
+      <section className="hero" aria-labelledby="hero-title">
+        {/* Left — text content */}
+        <div className="hero__left">
           <div className="hero__content">
-            <p className="hero__eyebrow">
-              <Sparkles size={14} />
-              Kenya · Community · Impact
-            </p>
+            <p className="hero__eyebrow">OUR MISSION</p>
             <h1 className="hero__title" id="hero-title">
               Empowering Women.<br />
-              <em>Preserving Culture.</em>
+              Preserving Culture.<br />
+              <em>Promoting Sustainability<br className="hero__br--md" /> Across Kenya.</em>
             </h1>
             <p className="hero__description">
-              SIANA Africa is a grassroots organisation promoting sustainability,
-              cultural preservation, and women's empowerment across Kenya.
+              SIANA Africa is a grassroots organisation devoted to uplifting women,
+              honouring Kenya's living heritage, and championing sustainable communities
+              for generations to come.
             </p>
             <div className="hero__actions">
-              <a href="#mission" className="btn btn--primary">
-                Our Mission <ArrowRight size={16} />
+              <a href="#mission" className="btn btn--coral">
+                Support Our Work <ArrowRight size={16} />
               </a>
-              <a href="#design" className="btn btn--outline">
-                Design System
+              <a href="#mission" className="btn btn--ghost">
+                Join the Movement
               </a>
             </div>
           </div>
+        </div>
+
+        {/* Right — image */}
+        <div className="hero__right" aria-hidden="true">
+          <img
+            src={heroImage}
+            alt="Maasai woman holding dragon fruit"
+            className="hero__image"
+            loading="eager"
+          />
+          <div className="hero__image-overlay" />
         </div>
       </section>
 
