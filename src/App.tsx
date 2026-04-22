@@ -169,7 +169,12 @@ export default function App() {
     text: 'Equipping women with skills, confidence, and resources to lead change in their communities.',
   },
 ]
-
+const galleryImages = [
+  heroImg1,
+  heroImg2,
+  heroImg3,
+  maasaiWomenImg,
+]
   return (
     <>
       {/* ── Preloader ── */}
@@ -407,7 +412,48 @@ export default function App() {
 
 </section>
       
+{/* ── Gallery Section ── */}
+<section className="gallery-section" aria-labelledby="gallery-title">
 
+  <div className="container">
+
+    {/* Header */}
+    <div className="gallery-header">
+      <p className="gallery-eyebrow">OUR STORY IN IMAGES</p>
+
+      <div className="brand-divider" aria-hidden="true">
+        <span className="brand-divider_line brand-divider_line--left" />
+        <span className="brand-divider__symbol">
+          <HeartHandshake size={22} strokeWidth={1.5} />
+        </span>
+        <span className="brand-divider_line brand-divider_line--right" />
+      </div>
+
+      <h2 className="gallery-title" id="gallery-title">
+        Moments from the Field
+      </h2>
+
+      <p className="gallery-subtext">
+        A glimpse into the communities, landscapes, and work shaping Siana Africa.
+      </p>
+    </div>
+
+  </div>
+
+  {/* Gallery Strip (Full Width Scroll Feel) */}
+  <div className="gallery-strip">
+
+    {galleryImages.map((img, i) => (
+      <div key={i} className="gallery-item">
+        <img src={img} alt={Siana Africa gallery ${i + 1}} />
+      </div>
+    ))}
+
+  </div>
+
+</section>
+
+      
       {/* ── Design System Showcase ── */}
       <section id="design" className="section section--mist" aria-labelledby="design-title">
         <div className="container">
