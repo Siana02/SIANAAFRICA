@@ -799,6 +799,8 @@
 .value-card--right { align-self: flex-end; }
 
 /* Horizontal connector line from card edge to spine */
+/* ── Individual value card connectors ────────────────────── */
+
 .value-card--left::after,
 .value-card--right::after {
   content: '';
@@ -808,14 +810,16 @@
   width: 3rem;
   transform: translateY(-50%);
   pointer-events: none;
+  /* Ensure the lines sit above the background */
+  z-index: 1; 
 }
 
 .value-card--left::after {
   right: -3rem;
   background: linear-gradient(
     to right,
-    rgba(76, 93, 67, 0.15),
-    rgba(76, 93, 67, 0.35)
+    rgba(168, 182, 154, 0.2), /* Sage at 20% opacity */
+    rgba(168, 182, 154, 0.8)  /* Sage at 80% opacity near the spine */
   );
 }
 
@@ -823,8 +827,8 @@
   left: -3rem;
   background: linear-gradient(
     to left,
-    rgba(76, 93, 67, 0.15),
-    rgba(76, 93, 67, 0.35)
+    rgba(168, 182, 154, 0.2), /* Sage at 20% opacity */
+    rgba(168, 182, 154, 0.8)  /* Sage at 80% opacity near the spine */
   );
 }
 
