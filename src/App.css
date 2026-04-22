@@ -1268,31 +1268,34 @@
 }
 
 /* ── CARD ── */
+/* ─────────────────────────────────────────────
+   CINEMATIC ARTICLE CARDS (NEW DESIGN)
+──────────────────────────────────────────── */
+
 .article-card {
+  position: relative;
   display: block;
-  background: #ffffff;
-  border-radius: 20px;
+  border-radius: 22px;
   overflow: hidden;
   text-decoration: none;
-  transition: all 0.4s ease;
-  position: relative;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-
-  /* animation initial state */
-  opacity: 1;
-  transform: translateY(0px);
+  background: transparent;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
-/* hover = lift + glow */
+/* hover lift */
 .article-card:hover {
   transform: translateY(-10px) scale(1.01);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+  box-shadow: 0 25px 70px rgba(0,0,0,0.18);
 }
 
-/* ── IMAGE ── */
+/* ─────────────────────────────
+   IMAGE BASE
+──────────────────────────── */
+
 .article-card__image {
   position: relative;
-  height: 240px;
+  height: 420px;
   overflow: hidden;
 }
 
@@ -1300,86 +1303,133 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s ease;
+  transform: scale(1.05);
+  transition: transform 0.7s ease;
 }
 
-/* cinematic zoom */
-.article-card:hover img {
-  transform: scale(1.08);
+/* cinematic zoom on hover */
+.article-card:hover .article-card__image img {
+  transform: scale(1.15);
 }
 
-/* overlay gradient */
+/* ─────────────────────────────
+   DARK GRADIENT OVERLAY
+   (bottom fade for readability)
+──────────────────────────── */
+
 .article-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.15) 0%,
+    rgba(0,0,0,0.25) 40%,
+    rgba(0,0,0,0.75) 100%
+  );
+  z-index: 1;
+}
+
+/* subtle top fade for title readability */
+.article-card__image::before {
+  content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(
     to top,
     rgba(0,0,0,0.35),
-    rgba(0,0,0,0.05),
-    transparent
+    transparent 50%
   );
-  opacity: 0.7;
-  transition: opacity 0.3s ease;
+  z-index: 1;
 }
 
-.article-card:hover .article-card__overlay {
-  opacity: 0.9;
-}
-
-/* ── CONTENT ── */
-.article-card__content {
-  padding: 1.6rem;
-}
+/* ─────────────────────────────
+   TITLE (TOP LEFT OVER IMAGE)
+──────────────────────────── */
 
 .article-card__title {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  right: 1.5rem;
+  z-index: 3;
+
   font-family: 'Playfair Display', serif;
-  font-size: 1.25rem;
-  margin-bottom: 0.5rem;
-  color: var(--color-charcoal);
-}
+  font-size: 1.4rem;
+  color: #fff;
+  max-width: 80%;
+  line-height: 1.2;
 
-.article-card__excerpt {
-  font-size: 0.92rem;
-  line-height: 1.6;
-  color: var(--color-text-muted);
-  margin-bottom: 1.2rem;
-}
-
-/* CTA */
-.article-card__cta {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--color-coral);
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition: gap 0.25s ease;
-}
-
-/* subtle arrow slide */
-.article-card:hover .article-card__cta {
-  gap: 10px;
-}
-
-/* ── FOOTER CTA ── */
-.articles-footer {
-  text-align: center;
-  margin-top: 3rem;
-}
-
-/* ─────────────────────────────────────────────
-   SCROLL ANIMATION (GSAP SUPPORT)
-──────────────────────────────────────────── */
-
-/* these get animated by GSAP */
-.article-card.is-visible {
-  opacity: 1;
   transform: translateY(0);
 }
 
-/* ─────────────────────────────────────────────
-   RESPONSIVENESS
-──────────────────────────────────────────── */
+/* ─────────────────────────────
+   CONTENT OVERLAY AREA (BOTTOM)
+──────────────────────────── */
+
+.article-card__content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+
+  padding: 1.5rem;
+  color: #fff;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+/* excerpt */
+.article-card__excerpt {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.85);
+  max-width: 90%;
+}
+
+/* ─────────────────────────────
+   CTA BUTTON (SQUARE + ARROW)
+──────────────────────────── */
+
+.article-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  width: fit-content;
+
+  padding: 0.55rem 0.9rem;
+  border-radius: 10px;
+
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.25);
+
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #fff;
+
+  transition: all 0.3s ease;
+  backdrop-filter: blur(6px);
+}
+
+/* CTA hover */
+.article-card:hover .article-card__cta {
+  background: rgba(255,255,255,0.2);
+  transform: translateX(4px);
+}
+
+/* arrow animation feel */
+.article-card__cta svg {
+  transition: transform 0.3s ease;
+}
+
+.article-card:hover .article-card__cta svg {
+  transform: translateX(4px);
+}
+
+
 
 @media (max-width: 900px) {
   .articles-grid {
