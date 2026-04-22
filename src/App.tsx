@@ -15,8 +15,8 @@ import {
 import Preloader from './Preloader'
 import heroImg1 from './assets/sianaafrica1.jpg'
 import heroImg2 from './assets/Sianaafrica2.jpg'
-import heroImg3 from './assets/Maasaiwomanholdingdragonfruit.png'
-import maasaiWomenImg from './assets/Maasaiwomentalkingtoaman.png'
+import heroImg3 from './assets/sianaafrica3.jpg'
+import maasaiWomenImg from './assets/sianaafrica4.jpg'
 import './App.css'
 
 /* ─── Hero slideshow scenes ──────────────────────────────── */
