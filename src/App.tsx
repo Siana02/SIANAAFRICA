@@ -338,11 +338,11 @@ export default function App() {
       <p className="impact-eyebrow">OUR IMPACT</p>
 
       <div className="brand-divider" aria-hidden="true">
-        <span className="brand-divider_line brand-divider_line--left" />
+        <span className="brand-divider__line brand-divider__line--left" />
         <span className="brand-divider__symbol">
           <HeartHandshake size={22} strokeWidth={1.5} />
         </span>
-        <span className="brand-divider_line brand-divider_line--right" />
+        <span className="brand-divider__line brand-divider__line--right" />
       </div>
 
       <h2 className="impact-title" id="impact-title">
