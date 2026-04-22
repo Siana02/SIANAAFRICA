@@ -264,15 +264,24 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   CINEMATIC HERO — scroll-driven visual story
+   HERO — auto-cycling background with zoom animations
    ═══════════════════════════════════════════════════════════ */
 
-.cinematic-hero {
-  position: relative;
+/* ── Zoom keyframes ──────────────────────────────────────── */
+
+@keyframes hero-zoom-in {
+  from { transform: scale(1.0); }
+  to   { transform: scale(1.12); }
 }
 
-/* Individual full-screen scene */
-.scene {
+@keyframes hero-zoom-out {
+  from { transform: scale(1.12); }
+  to   { transform: scale(1.0); }
+}
+
+/* ── Hero wrapper ────────────────────────────────────────── */
+
+.hero {
   position: relative;
   height: 100svh;
   min-height: 600px;
@@ -281,21 +290,41 @@
   align-items: center;
 }
 
+/* ── Slide (one per image) ───────────────────────────────── */
+
+.hero__slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+
+.hero__slide--active {
+  opacity: 1;
+}
+
 /* ── Background image layer ──────────────────────────────── */
 
-.scene__bg {
+.hero__bg {
   position: absolute;
   inset: 0;
   background-size: cover;
   /* background-position set via inline style per scene */
   will-change: transform;
-  /* No CSS transition — scroll handler updates frame-by-frame */
+  transform-origin: center center;
+  /* Ensure the sharpest possible rendering of the source image */
+  image-rendering: high-quality;
+  image-rendering: -webkit-optimize-contrast; /* Safari */
 }
+
+/* Zoom animations — applied for the full 5-second display duration */
+.hero__bg--zoom-in  { animation: hero-zoom-in  5s ease-in-out forwards; }
+.hero__bg--zoom-out { animation: hero-zoom-out 5s ease-in-out forwards; }
 
 /* ── Gradient overlays ───────────────────────────────────── */
 
-/* Primary scene (Scene 1): strong left-side gradient for text readability */
-.scene__gradient {
+/* Strong left-side gradient for text readability */
+.hero__gradient {
   position: absolute;
   inset: 0;
   z-index: 1;
@@ -309,19 +338,8 @@
   pointer-events: none;
 }
 
-/* Secondary scenes: lighter overlay — no text to protect */
-.scene--secondary .scene__gradient {
-  background: linear-gradient(
-    to bottom,
-    rgba(8, 10, 8, 0.30) 0%,
-    transparent 35%,
-    transparent 65%,
-    rgba(8, 10, 8, 0.25) 100%
-  );
-}
-
-/* Bottom vignette adds depth and grounds the scene */
-.scene__vignette {
+/* Bottom vignette adds depth */
+.hero__vignette {
   position: absolute;
   inset: 0;
   z-index: 1;
@@ -333,25 +351,11 @@
   pointer-events: none;
 }
 
-/* Top-fade on secondary scenes — subtle dark edge creates cinematic transition feel */
-.scene--secondary::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 22%;
-  background: linear-gradient(to bottom, rgba(8, 10, 8, 0.55) 0%, transparent 100%);
-  z-index: 2;
-  pointer-events: none;
-}
+/* ── Text layer ──────────────────────────────────────────── */
 
-/* ── Text layer (Scene 1 only) ───────────────────────────── */
-
-.scene__body {
+.hero__body {
   position: relative;
   z-index: 3;
-  /* vh-responsive: keeps content well inside the viewport on any screen height */
   padding-block: clamp(5rem, 14vh, 9rem) clamp(3rem, 7vh, 5rem);
   align-self: center;
 }
@@ -500,8 +504,8 @@
    ═══════════════════════════════════════════════════════════ */
 
 @media (max-width: 900px) {
-  /* ── Scene: gradient strengthens on mobile for readability ── */
-  .scene--primary .scene__gradient {
+  /* ── Hero: gradient strengthens on mobile for readability ── */
+  .hero__gradient {
     background: linear-gradient(
       115deg,
       rgba(8, 10, 8, 0.94) 0%,
@@ -511,7 +515,7 @@
     );
   }
 
-  .scene__body   { padding-block: 7rem 3.5rem; }
+  .hero__body    { padding-block: 7rem 3.5rem; }
   .hero__content { max-width: 100%; }
   .hero__title   { font-size: clamp(1.9rem, 6.5vw, 2.8rem); }
   .hero__description {
@@ -539,13 +543,13 @@
 }
 
 @media (max-width: 480px) {
-  .scene__body { padding-block: 6rem 3rem; }
+  .hero__body  { padding-block: 6rem 3rem; }
   .hero__title { font-size: clamp(1.75rem, 7.5vw, 2.3rem); }
 }
 
 /* Landscape / short-viewport — prevent CTA buttons from being cut off */
 @media (max-height: 650px) {
-  .scene__body { padding-block: clamp(4rem, 10vh, 6rem) clamp(1.5rem, 4vh, 3rem); }
+  .hero__body  { padding-block: clamp(4rem, 10vh, 6rem) clamp(1.5rem, 4vh, 3rem); }
   .hero__eyebrow   { margin-bottom: 0.75rem; }
   .hero__title     { font-size: clamp(1.5rem, 3.8vw, 2.2rem); margin-bottom: 1rem; }
   .hero__description { font-size: 0.92rem; line-height: 1.6; margin-bottom: 1.5rem; }
