@@ -138,10 +138,7 @@ export default function App() {
       scrollTrigger: { trigger: '.palette-grid', start: 'top 85%' },
       scale: 0.8, opacity: 0, duration: 0.5, stagger: 0.07, ease: 'back.out(1.7)',
     })
-
-    setPreloaderDone(true)
-  }, [])
-  gsap.from('.impact-card', {
+ gsap.from('.impact-card', {
   scrollTrigger: {
     trigger: '.impact-cards',
     start: 'top 80%',
@@ -152,6 +149,9 @@ export default function App() {
   stagger: 0.15,
   ease: 'power3.out',
 })
+    setPreloaderDone(true)
+  }, [])
+ 
   const impactCards = [
   {
     icon: <Leaf size={24} strokeWidth={1.5} />,
