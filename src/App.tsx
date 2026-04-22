@@ -309,6 +309,92 @@ export default function App() {
         </div>
 
       </section>
+      /* ─── Impact Section Data ────────────────────────────── */
+const impactCards = [
+  {
+    icon: <Leaf size={24} strokeWidth={1.5} />,
+    title: 'Climate Smart Technologies',
+    text: 'Introducing resilient farming practices that adapt to changing climates and protect long-term livelihoods.',
+  },
+  {
+    icon: <Zap size={24} strokeWidth={1.5} />,
+    title: 'Diverse Income Sources',
+    text: 'Empowering women to build multiple income streams for financial independence and stability.',
+  },
+  {
+    icon: <Users size={24} strokeWidth={1.5} />,
+    title: 'Women Empowerment',
+    text: 'Equipping women with skills, confidence, and resources to lead change in their communities.',
+  },
+]
+      {/* ── Impact Section ── */}
+<section className="impact-section" aria-labelledby="impact-title">
+
+  <div className="container">
+    
+    {/* Header */}
+    <div className="impact-header">
+      <p className="impact-eyebrow">OUR IMPACT</p>
+
+      <div className="brand-divider" aria-hidden="true">
+        <span className="brand-divider_line brand-divider_line--left" />
+        <span className="brand-divider__symbol">
+          <HeartHandshake size={22} strokeWidth={1.5} />
+        </span>
+        <span className="brand-divider_line brand-divider_line--right" />
+      </div>
+
+      <h2 className="impact-title" id="impact-title">
+        Creating Sustainable Change
+      </h2>
+    </div>
+
+    {/* ── Pilot Project ── */}
+    <div className="impact-pilot">
+      
+      <div className="impact-pilot__text">
+        <p className="impact-label">Pilot Project</p>
+
+        <h3 className="impact-pilot__title">
+          Empowering Communities in Namanga
+        </h3>
+
+        <p className="impact-pilot__description">
+          Siana Africa partners with Maasai women in Namanga to strengthen agricultural productivity while fostering sustainable, women-led economic growth.
+        </p>
+
+        <a href="#" className="btn btn--coral">
+          Learn More <ArrowRight size={16} />
+        </a>
+      </div>
+
+      <div className="impact-pilot__image">
+        <img src={maasaiWomenImg} alt="Maasai women in agricultural project" />
+      </div>
+
+    </div>
+
+    {/* ── Impact Cards ── */}
+    <div className="impact-cards">
+      {impactCards.map((card, i) => (
+        <div key={card.title} className="impact-card">
+          
+          <div className="impact-card__icon">
+            {card.icon}
+          </div>
+
+          <h4 className="impact-card__title">{card.title}</h4>
+
+          <p className="impact-card__text">{card.text}</p>
+
+        </div>
+      ))}
+    </div>
+
+  </div>
+
+</section>
+      
 
       {/* ── Design System Showcase ── */}
       <section id="design" className="section section--mist" aria-labelledby="design-title">
