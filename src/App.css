@@ -288,6 +288,7 @@
   overflow: hidden;
   display: flex;
   align-items: center;
+  perspective: 1000px; /* improves sub-pixel sharpness during GPU compositing */
 }
 
 /* ── Slide (one per image) ───────────────────────────────── */
@@ -312,6 +313,12 @@
   /* background-position set via inline style per scene */
   will-change: transform;
   transform-origin: center center;
+  /* GPU layer promotion — keeps the element on its own compositor layer
+     so the zoom animation never causes the browser to re-rasterise the
+     background image at a lower resolution during the transform. */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   /* Ensure the sharpest possible rendering of the source image */
   image-rendering: high-quality;
   image-rendering: -webkit-optimize-contrast; /* Safari */
