@@ -170,10 +170,22 @@ export default function App() {
   },
 ]
 const galleryImages = [
-  heroImg1,
-  heroImg2,
-  heroImg3,
-  maasaiWomenImg,
+  {
+    src: heroImg1,
+    alt: 'Women in rural Kenya engaging in farming activities',
+  },
+  {
+    src: heroImg2,
+    alt: 'Community members participating in sustainable agriculture',
+  },
+  {
+    src: heroImg3,
+    alt: 'Maasai woman holding dragon fruit in Namanga project',
+  },
+  {
+    src: maasaiWomenImg,
+    alt: 'Maasai women collaborating in Siana Africa field program',
+  },
 ]
   return (
     <>
