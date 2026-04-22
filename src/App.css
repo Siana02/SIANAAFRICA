@@ -738,7 +738,7 @@
 
 .section__label {
   /* Changing the small label to Mist for subtle contrast */
-  color: var(--color-mist);
+  color: var(--color-coral);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -748,7 +748,7 @@
   font-size: clamp(1.5rem, 3vw, 2.25rem);
   font-weight: 600;
   /* Changing from charcoal to Linen for high readability */
-  color: var(--color-linen); 
+  color: var(--color-forest); 
   margin: 0.5rem 0 0;
 }
 
@@ -768,11 +768,11 @@
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    var(--color-sage) 6%,
+    var(--color-sage) 96%,
     var(--color-sage) 94%,
-    transparent 100%
+    transparent 0%
   );
-  opacity: 0.4; /* Softens the line against the dark green */
+  opacity: 1; /* Softens the line against the dark green */
   pointer-events: none;
   z-index: 0;
 }
