@@ -7,12 +7,12 @@ export default defineConfig({
   plugins: [
     react(),
     ViteImageOptimizer({
-      jpg: { quality: 80 },  // .jpg extension
-      jpeg: { quality: 80 }, // .jpeg extension
-      png: { quality: 85 },
-      webp: { lossless: false, quality: 80 },
-      avif: { lossless: false, quality: 80 },
-      svg: { multipass: true },
+      jpg:  { quality: 92, progressive: true, chromaSubsampling: '4:4:4' },
+      jpeg: { quality: 92, progressive: true, chromaSubsampling: '4:4:4' },
+      png:  { quality: 95, compressionLevel: 7 },
+      webp: { lossless: false, quality: 92 },
+      avif: { lossless: false, quality: 85 },
+      svg:  { multipass: true },
     }),
   ],
 })

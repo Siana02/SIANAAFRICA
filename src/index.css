@@ -46,6 +46,13 @@
   box-sizing: border-box;
 }
 
+/* ---------- Global image quality ---------- */
+img {
+  image-rendering: high-quality;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
 html {
   scroll-behavior: smooth;
 }

@@ -282,7 +282,10 @@
   position: absolute;
   inset: 0;
   background-size: cover;
+  background-repeat: no-repeat;
   image-rendering: high-quality;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   opacity: 0;
   transition: opacity 1s ease;
   will-change: opacity, transform;
@@ -676,10 +679,9 @@
   height: 100%;
   object-fit: cover;
   object-position: center 30%;
-  /* Enhanced visual quality */
-  filter: contrast(1.08) brightness(0.9) saturate(1.2);
-  transform: scale(1.03);
-  transform-origin: center;
+  image-rendering: high-quality;
+  /* Subtle enhancement: lift contrast and saturation for visual crispness */
+  filter: contrast(1.06) brightness(0.92) saturate(1.15);
 }
 
 .wwa-image-block__overlay {
