@@ -10,18 +10,18 @@ import {
   X,
 } from 'lucide-react'
 import Preloader from './Preloader'
-import heroImg1 from './assets/Maasaiwomanholdingdragonfruit.png'
-import heroImg2 from './assets/hero.png'
-import heroImg3 from './assets/sianaafrica1.jpg'
+import heroImg1 from './assets/sianaafrica1.jpg'
+import heroImg2 from './assets/Sianaafrica2.jpg'
+import heroImg3 from './assets/Maasaiwomanholdingdragonfruit.png'
 import './App.css'
 
 /* ─── Auto-cycling hero scenes ──────────────────────────── */
 /* zoom: 'in'  → scale 1.0 → 1.12 over 5 s                 */
 /* zoom: 'out' → scale 1.12 → 1.0 over 5 s                 */
 const heroScenes = [
-  { src: heroImg1, pos: 'center 12%',    zoom: 'in'  as const }, // Image 1 – Maasai woman
-  { src: heroImg2, pos: 'center center', zoom: 'out' as const }, // Image 2 – environment
-  { src: heroImg3, pos: 'center center', zoom: 'in'  as const }, // Image 3 – community
+  { src: heroImg1, pos: 'center center', zoom: 'in'  as const }, // Image 1 – sianaafrica1
+  { src: heroImg2, pos: 'center center', zoom: 'out' as const }, // Image 2 – Sianaafrica2
+  { src: heroImg3, pos: 'center 12%',    zoom: 'in'  as const }, // Image 3 – Maasai woman
 ]
 
 const SCENE_DURATION = 5000 // ms per image
