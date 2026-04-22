@@ -264,15 +264,10 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   CINEMATIC HERO — scroll-driven visual story
+   HERO — auto-cycling background slideshow
    ═══════════════════════════════════════════════════════════ */
 
-.cinematic-hero {
-  position: relative;
-}
-
-/* Individual full-screen scene */
-.scene {
+.hero {
   position: relative;
   height: 100svh;
   min-height: 600px;
@@ -281,20 +276,39 @@
   align-items: center;
 }
 
-/* ── Background image layer ──────────────────────────────── */
+/* ── Background image layers ─────────────────────────────── */
 
-.scene__bg {
+.hero-bg {
   position: absolute;
   inset: 0;
   background-size: cover;
-  /* background-position set via inline style per scene */
-  will-change: transform;
-  /* No CSS transition — scroll handler updates frame-by-frame */
+  image-rendering: high-quality;
+  opacity: 0;
+  transition: opacity 1s ease;
+  will-change: opacity, transform;
 }
 
-/* ── Gradient overlays ───────────────────────────────────── */
+.hero-bg--active {
+  opacity: 1;
+}
 
-/* Primary scene (Scene 1): strong left-side gradient for text readability */
+/* Zoom-in: scale 1.0 → 1.15 over the full 5 s display time */
+@keyframes hero-zoom-in {
+  from { transform: scale(1.0); }
+  to   { transform: scale(1.15); }
+}
+
+/* Zoom-out: scale 1.15 → 1.0 over the full 5 s display time */
+@keyframes hero-zoom-out {
+  from { transform: scale(1.15); }
+  to   { transform: scale(1.0); }
+}
+
+.hero-bg--in  { animation: hero-zoom-in  5s linear forwards; }
+.hero-bg--out { animation: hero-zoom-out 5s linear forwards; }
+
+/* ── Gradient overlay — strong left-side fade for text readability ── */
+
 .scene__gradient {
   position: absolute;
   inset: 0;
@@ -307,17 +321,6 @@
     transparent 75%
   );
   pointer-events: none;
-}
-
-/* Secondary scenes: lighter overlay — no text to protect */
-.scene--secondary .scene__gradient {
-  background: linear-gradient(
-    to bottom,
-    rgba(8, 10, 8, 0.30) 0%,
-    transparent 35%,
-    transparent 65%,
-    rgba(8, 10, 8, 0.25) 100%
-  );
 }
 
 /* Bottom vignette adds depth and grounds the scene */
@@ -333,20 +336,7 @@
   pointer-events: none;
 }
 
-/* Top-fade on secondary scenes — subtle dark edge creates cinematic transition feel */
-.scene--secondary::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 22%;
-  background: linear-gradient(to bottom, rgba(8, 10, 8, 0.55) 0%, transparent 100%);
-  z-index: 2;
-  pointer-events: none;
-}
-
-/* ── Text layer (Scene 1 only) ───────────────────────────── */
+/* ── Text layer ───────────────────────────────────────────── */
 
 .scene__body {
   position: relative;
@@ -500,8 +490,8 @@
    ═══════════════════════════════════════════════════════════ */
 
 @media (max-width: 900px) {
-  /* ── Scene: gradient strengthens on mobile for readability ── */
-  .scene--primary .scene__gradient {
+  /* ── Hero: gradient strengthens on mobile for readability ── */
+  .scene__gradient {
     background: linear-gradient(
       115deg,
       rgba(8, 10, 8, 0.94) 0%,
