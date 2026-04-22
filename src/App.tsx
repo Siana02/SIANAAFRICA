@@ -377,7 +377,7 @@ export default function App() {
 
     {/* ── Impact Cards ── */}
     <div className="impact-cards">
-      {impactCards.map((card, i) => (
+      {impactCards.map((card) => (
         <div key={card.title} className="impact-card">
           
           <div className="impact-card__icon">
