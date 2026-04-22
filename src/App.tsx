@@ -16,12 +16,14 @@ import heroImg3 from './assets/sianaafrica1.jpg'
 import heroImg4 from './assets/Sianaafrica2.jpg'
 import './App.css'
 
-/* Images rotate through the hero slideshow. `pos` fine-tunes focal point. */
-const heroSlides = [
-  { src: heroImg1, pos: 'center 12%' },
-  { src: heroImg2, pos: 'center center' },
-  { src: heroImg3, pos: 'center center' },
-  { src: heroImg4, pos: 'center center' },
+/* ─── Cinematic hero scenes ─────────────────────────────── */
+/* zoom: 'in'  → scale 1.0→1.1 as user scrolls through the scene  */
+/* zoom: 'out' → scale 1.1→1.0 as user scrolls through the scene  */
+const heroScenes = [
+  { src: heroImg1, pos: 'center 12%',    zoom: 'in'  as const }, // Maasai woman – primary
+  { src: heroImg2, pos: 'center center', zoom: 'out' as const }, // hero.png – environment
+  { src: heroImg3, pos: 'center center', zoom: 'in'  as const }, // sianaafrica1 – community
+  { src: heroImg4, pos: 'center center', zoom: 'out' as const }, // Sianaafrica2 – transition
 ]
 
 gsap.registerPlugin(ScrollTrigger)
@@ -67,10 +69,6 @@ const navLinks = [
   { label: 'Contact', href: '#contact' },
 ]
 
-/* Slideshow timing — module-level so they're easy to tune */
-const SLIDE_HOLD = 7    // seconds each image is visible before crossfade begins
-const SLIDE_FADE = 1.5  // crossfade duration in seconds
-
 /* ─── App ──────────────────────────────────────────────────── */
 export default function App() {
   const [preloaderDone, setPreloaderDone] = useState(false)
@@ -79,6 +77,7 @@ export default function App() {
 
   const missionRef = useRef<HTMLDivElement>(null)
   const pillarsRef = useRef<HTMLDivElement>(null)
+  const sceneImgRefs = useRef<(HTMLDivElement | null)[]>([])
 
   /* ── Lock body scroll when preloader or mobile menu is open ── */
   useEffect(() => {
@@ -93,33 +92,47 @@ export default function App() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  /* ── Hero + scroll animations (fire once preloader finishes) ── */
-  const handlePreloaderComplete = useCallback(() => {
-    // ── Background slideshow ──────────────────────────────────
-    // Each slide holds for SLIDE_HOLD seconds, then crossfades over SLIDE_FADE seconds.
-    // Alternating slides zoom in / zoom out for cinematic depth.
-    const slides = gsap.utils.toArray<HTMLElement>('.hero__slide')
-    gsap.set(slides, { opacity: 0 })
-    gsap.set(slides[0], { opacity: 1, scale: 1 })
+  /* ── Scroll-based scene zoom ──────────────────────────────── */
+  useEffect(() => {
+    if (!preloaderDone) return
 
-    let current = 0
-    const cycleSlide = () => {
-      const prev = current
-      current = (current + 1) % slides.length
-      const zoomIn = current % 2 === 0  // alternate direction per slide
+    let pending = false
 
-      gsap.set(slides[current], { opacity: 0, scale: zoomIn ? 1 : 1.1 })
-      gsap.to(slides[current], { opacity: 1, duration: SLIDE_FADE, ease: 'power2.inOut' })
-      gsap.to(slides[prev], { opacity: 0, duration: SLIDE_FADE, ease: 'power2.inOut' })
-      // Slow continuous zoom across full display window
-      gsap.to(slides[current], { scale: zoomIn ? 1.1 : 1, duration: SLIDE_HOLD + SLIDE_FADE, ease: 'none' })
-      gsap.delayedCall(SLIDE_HOLD, cycleSlide)
+    const update = () => {
+      pending = false
+      const y = window.scrollY
+      const vh = window.innerHeight
+
+      heroScenes.forEach((scene, i) => {
+        const el = sceneImgRefs.current[i]
+        if (!el) return
+
+        // Progress through this scene: 0 = scene top enters viewport, 1 = scene bottom exits
+        const sceneStart = i * vh
+        const progress = Math.max(0, Math.min(1, (y - sceneStart) / vh))
+        const scale = scene.zoom === 'in'
+          ? 1 + progress * 0.1          // 1.0 → 1.1
+          : 1.1 - progress * 0.1        // 1.1 → 1.0
+
+        el.style.transform = `scale(${scale.toFixed(4)})`
+      })
     }
 
-    // Kick off slide 0 zoom immediately, queue first transition
-    gsap.to(slides[0], { scale: 1.1, duration: SLIDE_HOLD + SLIDE_FADE, ease: 'none' })
-    gsap.delayedCall(SLIDE_HOLD, cycleSlide)
+    const onScroll = () => {
+      if (!pending) {
+        pending = true
+        requestAnimationFrame(update)
+      }
+    }
 
+    window.addEventListener('scroll', onScroll, { passive: true })
+    update() // run immediately for initial scale
+
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [preloaderDone])
+
+  /* ── Hero text + section animations (fire once preloader finishes) ── */
+  const handlePreloaderComplete = useCallback(() => {
     // ── Hero text entrance (staggered) ────────────────────────
     const tl = gsap.timeline()
     tl.from('.hero__eyebrow',     { y: 22, opacity: 0, duration: 0.65, ease: 'power3.out' })
@@ -207,49 +220,59 @@ export default function App() {
         </a>
       </div>
 
-      {/* ── Hero ── */}
-      <section className="hero" aria-labelledby="hero-title">
-        {/* Cycling full-bleed background slides */}
-        <div className="hero__slides" aria-hidden="true">
-          {heroSlides.map((slide, i) => (
+      {/* ── Cinematic Hero — scroll-driven visual story ── */}
+      <div className="cinematic-hero">
+        {heroScenes.map((scene, i) => (
+          <section
+            key={i}
+            className={`scene${i === 0 ? ' scene--primary' : ' scene--secondary'}`}
+            {...(i === 0 ? { 'aria-labelledby': 'hero-title' } : { 'aria-hidden': true })}
+          >
+            {/* Background image layer — scale updated by scroll handler */}
             <div
-              key={i}
-              className="hero__slide"
-              style={{ backgroundImage: `url(${slide.src})`, backgroundPosition: slide.pos }}
+              ref={(el) => { sceneImgRefs.current[i] = el }}
+              className="scene__bg"
+              style={{
+                backgroundImage: `url(${scene.src})`,
+                backgroundPosition: scene.pos,
+                transform: `scale(${scene.zoom === 'out' ? 1.1 : 1})`,
+              }}
             />
-          ))}
-        </div>
 
-        {/* Cinematic left-to-right dark gradient — keeps text readable */}
-        <div className="hero__gradient" aria-hidden="true" />
-        {/* Bottom vignette for depth */}
-        <div className="hero__vignette" aria-hidden="true" />
+            {/* Gradient overlay */}
+            <div className="scene__gradient" aria-hidden="true" />
+            {/* Bottom vignette */}
+            <div className="scene__vignette" aria-hidden="true" />
 
-        {/* Text layer */}
-        <div className="container hero__body">
-          <div className="hero__content">
-            <p className="hero__eyebrow">OUR MISSION</p>
-            <h1 className="hero__title" id="hero-title">
-              Empowering Women.<br />
-              Preserving Culture.<br />
-              <em>Promoting Sustainability Across Kenya.</em>
-            </h1>
-            <p className="hero__description">
-              SIANA Africa is a grassroots organisation devoted to uplifting women,
-              honouring Kenya's living heritage, and championing sustainable communities
-              for generations to come.
-            </p>
-            <div className="hero__actions">
-              <a href="#mission" className="btn btn--coral">
-                Support Our Work <ArrowRight size={16} />
-              </a>
-              <a href="#mission" className="btn btn--ghost">
-                Join the Movement
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
+            {/* Text content — Scene 1 only */}
+            {i === 0 && (
+              <div className="container scene__body">
+                <div className="hero__content">
+                  <p className="hero__eyebrow">OUR MISSION</p>
+                  <h1 className="hero__title" id="hero-title">
+                    Empowering Women.<br />
+                    Preserving Culture.<br />
+                    <em>Promoting Sustainability Across Kenya.</em>
+                  </h1>
+                  <p className="hero__description">
+                    SIANA Africa is a grassroots organisation devoted to uplifting women,
+                    honouring Kenya's living heritage, and championing sustainable communities
+                    for generations to come.
+                  </p>
+                  <div className="hero__actions">
+                    <a href="#mission" className="btn btn--coral">
+                      Support Our Work <ArrowRight size={16} />
+                    </a>
+                    <a href="#mission" className="btn btn--ghost">
+                      Join the Movement
+                    </a>
+                  </div>
+                </div>
+              </div>
+            )}
+          </section>
+        ))}
+      </div>
 
       {/* ── Mission ── */}
       <section id="mission" className="section section--light" aria-labelledby="mission-title">
