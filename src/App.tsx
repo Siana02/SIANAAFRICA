@@ -2,18 +2,22 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import {
-  Heart,
-  Leaf,
-  Globe,
   ArrowRight,
+  HeartHandshake,
+  Leaf,
   Menu,
+  Scale,
+  ShieldCheck,
+  Users,
   X,
+  Zap,
 } from 'lucide-react'
 import Preloader from './Preloader'
 import heroImg1 from './assets/Maasaiwomanholdingdragonfruit.png'
-import heroImg2 from './assets/hero.png'
+import heroImg2 from './assets/Handsholdingdragonfruit.png'
 import heroImg3 from './assets/sianaafrica1.jpg'
 import heroImg4 from './assets/Sianaafrica2.jpg'
+import maasaiWomenImg from './assets/Maasaiwomentalkingtoaman.png'
 import './App.css'
 
 /* ─── Cinematic hero scenes ─────────────────────────────── */
@@ -39,25 +43,37 @@ const palette = [
   { name: 'Charcoal', hex: '#282B2B' },
 ]
 
-/* ─── Pillars data ─────────────────────────────────────────── */
-const pillars = [
+/* ─── Core Values data ────────────────────────────────────── */
+const coreValues = [
   {
-    icon: <Heart size={22} />,
-    iconClass: 'pillar-card__icon--rose',
-    title: 'Empowering Women',
-    text: 'Providing skills, education, and resources to women across Kenya so they can lead thriving, independent lives.',
+    icon: <ShieldCheck size={24} strokeWidth={1.5} />,
+    colorKey: 'dignity',
+    title: 'Dignity',
+    text: 'Every person we serve deserves to be seen, heard, and treated with deep respect. Dignity is the foundation on which all our work stands.',
   },
   {
-    icon: <Globe size={22} />,
-    iconClass: 'pillar-card__icon--green',
-    title: 'Preserving Culture',
-    text: "Celebrating and safeguarding Kenya's rich cultural heritage through storytelling, arts, and community programs.",
+    icon: <Users size={24} strokeWidth={1.5} />,
+    colorKey: 'community',
+    title: 'Community',
+    text: 'Lasting change is built together. Our strength lies in the bonds we forge across villages, families, and generations.',
   },
   {
-    icon: <Leaf size={22} />,
-    iconClass: 'pillar-card__icon--coral',
-    title: 'Promoting Sustainability',
-    text: 'Championing eco-friendly practices that protect natural environments and ensure future generations can flourish.',
+    icon: <Zap size={24} strokeWidth={1.5} />,
+    colorKey: 'empowerment',
+    title: 'Empowerment',
+    text: 'We equip women with skills, resources, and confidence — enabling them to lead their own stories and transform their communities.',
+  },
+  {
+    icon: <Scale size={24} strokeWidth={1.5} />,
+    colorKey: 'integrity',
+    title: 'Integrity',
+    text: 'We operate with transparency and accountability. Earning and keeping the trust of the communities we serve is everything.',
+  },
+  {
+    icon: <Leaf size={24} strokeWidth={1.5} />,
+    colorKey: 'sustainability',
+    title: 'Sustainability',
+    text: 'Our programmes nurture environments, economies, and people — designed to sustain and thrive for generations to come.',
   },
 ]
 
@@ -76,7 +92,7 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   const missionRef = useRef<HTMLDivElement>(null)
-  const pillarsRef = useRef<HTMLDivElement>(null)
+  const valuesTrackRef = useRef<HTMLDivElement>(null)
   const sceneImgRefs = useRef<(HTMLDivElement | null)[]>([])
 
   /* ── Lock body scroll when preloader or mobile menu is open ── */
@@ -145,8 +161,8 @@ export default function App() {
       scrollTrigger: { trigger: missionRef.current, start: 'top 80%' },
       y: 50, opacity: 0, duration: 0.9, ease: 'power3.out',
     })
-    gsap.from('.pillar-card', {
-      scrollTrigger: { trigger: pillarsRef.current, start: 'top 80%' },
+    gsap.from('.value-card', {
+      scrollTrigger: { trigger: valuesTrackRef.current, start: 'top 80%' },
       y: 60, opacity: 0, duration: 0.7, stagger: 0.15, ease: 'power3.out',
     })
     gsap.from('.swatch', {
@@ -274,28 +290,64 @@ export default function App() {
         ))}
       </div>
 
-      {/* ── Mission ── */}
-      <section id="mission" className="section section--light" aria-labelledby="mission-title">
-        <div className="container" ref={missionRef}>
-          <p className="section__label">Who we are</p>
-          <h2 className="section__title" id="mission-title">Our Three Pillars</h2>
-          <p className="section__body">
-            Everything we do is rooted in three interconnected values that guide
-            our programmes, partnerships, and community work.
-          </p>
+      {/* ── Who We Are + Core Values ── */}
+      <section id="mission" className="who-section" aria-labelledby="wwa-title">
 
-          <div className="pillars" ref={pillarsRef}>
-            {pillars.map((p) => (
-              <article key={p.title} className="pillar-card">
-                <div className={`pillar-card__icon ${p.iconClass}`}>
-                  {p.icon}
+        {/* Centered header */}
+        <div className="container" ref={missionRef}>
+          <div className="wwa-header">
+            <p className="wwa-eyebrow">WHO WE ARE</p>
+            <div className="brand-divider" aria-hidden="true">
+              <span className="brand-divider__line brand-divider__line--left" />
+              <span className="brand-divider__symbol">
+                <HeartHandshake size={22} strokeWidth={1.5} />
+              </span>
+              <span className="brand-divider__line brand-divider__line--right" />
+            </div>
+            <h2 className="wwa-title" id="wwa-title">A Movement Rooted in Purpose</h2>
+            <p className="wwa-intro">
+              SIANA Africa is a grassroots organisation devoted to uplifting women,
+              honouring Kenya's living heritage, and championing sustainable communities
+              for generations to come.
+            </p>
+          </div>
+        </div>
+
+        {/* Full-viewport mission image */}
+        <div className="wwa-image-block">
+          <img
+            src={maasaiWomenImg}
+            className="wwa-image-block__img"
+            alt="Maasai women in conversation"
+            loading="lazy"
+          />
+          <div className="wwa-image-block__overlay" aria-hidden="true" />
+          <p className="wwa-image-block__quote">"Empowering women across rural Kenya"</p>
+        </div>
+
+        {/* Core Values */}
+        <div className="container">
+          <div className="values-intro">
+            <p className="section__label">Our Core Values</p>
+            <h2 className="values-heading">What Guides Everything We Do</h2>
+          </div>
+          <div className="values-track" ref={valuesTrackRef}>
+            <div className="values-track__spine" aria-hidden="true" />
+            {coreValues.map((v, i) => (
+              <article
+                key={v.title}
+                className={`value-card value-card--${i % 2 === 0 ? 'left' : 'right'} value-card--${v.colorKey}`}
+              >
+                <div className="value-card__icon-wrap">
+                  {v.icon}
                 </div>
-                <h3 className="pillar-card__title">{p.title}</h3>
-                <p className="pillar-card__text">{p.text}</p>
+                <h3 className="value-card__title">{v.title}</h3>
+                <p className="value-card__text">{v.text}</p>
               </article>
             ))}
           </div>
         </div>
+
       </section>
 
       {/* ── Design System Showcase ── */}
