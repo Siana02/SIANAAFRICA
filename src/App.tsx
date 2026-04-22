@@ -141,6 +141,23 @@ export default function App() {
 
     setPreloaderDone(true)
   }, [])
+  const impactCards = [
+  {
+    icon: <Leaf size={24} strokeWidth={1.5} />,
+    title: 'Climate Smart Technologies',
+    text: 'Introducing resilient farming practices that adapt to changing climates and protect long-term livelihoods.',
+  },
+  {
+    icon: <Zap size={24} strokeWidth={1.5} />,
+    title: 'Diverse Income Sources',
+    text: 'Empowering women to build multiple income streams for financial independence and stability.',
+  },
+  {
+    icon: <Users size={24} strokeWidth={1.5} />,
+    title: 'Women Empowerment',
+    text: 'Equipping women with skills, confidence, and resources to lead change in their communities.',
+  },
+]
 
   return (
     <>
@@ -310,23 +327,7 @@ export default function App() {
 
       </section>
       /* ─── Impact Section Data ────────────────────────────── */
-const impactCards = [
-  {
-    icon: <Leaf size={24} strokeWidth={1.5} />,
-    title: 'Climate Smart Technologies',
-    text: 'Introducing resilient farming practices that adapt to changing climates and protect long-term livelihoods.',
-  },
-  {
-    icon: <Zap size={24} strokeWidth={1.5} />,
-    title: 'Diverse Income Sources',
-    text: 'Empowering women to build multiple income streams for financial independence and stability.',
-  },
-  {
-    icon: <Users size={24} strokeWidth={1.5} />,
-    title: 'Women Empowerment',
-    text: 'Equipping women with skills, confidence, and resources to lead change in their communities.',
-  },
-]
+
       {/* ── Impact Section ── */}
 <section className="impact-section" aria-labelledby="impact-title">
 
