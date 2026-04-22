@@ -17,6 +17,8 @@ import heroImg1 from './assets/sianaafrica1.jpg'
 import heroImg2 from './assets/Sianaafrica2.jpg'
 import heroImg3 from './assets/sianaafrica3.jpg'
 import maasaiWomenImg from './assets/sianaafrica4.jpg'
+import dragonFruitImg from './assets/Handsholdingdragonfruit.png' 
+import journeyImg from './assets/journeyimage.jpg'
 import './App.css'
 
 /* ─── Hero slideshow scenes ──────────────────────────────── */
@@ -185,6 +187,22 @@ const galleryImages = [
   {
     src: maasaiWomenImg,
     alt: 'Maasai women collaborating in Siana Africa field program',
+  },
+]
+  const articles = [
+  {
+    title: 'The Dragon Fruit Story',
+    excerpt:
+      'The dragon fruit thrives in tough conditions—just like our communities. It symbolizes courage, adaptability, and the fire within us to overcome challenges.',
+    image: dragonFruitImg,
+    link: '#',
+  },
+  {
+    title: 'Women Empowerment in Kenya: A Journey to Kerala',
+    excerpt:
+      'Follow the journey of our founder to the Kanthari Leadership Institute—where vision, resilience, and purpose shaped Siana Africa.',
+    image: journeyImg,
+    link: '#',
   },
 ]
   return (
@@ -460,6 +478,83 @@ const galleryImages = [
     <img src={item.src} alt={item.alt} />
   </div>
 ))}
+
+  </div>
+
+</section>
+
+
+      {/* ── Articles Section ── */}
+<section className="articles-section" aria-labelledby="articles-title">
+
+  <div className="container">
+
+    {/* Header */}
+    <div className="articles-header">
+      <p className="articles-eyebrow">FROM OUR JOURNAL</p>
+
+      <div className="brand-divider" aria-hidden="true">
+        <span className="brand-divider_line brand-divider_line--left" />
+        <span className="brand-divider__symbol">
+          <HeartHandshake size={22} strokeWidth={1.5} />
+        </span>
+        <span className="brand-divider_line brand-divider_line--right" />
+      </div>
+
+      <h2 className="articles-title" id="articles-title">
+        Stories That Shape Our Work
+      </h2>
+
+      <p className="articles-subtext">
+        Insights, journeys, and reflections from the communities and people behind Siana Africa.
+      </p>
+    </div>
+
+    {/* Articles Grid */}
+    <div className="articles-grid">
+
+      {articles.map((article, index) => (
+        <a
+          key={index}
+          href={article.link}
+          className="article-card"
+          aria-label={Read article: ${article.title}}
+        >
+
+          {/* Image */}
+          <div className="article-card__image">
+            <img
+              src={article.image}
+              alt={article.title}
+              loading="lazy"
+            />
+            <div className="article-card__overlay" />
+          </div>
+
+          {/* Content */}
+          <div className="article-card__content">
+            <h3 className="article-card__title">{article.title}</h3>
+
+            <p className="article-card__excerpt">
+              {article.excerpt}
+            </p>
+
+            <span className="article-card__cta">
+              Read More <ArrowRight size={16} />
+            </span>
+          </div>
+
+        </a>
+      ))}
+
+    </div>
+
+    {/* Bottom CTA */}
+    <div className="articles-footer">
+      <a href="/blog" className="btn btn--ghost">
+        View All Articles <ArrowRight size={16} />
+      </a>
+    </div>
 
   </div>
 
