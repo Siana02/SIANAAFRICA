@@ -1314,7 +1314,7 @@
 
 /* ─────────────────────────────
    DARK GRADIENT OVERLAY
-   (bottom fade for readability)
+   Top fade for title, clear middle, dark bottom for content
 ──────────────────────────── */
 
 .article-card__overlay {
@@ -1322,29 +1322,14 @@
   inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba(0,0,0,0.15) 0%,
-    rgba(0,0,0,0.25) 40%,
-    rgba(0,0,0,0.75) 100%
+    rgba(0,0,0,0.45) 0%,
+    transparent 28%,
+    transparent 55%,
+    rgba(0,0,0,0.82) 100%
   );
   z-index: 1;
 }
 
-/* subtle top fade for title readability */
-.article-card__image::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(0,0,0,0.35),
-    transparent 50%
-  );
-  z-index: 1;
-}
-
-/* ─────────────────────────────
-   TITLE (TOP LEFT OVER IMAGE)
-──────────────────────────── */
 /* ─────────────────────────────
    TITLE (TOP LEFT FLOATING)
 ──────────────────────────── */
@@ -1386,12 +1371,12 @@
   flex-direction: column;
   gap: 0.9rem;
 
-  /* stronger readable base */
+  /* solid dark gradient base — excerpt + CTA only live here */
   background: linear-gradient(
     to top,
-    rgba(0,0,0,0.85),
-    rgba(0,0,0,0.4),
-    transparent
+    rgba(0,0,0,0.92) 0%,
+    rgba(0,0,0,0.72) 55%,
+    transparent 100%
   );
 }
 

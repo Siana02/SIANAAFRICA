@@ -532,7 +532,7 @@ const galleryImages = [
           aria-label={'Read article: ${article.title}'}
         >
 
-          {/* Image */}
+          {/* Image — pure visual space */}
           <div className="article-card__image">
             <img
               src={article.image}
@@ -542,10 +542,11 @@ const galleryImages = [
             <div className="article-card__overlay" />
           </div>
 
-          {/* Content */}
-          <div className="article-card__content">
-            <h3 className="article-card__title">{article.title}</h3>
+          {/* Title — top-left floating over image */}
+          <h3 className="article-card__title">{article.title}</h3>
 
+          {/* Bottom overlay — excerpt + CTA */}
+          <div className="article-card__content">
             <p className="article-card__excerpt">
               {article.excerpt}
             </p>
