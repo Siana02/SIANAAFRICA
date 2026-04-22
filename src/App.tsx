@@ -455,11 +455,11 @@ const galleryImages = [
   {/* Gallery Strip (Full Width Scroll Feel) */}
   <div className="gallery-strip">
 
-    {galleryImages.map((img, i) => (
-      <div key={i} className="gallery-item">
-        <img src={img} alt={Siana Africa gallery ${i + 1}} />
-      </div>
-    ))}
+    {galleryImages.map((item, index) => (
+  <div key={index} className="gallery-item">
+    <img src={item.src} alt={item.alt} />
+  </div>
+))}
 
   </div>
 
