@@ -713,33 +713,46 @@
   text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
 }
 
-/* ── Core Values header ───────────────────────────────────── */
-
-.values-intro {
-  text-align: center;
-  padding-top: 5rem;
-  margin-bottom: 3.5rem;
-}
-
-.values-heading {
-  font-family: var(--font-heading);
-  font-size: clamp(1.5rem, 3vw, 2.25rem);
-  font-weight: 600;
-  color: var(--color-charcoal);
-  margin: 0.5rem 0 0;
-}
-
-/* ── Values zigzag / crossroads track ────────────────────── */
-
+/* ── Core Values Section Wrapper ─────────────────────────── */
+/* Added a wrapper or target the container to apply the forest background */
 .values-track {
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 2.75rem;
   padding-bottom: 5rem;
+  
+  /* Applying the Forest Green background */
+  background-color: var(--color-forest);
+  /* Adding padding so content doesn't hit the edges */
+  padding: 4rem 2rem; 
+  border-radius: 8px; /* Optional: adds smoothness */
 }
 
-/* Vertical spine running down the centre */
+/* ── Values Intro (Header) ──────────────────────────────── */
+.values-intro {
+  text-align: center;
+  padding-top: 5rem;
+  margin-bottom: 3.5rem;
+}
+
+.section__label {
+  /* Changing the small label to Mist for subtle contrast */
+  color: var(--color-mist);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.values-heading {
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 600;
+  /* Changing from charcoal to Linen for high readability */
+  color: var(--color-linen); 
+  margin: 0.5rem 0 0;
+}
+
+/* ── Values Track Spine ──────────────────────────────────── */
 .values-track__spine {
   position: absolute;
   left: 50%;
@@ -747,13 +760,19 @@
   bottom: 0;
   width: 1px;
   transform: translateX(-50%);
+  
+  /* Updated the gradient: 
+     Since the background is now Forest Green, the spine needs to be lighter
+     (using Mist or Sage) to stay visible.
+  */
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    rgba(76, 93, 67, 0.22) 6%,
-    rgba(76, 93, 67, 0.22) 94%,
+    var(--color-sage) 6%,
+    var(--color-sage) 94%,
     transparent 100%
   );
+  opacity: 0.4; /* Softens the line against the dark green */
   pointer-events: none;
   z-index: 0;
 }
