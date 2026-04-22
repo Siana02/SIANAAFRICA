@@ -264,10 +264,15 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   HERO — full-bleed cinematic slideshow
+   CINEMATIC HERO — scroll-driven visual story
    ═══════════════════════════════════════════════════════════ */
 
-.hero {
+.cinematic-hero {
+  position: relative;
+}
+
+/* Individual full-screen scene */
+.scene {
   position: relative;
   height: 100svh;
   min-height: 600px;
@@ -276,32 +281,21 @@
   align-items: center;
 }
 
-/* ── Background slide stack ────────────────────────────── */
+/* ── Background image layer ──────────────────────────────── */
 
-.hero__slides {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-
-.hero__slide {
+.scene__bg {
   position: absolute;
   inset: 0;
   background-size: cover;
-  /* background-position set via inline style per slide */
-  will-change: transform, opacity;
+  /* background-position set via inline style per scene */
+  will-change: transform;
+  /* No CSS transition — scroll handler updates frame-by-frame */
 }
 
-/* Only the first slide is visible before GSAP takes over —
-   prevents all 4 images stacking during preloader phase */
-.hero__slide:nth-child(n+2) {
-  opacity: 0;
-}
+/* ── Gradient overlays ───────────────────────────────────── */
 
-/* ── Cinematic gradient overlays ───────────────────────── */
-
-/* Left-side dark fade — makes text pop against any image */
-.hero__gradient {
+/* Primary scene (Scene 1): strong left-side gradient for text readability */
+.scene__gradient {
   position: absolute;
   inset: 0;
   z-index: 1;
@@ -315,8 +309,19 @@
   pointer-events: none;
 }
 
-/* Bottom vignette adds depth and grounds the section */
-.hero__vignette {
+/* Secondary scenes: lighter overlay — no text to protect */
+.scene--secondary .scene__gradient {
+  background: linear-gradient(
+    to bottom,
+    rgba(8, 10, 8, 0.30) 0%,
+    transparent 35%,
+    transparent 65%,
+    rgba(8, 10, 8, 0.25) 100%
+  );
+}
+
+/* Bottom vignette adds depth and grounds the scene */
+.scene__vignette {
   position: absolute;
   inset: 0;
   z-index: 1;
@@ -328,11 +333,24 @@
   pointer-events: none;
 }
 
-/* ── Text layer ────────────────────────────────────────── */
-
-.hero__body {
-  position: relative;
+/* Top-fade on secondary scenes — subtle dark edge creates cinematic transition feel */
+.scene--secondary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 22%;
+  background: linear-gradient(to bottom, rgba(8, 10, 8, 0.55) 0%, transparent 100%);
   z-index: 2;
+  pointer-events: none;
+}
+
+/* ── Text layer (Scene 1 only) ───────────────────────────── */
+
+.scene__body {
+  position: relative;
+  z-index: 3;
   /* vh-responsive: keeps content well inside the viewport on any screen height */
   padding-block: clamp(5rem, 14vh, 9rem) clamp(3rem, 7vh, 5rem);
   align-self: center;
@@ -482,8 +500,8 @@
    ═══════════════════════════════════════════════════════════ */
 
 @media (max-width: 900px) {
-  /* ── Hero: full-bleed stays, gradient strengthens for readability ── */
-  .hero__gradient {
+  /* ── Scene: gradient strengthens on mobile for readability ── */
+  .scene--primary .scene__gradient {
     background: linear-gradient(
       115deg,
       rgba(8, 10, 8, 0.94) 0%,
@@ -493,7 +511,7 @@
     );
   }
 
-  .hero__body    { padding-block: 7rem 3.5rem; }
+  .scene__body   { padding-block: 7rem 3.5rem; }
   .hero__content { max-width: 100%; }
   .hero__title   { font-size: clamp(1.9rem, 6.5vw, 2.8rem); }
   .hero__description {
@@ -521,13 +539,13 @@
 }
 
 @media (max-width: 480px) {
-  .hero__body  { padding-block: 6rem 3rem; }
+  .scene__body { padding-block: 6rem 3rem; }
   .hero__title { font-size: clamp(1.75rem, 7.5vw, 2.3rem); }
 }
 
 /* Landscape / short-viewport — prevent CTA buttons from being cut off */
 @media (max-height: 650px) {
-  .hero__body { padding-block: clamp(4rem, 10vh, 6rem) clamp(1.5rem, 4vh, 3rem); }
+  .scene__body { padding-block: clamp(4rem, 10vh, 6rem) clamp(1.5rem, 4vh, 3rem); }
   .hero__eyebrow   { margin-bottom: 0.75rem; }
   .hero__title     { font-size: clamp(1.5rem, 3.8vw, 2.2rem); margin-bottom: 1rem; }
   .hero__description { font-size: 0.92rem; line-height: 1.6; margin-bottom: 1.5rem; }
