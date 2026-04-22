@@ -151,6 +151,17 @@ export default function App() {
   stagger: 0.15,
   ease: 'power3.out',
 })
+    gsap.from('.article-card', {
+  scrollTrigger: {
+    trigger: '.articles-grid',
+    start: 'top 85%',
+  },
+  y: 50,
+  opacity: 0,
+  duration: 0.8,
+  stagger: 0.2,
+  ease: 'power3.out',
+})
     setPreloaderDone(true)
   }, [])
  
