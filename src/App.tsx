@@ -14,7 +14,7 @@ import {
 } from 'lucide-react'
 import Preloader from './Preloader'
 import heroImg1 from './assets/Maasaiwomanholdingdragonfruit.png'
-import heroImg2 from './assets/Handsholdingdragonfruit.png'
+import heroImg2 from './assets/hero.png'
 import heroImg3 from './assets/sianaafrica1.jpg'
 import heroImg4 from './assets/Sianaafrica2.jpg'
 import maasaiWomenImg from './assets/Maasaiwomentalkingtoaman.png'
