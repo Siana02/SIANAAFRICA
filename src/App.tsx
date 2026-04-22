@@ -141,6 +141,17 @@ export default function App() {
 
     setPreloaderDone(true)
   }, [])
+  gsap.from('.impact-card', {
+  scrollTrigger: {
+    trigger: '.impact-cards',
+    start: 'top 80%',
+  },
+  y: 50,
+  opacity: 0,
+  duration: 0.7,
+  stagger: 0.15,
+  ease: 'power3.out',
+})
   const impactCards = [
   {
     icon: <Leaf size={24} strokeWidth={1.5} />,
