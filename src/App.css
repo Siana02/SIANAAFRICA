@@ -1432,10 +1432,23 @@
 }
 /* ── FOOTER CTA ── */
 .articles-footer {
-   background: var(--color-forest)
-  text-align: center;
-   color: #ffff;
-  margin-top: 3rem;
+  display: flex;
+  justify-content: center;
+  margin-top: 3.5rem;
+}
+
+.articles-footer .btn {
+  background: var(--color-forest);
+  color: var(--color-linen);
+  border-color: var(--color-forest);
+  box-shadow: 0 4px 18px rgba(76, 93, 67, 0.28);
+}
+
+.articles-footer .btn:hover {
+  background: #3a4933;
+  border-color: #3a4933;
+  color: var(--color-linen);
+  box-shadow: 0 8px 28px rgba(76, 93, 67, 0.42);
 }
 
 
