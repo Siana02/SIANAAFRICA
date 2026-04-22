@@ -438,7 +438,7 @@ const galleryImages = [
         <span className="brand-divider__symbol">
           <HeartHandshake size={22} strokeWidth={1.5} />
         </span>
-        <span className="brand-divider_line brand-divider_line--right" />
+        <span className="brand-divider__line brand-divider__line--right" />
       </div>
 
       <h2 className="gallery-title" id="gallery-title">
