@@ -434,7 +434,7 @@ const galleryImages = [
       <p className="gallery-eyebrow">OUR STORY IN IMAGES</p>
 
       <div className="brand-divider" aria-hidden="true">
-        <span className="brand-divider_line brand-divider_line--left" />
+        <span className="brand-divider__line brand-divider__line--left" />
         <span className="brand-divider__symbol">
           <HeartHandshake size={22} strokeWidth={1.5} />
         </span>
