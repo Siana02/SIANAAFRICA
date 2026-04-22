@@ -1279,8 +1279,8 @@
   box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 
   /* animation initial state */
-  opacity: 0;
-  transform: translateY(40px);
+  opacity: 1;
+  transform: translateY(0px);
 }
 
 /* hover = lift + glow */
