@@ -326,7 +326,7 @@ export default function App() {
         </div>
 
       </section>
-      /* ─── Impact Section Data ────────────────────────────── */
+      
 
       {/* ── Impact Section ── */}
 <section className="impact-section" aria-labelledby="impact-title">
