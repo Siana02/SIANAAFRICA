@@ -787,64 +787,6 @@ const galleryImages = [
 
 </section>
 
-      
-      {/* ── Design System Showcase ── */}
-      <section id="design" className="section section--mist" aria-labelledby="design-title">
-        <div className="container">
-          <p className="section__label">Design System</p>
-          <h2 className="section__title" id="design-title">Colour Palette</h2>
-          <p className="section__body">
-            A warm, nature-inspired palette that communicates growth, community,
-            and warmth.
-          </p>
-
-          <div className="palette-grid">
-            {palette.map((s) => (
-              <div key={s.hex} className="swatch">
-                <div className="swatch__color" style={{ background: s.hex }} />
-                <div className="swatch__label">
-                  <span className="swatch__name">{s.name}</span>
-                  <span className="swatch__hex">{s.hex}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Typography showcase */}
-          <h2 className="section__title" id="type-title" style={{ marginTop: '4rem' }}>
-            Typography
-          </h2>
-          <p className="section__body">
-            <strong>Cormorant Garamond</strong> for editorial display headings ·{' '}
-            <strong>Playfair Display</strong> for section &amp; card headings ·{' '}
-            <strong>DM Sans</strong> for UI &amp; labels ·{' '}
-            <strong>Inter</strong> for body text.
-          </p>
-
-          <div style={{ marginTop: '2rem' }}>
-            <div className="type-sample">
-              <p className="type-sample__label">Display – Cormorant Garamond 400</p>
-              <h1 style={{ margin: 0 }}>Empowering Communities</h1>
-            </div>
-            <div className="type-sample">
-              <p className="type-sample__label">Section Heading – Playfair Display 600</p>
-              <h2 style={{ margin: 0 }}>Preserving Kenya's Heritage</h2>
-            </div>
-            <div className="type-sample">
-              <p className="type-sample__label">Card Heading – Playfair Display 600</p>
-              <h3 style={{ margin: 0 }}>Stories of Resilience</h3>
-            </div>
-            <div className="type-sample">
-              <p className="type-sample__label">Body – Inter 400</p>
-              <p style={{ margin: 0, fontSize: '1.0625rem', color: 'var(--color-text-muted)' }}>
-                We believe every woman in Kenya deserves access to opportunities,
-                education, and the freedom to shape her own future — all while
-                honouring the culture and traditions that define her community.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* ── Footer ── */}
       <footer id="contact" className="footer">
