@@ -5,8 +5,12 @@ import {
   ArrowRight,
   HeartHandshake,
   Leaf,
+  Mail,
+  MapPin,
   Menu,
+  Phone,
   Scale,
+  Send,
   ShieldCheck,
   Users,
   X,
@@ -19,7 +23,36 @@ import heroImg3 from './assets/sianaafrica3.jpg'
 import maasaiWomenImg from './assets/sianaafrica4.jpg'
 import dragonFruitImg from './assets/Handsholdingdragonfruit.png' 
 import journeyImg from './assets/journeyimage.jpg'
+import contactHeroImg from './assets/sianaafrica.png'
+import impactImg from './assets/sianaafrica5.png'
 import './App.css'
+
+/* ─── Inline social icons (brand icons not in this lucide-react build) ── */
+const IconFacebook = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+  </svg>
+)
+const IconTwitter = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+  </svg>
+)
+const IconYoutube = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.54C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58zM9.75 15.02V8.98L15.5 12z"/>
+  </svg>
+)
+const IconLinkedin = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/>
+  </svg>
+)
+const IconInstagram = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+  </svg>
+)
 
 /* ─── Hero slideshow scenes ──────────────────────────────── */
 /* Images auto-cycle every 5 s; zoom direction per scene      */
@@ -30,17 +63,6 @@ const heroScenes = [
 ]
 
 gsap.registerPlugin(ScrollTrigger)
-
-/* ─── Colour Palette data ─────────────────────────────────── */
-const palette = [
-  { name: 'Forest',   hex: '#4C5D43' },
-  { name: 'Sage',     hex: '#A8B69A' },
-  { name: 'Mist',     hex: '#E7F0E5' },
-  { name: 'Linen',    hex: '#F7F3EF' },
-  { name: 'Coral',    hex: '#E36E5B' },
-  { name: 'Rose',     hex: '#C95A7B' },
-  { name: 'Charcoal', hex: '#282B2B' },
-]
 
 /* ─── Core Values data ────────────────────────────────────── */
 const coreValues = [
@@ -195,6 +217,21 @@ export default function App() {
         gsap.from('.newsletter-card', {
           scrollTrigger: { trigger: '.newsletter-card', start: 'top 90%', once: true },
           y: 40, opacity: 0, duration: 0.8, ease: 'power3.out',
+          immediateRender: false,
+        })
+        gsap.from('.contact-form-wrap', {
+          scrollTrigger: { trigger: '.contact-grid', start: 'top 82%', once: true },
+          x: -50, opacity: 0, duration: 0.9, ease: 'power3.out',
+          immediateRender: false,
+        })
+        gsap.from('.contact-info', {
+          scrollTrigger: { trigger: '.contact-grid', start: 'top 82%', once: true },
+          x: 50, opacity: 0, duration: 0.9, ease: 'power3.out',
+          immediateRender: false,
+        })
+        gsap.from('.contact-detail-item', {
+          scrollTrigger: { trigger: '.contact-details', start: 'top 88%', once: true },
+          y: 20, opacity: 0, duration: 0.55, stagger: 0.12, ease: 'power3.out',
           immediateRender: false,
         })
         gsap.from('.swatch', {
@@ -503,7 +540,7 @@ const galleryImages = [
       </div>
 
       <div className="impact-pilot__image">
-        <img src={maasaiWomenImg} alt="Maasai women in agricultural project" />
+        <img src={impactImg} alt="Siana Africa community in Namanga" />
       </div>
 
     </div>
@@ -788,115 +825,238 @@ const galleryImages = [
 </section>
 
 {/* ── Contact Section ── */}
-<section className="contact-section" aria-labelledby="contact-title">
+<section id="contact" className="contact-section" aria-labelledby="contact-title">
 
-  <div className="container">
-
-    {/* Header */}
-    <div className="contact-header">
+  {/* ── Section Header ── */}
+  <div className="contact-header">
+    <div className="container">
       <p className="contact-eyebrow">CONTACT US</p>
-
-      <div className="brand-divider" aria-hidden="true">
-        <span className="brand-divider_line brand-divider_line--left" />
+      <div className="brand-divider brand-divider--light" aria-hidden="true">
+        <span className="brand-divider__line brand-divider__line--left" />
         <span className="brand-divider__symbol">
           <HeartHandshake size={22} strokeWidth={1.5} />
         </span>
-        <span className="brand-divider_line brand-divider_line--right" />
+        <span className="brand-divider__line brand-divider__line--right" />
       </div>
-
       <h2 className="contact-title" id="contact-title">
         Let’s Connect
       </h2>
-
-      <p className="contact-subtext">
-        Have a question or want to collaborate? Send us a message — we’d love to hear from you.
-      </p>
     </div>
+  </div>
 
-    {/* Content */}
+  {/* ── Hero Image Banner ── */}
+  <div className="contact-hero-image">
+    <img src={contactHeroImg} alt="Siana Africa community" loading="lazy" />
+    <div className="contact-hero-image__overlay" aria-hidden="true" />
+    <p className="contact-hero-image__caption">
+      Have a question or want to collaborate? Send us a message — we’d love to hear from you.
+    </p>
+  </div>
+
+  {/* ── Content Grid ── */}
+  <div className="container">
     <div className="contact-grid">
 
-      {/* Form */}
-      <form className="contact-form">
-        <input type="text" placeholder="Your Name" required />
-        <input type="email" placeholder="Your Email" required />
-        <textarea placeholder="Your Message" rows={5} required />
+      {/* Left: Form */}
+      <div className="contact-form-wrap">
+        <div className="contact-form-header">
+          <span className="contact-form-badge">✉️ Send a Message</span>
+          <h3 className="contact-form-title">Drop us a line</h3>
+        </div>
+        <form className="contact-form">
+          <div className="contact-form__row">
+            <div className="contact-form__field">
+              <label htmlFor="cf-name">Full Name</label>
+              <input id="cf-name" type="text" placeholder="Your full name" required />
+            </div>
+            <div className="contact-form__field">
+              <label htmlFor="cf-email">Email Address</label>
+              <input id="cf-email" type="email" placeholder="you@example.com" required />
+            </div>
+          </div>
+          <div className="contact-form__field">
+            <label htmlFor="cf-subject">Subject</label>
+            <input id="cf-subject" type="text" placeholder="How can we help?" />
+          </div>
+          <div className="contact-form__field">
+            <label htmlFor="cf-message">Message</label>
+            <textarea id="cf-message" placeholder="Tell us about your inquiry…" rows={5} required />
+          </div>
+          <button type="submit" className="btn btn--coral contact-form__submit">
+            Send Message <Send size={16} />
+          </button>
+        </form>
+      </div>
 
-        <button type="submit" className="btn btn--coral">
-          Send Message <ArrowRight size={16} />
-        </button>
-      </form>
-
-      {/* Info */}
+      {/* Right: Info + Socials */}
       <div className="contact-info">
 
-        <div className="contact-block">
-          <h4>Our Location</h4>
-          <p>Namanga, Kenya</p>
+        <div className="contact-info__intro">
+          <h3 className="contact-info__title">Get in Touch</h3>
+          <p className="contact-info__body">
+            Whether you’re a donor, partner, volunteer, or simply curious — we’re
+            always happy to connect. Reach out through any of the channels below.
+          </p>
         </div>
 
-        <div className="contact-block">
-          <h4>Phone</h4>
-          <p>+254 720239716</p>
+        <div className="contact-details">
+          <a href="https://maps.google.com/?q=Namanga,Kenya" target="_blank" rel="noopener noreferrer" className="contact-detail-item">
+            <span className="contact-detail-item__icon">
+              <MapPin size={20} strokeWidth={1.5} />
+            </span>
+            <span className="contact-detail-item__text">
+              <strong>Our Location</strong>
+              Namanga, Kenya
+            </span>
+          </a>
+          <a href="tel:+254720239716" className="contact-detail-item">
+            <span className="contact-detail-item__icon">
+              <Phone size={20} strokeWidth={1.5} />
+            </span>
+            <span className="contact-detail-item__text">
+              <strong>Phone</strong>
+              +254 720 239 716
+            </span>
+          </a>
+          <a href="mailto:info@sianaafrica.org" className="contact-detail-item">
+            <span className="contact-detail-item__icon">
+              <Mail size={20} strokeWidth={1.5} />
+            </span>
+            <span className="contact-detail-item__text">
+              <strong>Email</strong>
+              info@sianaafrica.org
+            </span>
+          </a>
         </div>
 
-        <div className="contact-block">
-          <h4>Email</h4>
-          <p>info@sianaafrica.org</p>
-        </div>
-
-        {/* Socials */}
-        <div className="contact-socials">
-          <a href="https://web.facebook.com/people/Siana-Africa" aria-label="Facebook"><Users size={18} /></a>
-          <a href="https://x.com/SianaAfrica" aria-label="Twitter"><Zap size={18} /></a>
-          <a href="https://www.youtube.com/@sianaafrica" aria-label="YouTube"><Play size={18} /></a>
-          <a href="https://www.linkedin.com/company/siana-africa/" aria-label="LinkedIn"><Briefcase size={18} /></a>
+        <div className="contact-socials-wrap">
+          <p className="contact-socials-label">Let’s Connect</p>
+          <div className="contact-socials">
+            <a href="https://web.facebook.com/people/Siana-Africa" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="contact-social-btn">
+              <IconFacebook />
+            </a>
+            <a href="https://x.com/SianaAfrica" target="_blank" rel="noopener noreferrer" aria-label="Twitter / X" className="contact-social-btn">
+              <IconTwitter />
+            </a>
+            <a href="https://www.youtube.com/@sianaafrica" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="contact-social-btn">
+              <IconYoutube />
+            </a>
+            <a href="https://www.linkedin.com/company/siana-africa/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="contact-social-btn">
+              <IconLinkedin />
+            </a>
+            <a href="https://www.instagram.com/sianaafrica" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="contact-social-btn">
+              <IconInstagram />
+            </a>
+          </div>
         </div>
 
       </div>
 
     </div>
-
   </div>
 
 </section>
+
       {/* ── Footer ── */}
-      <footer id="contact" className="footer">
-        <div className="container footer__inner">
-          <div className="footer__brand">
-            <p className="footer__logo">SIANA Africa</p>
-            <p className="footer__tagline">
-              Empowering Women. Preserving Culture.<br />
-              Promoting Sustainability Across Kenya.
+      <footer className="footer">
+
+        {/* Top bar */}
+        <div className="footer__top">
+          <div className="container footer__top-inner">
+            <p className="footer__top-text">
+              Empowering Women · Preserving Culture · Building a Sustainable Kenya
             </p>
-          </div>
-          <div className="footer__links">
-            <p className="footer__links-heading">Explore</p>
-            <ul role="list">
-              <li><a href="#mission">Our Mission</a></li>
-              <li><a href="#mission">Core Values</a></li>
-              <li><a href="#mission">Our Work</a></li>
-              <li><a href="#join-section">Get Involved</a></li>
-            </ul>
-          </div>
-          <div className="footer__contact">
-            <p className="footer__links-heading">Connect</p>
-            <p>Kenya · East Africa</p>
-            <a href="mailto:info@sianaafrica.org" className="footer__email">
-              info@sianaafrica.org
-            </a>
-            <a href="#contact" className="btn btn--coral btn--sm footer__donate">
+            <a href="#contact" className="btn btn--coral btn--sm">
               Donate Now <ArrowRight size={14} />
             </a>
           </div>
         </div>
+
+        {/* Main grid */}
+        <div className="container footer__inner">
+
+          {/* Brand column */}
+          <div className="footer__brand">
+            <p className="footer__logo">SIANA <em>Africa</em></p>
+            <p className="footer__tagline">
+              A movement rooted in purpose — walking alongside rural Kenyan women
+              to build skills, resilience, and a sustainable future.
+            </p>
+            <div className="footer__social-row">
+              <a href="https://web.facebook.com/people/Siana-Africa" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="footer__social-btn">
+                <IconFacebook />
+              </a>
+              <a href="https://x.com/SianaAfrica" target="_blank" rel="noopener noreferrer" aria-label="Twitter / X" className="footer__social-btn">
+                <IconTwitter />
+              </a>
+              <a href="https://www.youtube.com/@sianaafrica" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="footer__social-btn">
+                <IconYoutube />
+              </a>
+              <a href="https://www.linkedin.com/company/siana-africa/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="footer__social-btn">
+                <IconLinkedin />
+              </a>
+              <a href="https://www.instagram.com/sianaafrica" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="footer__social-btn">
+                <IconInstagram />
+              </a>
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <div className="footer__col">
+            <p className="footer__col-heading">Quick Links</p>
+            <ul className="footer__col-list" role="list">
+              <li><a href="#">Home</a></li>
+              <li><a href="#mission">About Us</a></li>
+              <li><a href="#">Siana Blog</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div>
+
+          {/* Important Links */}
+          <div className="footer__col">
+            <p className="footer__col-heading">Important Links</p>
+            <ul className="footer__col-list" role="list">
+              <li><a href="#mission">About Us</a></li>
+              <li><a href="#">Siana Blog</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div>
+
+          {/* Contact / Connect column */}
+          <div className="footer__col footer__col--contact">
+            <p className="footer__col-heading">Let’s Connect!</p>
+            <p className="footer__connect-intro">
+              Have a question or want to collaborate? Send us a message — we’d love to hear from you.
+            </p>
+            <ul className="footer__contact-list" role="list">
+              <li>
+                <MapPin size={14} strokeWidth={1.5} />
+                <span>Namanga, Kenya</span>
+              </li>
+              <li>
+                <Phone size={14} strokeWidth={1.5} />
+                <a href="tel:+254720239716">+254 720 239 716</a>
+              </li>
+              <li>
+                <Mail size={14} strokeWidth={1.5} />
+                <a href="mailto:info@sianaafrica.org">info@sianaafrica.org</a>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+        {/* Bottom bar */}
         <div className="footer__bottom">
-          <div className="container">
+          <div className="container footer__bottom-inner">
             <p>© {new Date().getFullYear()} SIANA Africa. All rights reserved.</p>
+            <p className="footer__bottom-right">
+              Made with <span aria-hidden="true">♥</span> for the communities of Kenya
+            </p>
           </div>
         </div>
+
       </footer>
     </>
   )
 }
-
