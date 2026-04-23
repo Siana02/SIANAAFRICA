@@ -25,7 +25,7 @@ import dragonFruitImg from './assets/Handsholdingdragonfruit.png'
 import journeyImg from './assets/journeyimage.jpg'
 import contactHeroImg from './assets/sianaafrica.png'
 import sianaafrica5Img from './assets/sianaafrica5.png'
-import pilotProjectImg from './assets/pilot-project.jpg' // TODO: add src/assets/pilot-project.jpg
+import pilotProjectImg from './assets/pilot-project.jpg'
 import './App.css'
 
 /* ─── Inline social icons (brand icons not in this lucide-react build) ── */
