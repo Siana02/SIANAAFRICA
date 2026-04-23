@@ -900,7 +900,7 @@ const galleryImages = [
         </div>
 
         <div className="contact-details">
-          <a href="https://maps.google.com/?q=Namanga,Kenya" target="_blank" rel="noopener noreferrer" className="contact-detail-item">
+          <a href="https://maps.google.com/?q=Namanga%2CKenya" target="_blank" rel="noopener noreferrer" className="contact-detail-item">
             <span className="contact-detail-item__icon">
               <MapPin size={20} strokeWidth={1.5} />
             </span>

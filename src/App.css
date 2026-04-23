@@ -2070,7 +2070,7 @@
 /* ── Form Wrap ── */
 .contact-form-wrap {
   background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(168, 182, 154, 0.16);
+  border: 1px solid rgba(168, 182, 154, 0.26);
   border-radius: 24px;
   padding: 2.5rem;
   backdrop-filter: blur(10px);
@@ -2150,7 +2150,7 @@
 
 .contact-form__field input::placeholder,
 .contact-form__field textarea::placeholder {
-  color: rgba(231, 240, 229, 0.28);
+  color: rgba(231, 240, 229, 0.48);
 }
 
 .contact-form__field input:focus,
