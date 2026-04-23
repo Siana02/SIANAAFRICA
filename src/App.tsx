@@ -848,10 +848,6 @@ const galleryImages = [
   {/* ── Hero Image Banner ── */}
   <div className="contact-hero-image">
     <img src={contactHeroImg} alt="Siana Africa community" loading="lazy" />
-    <div className="contact-hero-image__overlay" aria-hidden="true" />
-    <p className="contact-hero-image__caption">
-      Have a question or want to collaborate? Send us a message — we’d love to hear from you.
-    </p>
   </div>
 
   {/* ── Content Grid ── */}
