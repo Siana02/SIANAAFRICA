@@ -381,6 +381,11 @@
   color: var(--color-sage);
 }
 
+/* Each word is inline-block so GSAP y-transforms work correctly */
+.hero__word {
+  display: inline-block;
+}
+
 /* Subtext */
 .hero__description {
   font-family: var(--font-body);
@@ -528,7 +533,9 @@
   .nav__cta       { display: none; }
   .nav__hamburger { display: flex; }
 
-  /* Nav logo stays linen: hero is always a dark image on mobile (only when not yet scrolled) */
+  /* Nav logo stays linen while the hero (dark image) is visible.
+     .nav--scrolled already switches --nav-logo to forest-green on a linen
+     background, so we must NOT apply the linen override when scrolled. */
   .nav:not(.nav--scrolled) { --nav-logo: var(--color-linen); }
 }
 
@@ -1724,15 +1731,23 @@
 @media (max-width: 900px) {
   .articles-grid {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 2rem;
   }
 
+  /* Tablet: tall enough to show gradient zones clearly */
   .article-card__image {
-    height: 200px;
+    height: 360px;
   }
 
   .articles-section {
     padding: 4rem 0;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Mobile: slightly shorter but still spacious */
+  .article-card__image {
+    height: 300px;
   }
 }
 
@@ -1781,18 +1796,39 @@
 .join-hero {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 3.5rem;
-  align-items: center;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "image header"
+    "image body";
+  column-gap: 3.5rem;
+  row-gap: 0;
   margin-bottom: 2rem;
   position: relative;
+  align-items: start;
+}
+
+.join-hero__image {
+  grid-area: image;
+  align-self: stretch;
 }
 
 .join-hero__image img {
   width: 100%;
+  height: 100%;
   border-radius: 18px;
   object-fit: cover;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
   filter: contrast(1.04) saturate(1.06);
+}
+
+.join-hero__header {
+  grid-area: header;
+  padding-bottom: 1.25rem;
+}
+
+.join-hero__body {
+  grid-area: body;
+  align-self: start;
 }
 
 .join-eyebrow {
@@ -1834,6 +1870,19 @@
   color: var(--color-sage);
   background: rgba(168, 182, 154, 0.08);
   box-shadow: 0 0 16px rgba(168, 182, 154, 0.1);
+}
+
+/* ── Options mini-title ── */
+
+.join-options-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+  font-weight: 600;
+  color: var(--color-linen);
+  text-align: center;
+  letter-spacing: 0.01em;
+  margin: 1rem 0 1.5rem;
+  opacity: 0.9;
 }
 
 /* ── CARDS ── */
@@ -2121,9 +2170,12 @@
 /* ── RESPONSIVE ── */
 
 @media (max-width: 900px) {
+  /* Join hero: flex column — natural DOM order gives header → image → body */
   .join-hero {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     text-align: center;
+    gap: 1.75rem;
   }
 
   .join-hero__image img {
@@ -2134,6 +2186,10 @@
 
   .join-options {
     grid-template-columns: 1fr;
+  }
+
+  .join-options-title {
+    margin: 0.5rem 0 1.25rem;
   }
 
   .newsletter-card {
@@ -2152,6 +2208,32 @@
   .newsletter-input-group .btn {
     width: 100%;
     justify-content: center;
+  }
+}
+
+/* Tablet: keep join cards in a 2-column grid */
+@media (min-width: 641px) and (max-width: 900px) {
+  .join-options {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 680px;
+    margin-inline: auto;
+  }
+
+  .join-hero__image img {
+    max-height: 420px;
+  }
+
+  .join-hero {
+    gap: 2.5rem;
+  }
+}
+
+/* Newsletter badge — centered on mobile */
+@media (max-width: 640px) {
+  .newsletter-badge {
+    display: flex;
+    width: fit-content;
+    margin: 0 auto 1.1rem;
   }
 }
 
@@ -2467,8 +2549,15 @@
 @media (max-width: 900px) {
   .contact-grid {
     grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 2.5rem;
     padding-block: 3.5rem 4.5rem;
+  }
+
+  /* Reorder: "Get in Touch" info appears before the form on mobile/tablet */
+  .contact-info {
+    order: -1;
   }
 
   .contact-hero-image {
@@ -2482,6 +2571,23 @@
 
   .contact-form-wrap {
     padding: 1.75rem;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 900px) {
+  /* Tablet: more generous contact spacing */
+  .contact-grid {
+    padding-block: 4.5rem 5.5rem;
+    gap: 3.5rem;
+  }
+
+  .contact-form-wrap {
+    padding: 2.25rem;
+  }
+
+  .contact-hero-image {
+    height: clamp(320px, 45vw, 480px);
+    padding-inline: 1.75rem;
   }
 }
 

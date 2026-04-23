@@ -143,13 +143,26 @@ export default function App() {
 
   /* ── Hero text + section animations (fire once preloader finishes) ── */
   const handlePreloaderComplete = useCallback(() => {
-    // ── Hero text entrance (staggered) ────────────────────────
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
     const tl = gsap.timeline()
-    tl.from('.hero__eyebrow',     { y: 22, opacity: 0, duration: 0.65, ease: 'power3.out' })
-      .from('.hero__title',       { y: 38, opacity: 0, duration: 0.85, ease: 'power3.out' }, '-=0.3')
-      .from('.hero__description', { y: 22, opacity: 0, duration: 0.7,  ease: 'power3.out' }, '-=0.4')
-      .from('.hero__actions',     { y: 16, opacity: 0, duration: 0.65, ease: 'power3.out' }, '-=0.35')
-      .call(() => setPreloaderDone(true))
+
+    if (!prefersReducedMotion) {
+      // Eyebrow slides in first
+      tl.from('.hero__eyebrow', { y: 18, opacity: 0, duration: 0.55, ease: 'power3.out' })
+      // Title: word-by-word reveal
+        .from('.hero__word', {
+          y: 48, opacity: 0, duration: 0.7,
+          stagger: { each: 0.07, from: 'start' },
+          ease: 'power4.out',
+        }, '-=0.2')
+      // Description fades up as last word is finishing
+        .from('.hero__description', { y: 28, opacity: 0, duration: 0.8, ease: 'power3.out' }, '-=0.35')
+      // CTAs stagger in individually
+        .from('.hero__actions .btn', { y: 22, opacity: 0, duration: 0.65, stagger: 0.14, ease: 'power3.out' }, '-=0.4')
+    }
+
+    tl.call(() => setPreloaderDone(true))
   }, [])
 
   /* ── Scroll-triggered animations (run after preloader + overflow cleared) ── */
@@ -164,75 +177,95 @@ export default function App() {
       ctx = gsap.context(() => {
 
         gsap.from('.trust-stat', {
-          scrollTrigger: { trigger: '.trust-strip', start: 'top 90%', once: true },
-          y: 20, opacity: 0, duration: 0.6, stagger: 0.1, ease: 'power3.out',
+          scrollTrigger: { trigger: '.trust-strip', start: 'top 88%', once: true },
+          y: 32, opacity: 0, duration: 0.7, stagger: 0.12, ease: 'power4.out',
         })
 
         gsap.from(missionRef.current, {
           scrollTrigger: { trigger: missionRef.current, start: 'top 82%', once: true },
-          y: 50, opacity: 0, duration: 0.9, ease: 'power3.out',
+          y: 55, opacity: 0, duration: 1.0, ease: 'power3.out',
         })
         gsap.from('.value-card', {
-          scrollTrigger: { trigger: valuesTrackRef.current, start: 'top 82%', once: true },
-          y: 60, opacity: 0, duration: 0.7, stagger: 0.15, ease: 'power3.out',
+          scrollTrigger: { trigger: valuesTrackRef.current, start: 'top 80%', once: true },
+          y: 80, opacity: 0, scale: 0.94, duration: 0.9, stagger: 0.18, ease: 'power4.out',
         })
-        gsap.from('.impact-pilot__text', {
+        gsap.from('.wwa-cta', {
+          scrollTrigger: { trigger: '.wwa-cta', start: 'top 85%', once: true },
+          y: 40, opacity: 0, duration: 0.9, ease: 'power3.out',
+          immediateRender: false,
+        })
+        gsap.from('.impact-pilot__text-header', {
           scrollTrigger: { trigger: '.impact-pilot', start: 'top 80%', once: true },
-          x: -50, opacity: 0, duration: 0.9, ease: 'power3.out',
+          x: -55, opacity: 0, duration: 0.95, ease: 'power4.out',
         })
         gsap.from('.impact-pilot__image', {
           scrollTrigger: { trigger: '.impact-pilot', start: 'top 80%', once: true },
-          x: 50, opacity: 0, duration: 0.9, ease: 'power3.out',
+          x: 55, opacity: 0, scale: 0.96, duration: 0.95, ease: 'power4.out',
         })
-        // Use 'top bottom' so cards animate the moment they scroll into view
+        gsap.from('.impact-pilot__text-body', {
+          scrollTrigger: { trigger: '.impact-pilot', start: 'top 75%', once: true },
+          x: -40, opacity: 0, duration: 0.85, ease: 'power3.out',
+          immediateRender: false,
+        })
+        // Cards animate with scale + y for a more dramatic entrance
         gsap.from('.impact-card', {
-          scrollTrigger: { trigger: '.impact-cards', start: 'top bottom', once: true },
-          y: 50, opacity: 0, duration: 0.7, stagger: 0.15, ease: 'power3.out',
+          scrollTrigger: { trigger: '.impact-cards', start: 'top 85%', once: true },
+          y: 70, opacity: 0, scale: 0.93, duration: 0.9, stagger: 0.18, ease: 'power4.out',
           immediateRender: false,
         })
         gsap.from('.gallery-item', {
-          scrollTrigger: { trigger: '.gallery-strip', start: 'top 88%', once: true },
-          x: 70, opacity: 0, duration: 0.75, stagger: 0.12, ease: 'power3.out',
+          scrollTrigger: { trigger: '.gallery-strip', start: 'top 86%', once: true },
+          x: 90, opacity: 0, scale: 0.95, duration: 0.85, stagger: 0.14, ease: 'power4.out',
           immediateRender: false,
         })
         gsap.from('.article-card', {
-          scrollTrigger: { trigger: '.articles-grid', start: 'top 85%', once: true },
-          y: 50, opacity: 0, duration: 0.8, stagger: 0.2, ease: 'power3.out',
+          scrollTrigger: { trigger: '.articles-grid', start: 'top 82%', once: true },
+          y: 80, opacity: 0, scale: 0.95, duration: 1.0, stagger: 0.22, ease: 'power4.out',
           immediateRender: false,
         })
         gsap.from('.join-hero__image', {
           scrollTrigger: { trigger: '.join-section', start: 'top 78%', once: true },
-          x: -60, opacity: 0, duration: 0.95, ease: 'power3.out',
+          x: -70, opacity: 0, scale: 0.96, duration: 1.0, ease: 'power4.out',
           immediateRender: false,
         })
-        gsap.from('.join-hero__content', {
+        gsap.from('.join-hero__header', {
           scrollTrigger: { trigger: '.join-section', start: 'top 78%', once: true },
-          x: 60, opacity: 0, duration: 0.95, ease: 'power3.out',
+          x: 70, opacity: 0, duration: 1.0, ease: 'power4.out',
+          immediateRender: false,
+        })
+        gsap.from('.join-hero__body', {
+          scrollTrigger: { trigger: '.join-section', start: 'top 72%', once: true },
+          x: 50, opacity: 0, duration: 0.9, ease: 'power3.out',
+          immediateRender: false,
+        })
+        gsap.from('.join-options-title', {
+          scrollTrigger: { trigger: '.join-options-title', start: 'top 88%', once: true },
+          y: 28, opacity: 0, duration: 0.75, ease: 'power3.out',
           immediateRender: false,
         })
         gsap.from('.join-card', {
-          scrollTrigger: { trigger: '.join-options', start: 'top 88%', once: true },
-          y: 45, opacity: 0, duration: 0.7, stagger: 0.15, ease: 'power3.out',
+          scrollTrigger: { trigger: '.join-options', start: 'top 85%', once: true },
+          y: 70, opacity: 0, scale: 0.93, duration: 0.9, stagger: 0.18, ease: 'power4.out',
           immediateRender: false,
         })
         gsap.from('.newsletter-card', {
-          scrollTrigger: { trigger: '.newsletter-card', start: 'top 90%', once: true },
-          y: 40, opacity: 0, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: { trigger: '.newsletter-card', start: 'top 88%', once: true },
+          y: 55, opacity: 0, scale: 0.97, duration: 0.9, ease: 'power4.out',
           immediateRender: false,
         })
         gsap.from('.contact-form-wrap', {
           scrollTrigger: { trigger: '.contact-grid', start: 'top 82%', once: true },
-          x: -50, opacity: 0, duration: 0.9, ease: 'power3.out',
+          x: -55, opacity: 0, duration: 0.95, ease: 'power4.out',
           immediateRender: false,
         })
         gsap.from('.contact-info', {
           scrollTrigger: { trigger: '.contact-grid', start: 'top 82%', once: true },
-          x: 50, opacity: 0, duration: 0.9, ease: 'power3.out',
+          x: 55, opacity: 0, duration: 0.95, ease: 'power4.out',
           immediateRender: false,
         })
         gsap.from('.contact-detail-item', {
           scrollTrigger: { trigger: '.contact-details', start: 'top 88%', once: true },
-          y: 20, opacity: 0, duration: 0.55, stagger: 0.12, ease: 'power3.out',
+          y: 24, opacity: 0, duration: 0.6, stagger: 0.12, ease: 'power3.out',
           immediateRender: false,
         })
         gsap.from('.swatch', {
@@ -390,9 +423,16 @@ const galleryImages = [
           <div className="hero__content">
             <p className="hero__eyebrow">SIANA AFRICA · KENYA</p>
             <h1 className="hero__title" id="hero-title">
-              Empowering Women.<br />
-              Preserving Culture.<br />
-              <em>Building a Sustainable Kenya.</em>
+              <span className="hero__word">Empowering</span>{' '}
+              <span className="hero__word">Women.</span><br />
+              <span className="hero__word">Preserving</span>{' '}
+              <span className="hero__word">Culture.</span><br />
+              <em>
+                <span className="hero__word">Building</span>{' '}
+                <span className="hero__word">a</span>{' '}
+                <span className="hero__word">Sustainable</span>{' '}
+                <span className="hero__word">Kenya.</span>
+              </em>
             </h1>
             <p className="hero__description">
               We walk alongside rural Kenyan women — equipping them with skills,
