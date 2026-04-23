@@ -787,7 +787,79 @@ const galleryImages = [
 
 </section>
 
+{/* ── Contact Section ── */}
+<section className="contact-section" aria-labelledby="contact-title">
 
+  <div className="container">
+
+    {/* Header */}
+    <div className="contact-header">
+      <p className="contact-eyebrow">CONTACT US</p>
+
+      <div className="brand-divider" aria-hidden="true">
+        <span className="brand-divider_line brand-divider_line--left" />
+        <span className="brand-divider__symbol">
+          <HeartHandshake size={22} strokeWidth={1.5} />
+        </span>
+        <span className="brand-divider_line brand-divider_line--right" />
+      </div>
+
+      <h2 className="contact-title" id="contact-title">
+        Let’s Connect
+      </h2>
+
+      <p className="contact-subtext">
+        Have a question or want to collaborate? Send us a message — we’d love to hear from you.
+      </p>
+    </div>
+
+    {/* Content */}
+    <div className="contact-grid">
+
+      {/* Form */}
+      <form className="contact-form">
+        <input type="text" placeholder="Your Name" required />
+        <input type="email" placeholder="Your Email" required />
+        <textarea placeholder="Your Message" rows={5} required />
+
+        <button type="submit" className="btn btn--coral">
+          Send Message <ArrowRight size={16} />
+        </button>
+      </form>
+
+      {/* Info */}
+      <div className="contact-info">
+
+        <div className="contact-block">
+          <h4>Our Location</h4>
+          <p>Namanga, Kenya</p>
+        </div>
+
+        <div className="contact-block">
+          <h4>Phone</h4>
+          <p>+254 720239716</p>
+        </div>
+
+        <div className="contact-block">
+          <h4>Email</h4>
+          <p>info@sianaafrica.org</p>
+        </div>
+
+        {/* Socials */}
+        <div className="contact-socials">
+          <a href="https://web.facebook.com/people/Siana-Africa" aria-label="Facebook"><Users size={18} /></a>
+          <a href="https://x.com/SianaAfrica" aria-label="Twitter"><Zap size={18} /></a>
+          <a href="https://www.youtube.com/@sianaafrica" aria-label="YouTube"><Play size={18} /></a>
+          <a href="https://www.linkedin.com/company/siana-africa/" aria-label="LinkedIn"><Briefcase size={18} /></a>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
       {/* ── Footer ── */}
       <footer id="contact" className="footer">
         <div className="container footer__inner">
