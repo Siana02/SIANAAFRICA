@@ -864,20 +864,31 @@
   }
 }
 
+/* ── Core Values — full-bleed dark background ────────────── */
+
+.values-dark-bg {
+  background: linear-gradient(180deg, #1a2418, #111610);
+  padding-bottom: 6rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle radial depth glow */
+.values-dark-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 60%, rgba(76, 93, 67, 0.22), transparent 55%);
+  pointer-events: none;
+}
+
 /* ── Core Values Section Wrapper ─────────────────────────── */
-/* Added a wrapper or target the container to apply the forest background */
 .values-track {
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 2.75rem;
-  padding-bottom: 5rem;
-  
-  /* Applying the Forest Green background */
-  background-color: var(--color-forest);
-  /* Adding padding so content doesn't hit the edges */
-  padding: 4rem 2rem; 
-  border-radius: 8px; /* Optional: adds smoothness */
+  padding: 2rem 0 1rem;
 }
 
 /* ── Values Intro (Header) ──────────────────────────────── */
@@ -887,11 +898,13 @@
   margin-bottom: 3.5rem;
 }
 
-.section__label {
-  /* Changing the small label to Mist for subtle contrast */
+.values-intro .section__label {
   color: var(--color-coral);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.12em;
+  font-size: 0.72rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
 }
 
 .values-heading {
@@ -899,8 +912,7 @@
   font-size: clamp(1.6rem, 3vw, 2.4rem);
   font-weight: 400;
   letter-spacing: -0.01em;
-  /* Changing from charcoal to Linen for high readability */
-  color: var(--color-forest); 
+  color: var(--color-linen);
   margin: 0.5rem 0 0;
 }
 
@@ -912,19 +924,13 @@
   bottom: 0;
   width: 1px;
   transform: translateX(-50%);
-  
-  /* Updated the gradient: 
-     Since the background is now Forest Green, the spine needs to be lighter
-     (using Mist or Sage) to stay visible.
-  */
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    var(--color-sage) 96%,
-    var(--color-sage) 94%,
-    transparent 0%
+    rgba(168, 182, 154, 0.35) 15%,
+    rgba(168, 182, 154, 0.35) 85%,
+    transparent 100%
   );
-  opacity: 1; /* Softens the line against the dark green */
   pointer-events: none;
   z-index: 0;
 }
@@ -934,16 +940,21 @@
 .value-card {
   position: relative;
   width: calc(50% - 3rem);
-  background: var(--color-surface);
-  border: 1px solid rgba(168, 182, 154, 0.3);
-  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(168, 182, 154, 0.18);
+  backdrop-filter: blur(8px);
+  border-radius: 1.25rem;
   padding: 2rem 2rem 2.25rem;
-  box-shadow: 0 2px 14px rgba(40, 43, 43, 0.07);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
   overflow: visible;
   cursor: default;
   transition:
-    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
-    box-shadow 0.35s ease;
+    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.4s ease,
+    border-color 0.4s ease,
+    background 0.4s ease;
   z-index: 1;
 }
 
@@ -951,8 +962,6 @@
 .value-card--right { align-self: flex-end; }
 
 /* Horizontal connector line from card edge to spine */
-/* ── Individual value card connectors ────────────────────── */
-
 .value-card--left::after,
 .value-card--right::after {
   content: '';
@@ -962,16 +971,15 @@
   width: 3rem;
   transform: translateY(-50%);
   pointer-events: none;
-  /* Ensure the lines sit above the background */
-  z-index: 1; 
+  z-index: 1;
 }
 
 .value-card--left::after {
   right: -3rem;
   background: linear-gradient(
     to right,
-    rgba(168, 182, 154, 0.2), /* Sage at 20% opacity */
-    rgba(168, 182, 154, 0.8)  /* Sage at 80% opacity near the spine */
+    rgba(168, 182, 154, 0.18),
+    rgba(168, 182, 154, 0.6)
   );
 }
 
@@ -979,63 +987,86 @@
   left: -3rem;
   background: linear-gradient(
     to left,
-    rgba(168, 182, 154, 0.2), /* Sage at 20% opacity */
-    rgba(168, 182, 154, 0.8)  /* Sage at 80% opacity near the spine */
+    rgba(168, 182, 154, 0.18),
+    rgba(168, 182, 154, 0.6)
   );
 }
 
-/* ── Glow hover: scale + card shadow + icon glow ─────────── */
+/* ── Card hover: lift + glow border ─────────────────────── */
 
-.value-card:hover { transform: scale(1.045); }
+.value-card:hover {
+  transform: translateY(-6px) scale(1.025);
+  background: rgba(255, 255, 255, 0.07);
+}
 
 /* Dignity — forest green */
 .value-card--dignity:hover {
   box-shadow:
-    0 10px 36px rgba(76, 93, 67, 0.28),
-    0 0 0 1.5px rgba(76, 93, 67, 0.18);
+    0 16px 48px rgba(76, 93, 67, 0.45),
+    0 0 0 1.5px rgba(76, 93, 67, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  border-color: rgba(76, 93, 67, 0.55);
 }
 .value-card--dignity:hover .value-card__icon-wrap {
-  box-shadow: 0 0 22px rgba(76, 93, 67, 0.55);
+  background: var(--color-forest);
+  color: #fff;
+  box-shadow: 0 0 32px rgba(76, 93, 67, 0.8), 0 0 8px rgba(76, 93, 67, 0.5);
 }
 
 /* Community — rose */
 .value-card--community:hover {
   box-shadow:
-    0 10px 36px rgba(201, 90, 123, 0.26),
-    0 0 0 1.5px rgba(201, 90, 123, 0.18);
+    0 16px 48px rgba(201, 90, 123, 0.4),
+    0 0 0 1.5px rgba(201, 90, 123, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  border-color: rgba(201, 90, 123, 0.5);
 }
 .value-card--community:hover .value-card__icon-wrap {
-  box-shadow: 0 0 22px rgba(201, 90, 123, 0.52);
+  background: var(--color-rose);
+  color: #fff;
+  box-shadow: 0 0 32px rgba(201, 90, 123, 0.75), 0 0 8px rgba(201, 90, 123, 0.5);
 }
 
 /* Empowerment — coral */
 .value-card--empowerment:hover {
   box-shadow:
-    0 10px 36px rgba(227, 110, 91, 0.26),
-    0 0 0 1.5px rgba(227, 110, 91, 0.18);
+    0 16px 48px rgba(227, 110, 91, 0.4),
+    0 0 0 1.5px rgba(227, 110, 91, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  border-color: rgba(227, 110, 91, 0.5);
 }
 .value-card--empowerment:hover .value-card__icon-wrap {
-  box-shadow: 0 0 22px rgba(227, 110, 91, 0.52);
+  background: var(--color-coral);
+  color: #fff;
+  box-shadow: 0 0 32px rgba(227, 110, 91, 0.75), 0 0 8px rgba(227, 110, 91, 0.5);
 }
 
 /* Integrity — sage */
 .value-card--integrity:hover {
   box-shadow:
-    0 10px 36px rgba(168, 182, 154, 0.38),
-    0 0 0 1.5px rgba(168, 182, 154, 0.32);
+    0 16px 48px rgba(168, 182, 154, 0.45),
+    0 0 0 1.5px rgba(168, 182, 154, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  border-color: rgba(168, 182, 154, 0.55);
 }
 .value-card--integrity:hover .value-card__icon-wrap {
-  box-shadow: 0 0 22px rgba(168, 182, 154, 0.65);
+  background: var(--color-sage);
+  color: var(--color-forest);
+  box-shadow: 0 0 32px rgba(168, 182, 154, 0.75), 0 0 8px rgba(168, 182, 154, 0.5);
 }
 
 /* Sustainability — forest green */
 .value-card--sustainability:hover {
   box-shadow:
-    0 10px 36px rgba(76, 93, 67, 0.28),
-    0 0 0 1.5px rgba(76, 93, 67, 0.18);
+    0 16px 48px rgba(76, 93, 67, 0.45),
+    0 0 0 1.5px rgba(76, 93, 67, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  border-color: rgba(76, 93, 67, 0.55);
 }
 .value-card--sustainability:hover .value-card__icon-wrap {
-  box-shadow: 0 0 22px rgba(76, 93, 67, 0.55);
+  background: var(--color-forest);
+  color: #fff;
+  box-shadow: 0 0 32px rgba(76, 93, 67, 0.8), 0 0 8px rgba(76, 93, 67, 0.5);
 }
 
 /* ── Icon wrapper ─────────────────────────────────────────── */
@@ -1044,31 +1075,34 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 0.625rem;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 0.75rem;
   margin-bottom: 1.25rem;
-  transition: box-shadow 0.35s ease;
+  transition:
+    background 0.35s ease,
+    color 0.35s ease,
+    box-shadow 0.35s ease;
 }
 
-/* Per-value icon colours */
-.value-card--dignity .value-card__icon-wrap     { background: rgba(76, 93, 67, 0.1);    color: var(--color-forest); }
-.value-card--community .value-card__icon-wrap   { background: rgba(201, 90, 123, 0.1);  color: var(--color-rose);   }
-.value-card--empowerment .value-card__icon-wrap { background: rgba(227, 110, 91, 0.1);  color: var(--color-coral);  }
-.value-card--integrity .value-card__icon-wrap   { background: rgba(168, 182, 154, 0.22); color: var(--color-forest); }
-.value-card--sustainability .value-card__icon-wrap { background: rgba(76, 93, 67, 0.1); color: var(--color-forest); }
+/* Per-value icon default colours — on dark bg use slightly brighter tints */
+.value-card--dignity .value-card__icon-wrap     { background: rgba(76, 93, 67, 0.22);     color: var(--color-sage);   }
+.value-card--community .value-card__icon-wrap   { background: rgba(201, 90, 123, 0.18);   color: #e891b0;             }
+.value-card--empowerment .value-card__icon-wrap { background: rgba(227, 110, 91, 0.18);   color: var(--color-coral);  }
+.value-card--integrity .value-card__icon-wrap   { background: rgba(168, 182, 154, 0.18);  color: var(--color-sage);   }
+.value-card--sustainability .value-card__icon-wrap { background: rgba(76, 93, 67, 0.22);  color: var(--color-sage);   }
 
 .value-card__title {
   font-family: var(--font-heading);
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--color-charcoal);
+  color: var(--color-linen);
   margin: 0 0 0.625rem;
 }
 
 .value-card__text {
   font-size: 0.9375rem;
-  color: var(--color-text-muted);
+  color: rgba(231, 240, 229, 0.82);
   line-height: 1.75;
   margin: 0;
 }
@@ -1078,23 +1112,41 @@
 @media (max-width: 760px) {
   .values-track__spine { display: none; }
 
+  .values-track {
+    gap: 1.5rem;
+    padding: 1rem 0;
+  }
+
   .value-card {
     width: 100%;
     align-self: stretch !important;
+    padding: 1.75rem;
   }
 
   .value-card--left::after,
   .value-card--right::after { display: none; }
 
   .wwa-header { padding-block: 3.5rem 2.5rem; }
+
+  .values-intro {
+    padding-top: 3.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .values-dark-bg { padding-bottom: 4rem; }
+}
+
+@media (min-width: 761px) and (max-width: 900px) {
+  /* Tablet: slightly narrower cards with more breathing room */
+  .values-track { gap: 2.25rem; }
+  .value-card { padding: 2.25rem; }
 }
 
 /* ── Respect reduced-motion preference ───────────────────── */
 
 @media (prefers-reduced-motion: reduce) {
   .value-card {
-    transition:
-      box-shadow 0.25s ease;
+    transition: box-shadow 0.25s ease, border-color 0.25s ease;
   }
   .value-card:hover { transform: none; }
 }
@@ -1948,6 +2000,18 @@
 
 /* ── NEWSLETTER ── */
 
+/* Mini-title above the newsletter card */
+.newsletter-section-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.2rem, 2vw, 1.55rem);
+  font-weight: 600;
+  color: var(--color-linen);
+  text-align: center;
+  letter-spacing: 0.01em;
+  margin: 0.5rem 0 1.75rem;
+  opacity: 0.92;
+}
+
 .join-newsletter {
   position: relative;
 }
@@ -2600,8 +2664,12 @@
     padding-inline: 1rem;
   }
 
+  /* Floating centered form on mobile */
   .contact-form-wrap {
     padding: 1.25rem;
+    max-width: 480px;
+    width: calc(100% - 2rem);
+    margin-inline: auto;
   }
 }
 

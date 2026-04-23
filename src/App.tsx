@@ -185,9 +185,13 @@ export default function App() {
           scrollTrigger: { trigger: missionRef.current, start: 'top 82%', once: true },
           y: 55, opacity: 0, duration: 1.0, ease: 'power3.out',
         })
-        gsap.from('.value-card', {
+        gsap.from('.value-card--left', {
           scrollTrigger: { trigger: valuesTrackRef.current, start: 'top 80%', once: true },
-          y: 80, opacity: 0, scale: 0.94, duration: 0.9, stagger: 0.18, ease: 'power4.out',
+          x: -90, opacity: 0, scale: 0.94, duration: 1.0, stagger: 0.22, ease: 'power4.out',
+        })
+        gsap.from('.value-card--right', {
+          scrollTrigger: { trigger: valuesTrackRef.current, start: 'top 80%', once: true },
+          x: 90, opacity: 0, scale: 0.94, duration: 1.0, stagger: 0.22, ease: 'power4.out',
         })
         gsap.from('.wwa-cta', {
           scrollTrigger: { trigger: '.wwa-cta', start: 'top 85%', once: true },
@@ -246,6 +250,11 @@ export default function App() {
         gsap.from('.join-card', {
           scrollTrigger: { trigger: '.join-options', start: 'top 85%', once: true },
           y: 70, opacity: 0, scale: 0.93, duration: 0.9, stagger: 0.18, ease: 'power4.out',
+          immediateRender: false,
+        })
+        gsap.from('.newsletter-section-title', {
+          scrollTrigger: { trigger: '.newsletter-section-title', start: 'top 88%', once: true },
+          y: 28, opacity: 0, duration: 0.75, ease: 'power3.out',
           immediateRender: false,
         })
         gsap.from('.newsletter-card', {
@@ -531,26 +540,35 @@ const galleryImages = [
           </div>
         </div>
 
-        {/* Core Values */}
-        <div className="container">
-          <div className="values-intro">
-            <p className="section__label">Our Core Values</p>
-            <h2 className="values-heading">What Guides Everything We Do</h2>
-          </div>
-          <div className="values-track" ref={valuesTrackRef}>
-            <div className="values-track__spine" aria-hidden="true" />
-            {coreValues.map((v, i) => (
-              <article
-                key={v.title}
-                className={`value-card value-card--${i % 2 === 0 ? 'left' : 'right'} value-card--${v.colorKey}`}
-              >
-                <div className="value-card__icon-wrap">
-                  {v.icon}
-                </div>
-                <h3 className="value-card__title">{v.title}</h3>
-                <p className="value-card__text">{v.text}</p>
-              </article>
-            ))}
+        {/* Core Values — full-bleed dark section */}
+        <div className="values-dark-bg">
+          <div className="container">
+            <div className="values-intro">
+              <p className="section__label">Our Core Values</p>
+              <div className="brand-divider brand-divider--light" aria-hidden="true">
+                <span className="brand-divider__line brand-divider__line--left" />
+                <span className="brand-divider__symbol">
+                  <HeartHandshake size={22} strokeWidth={1.5} />
+                </span>
+                <span className="brand-divider__line brand-divider__line--right" />
+              </div>
+              <h2 className="values-heading">What Guides Everything We Do</h2>
+            </div>
+            <div className="values-track" ref={valuesTrackRef}>
+              <div className="values-track__spine" aria-hidden="true" />
+              {coreValues.map((v, i) => (
+                <article
+                  key={v.title}
+                  className={`value-card value-card--${i % 2 === 0 ? 'left' : 'right'} value-card--${v.colorKey}`}
+                >
+                  <div className="value-card__icon-wrap">
+                    {v.icon}
+                  </div>
+                  <h3 className="value-card__title">{v.title}</h3>
+                  <p className="value-card__text">{v.text}</p>
+                </article>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -830,6 +848,7 @@ const galleryImages = [
     </div>
 
     {/* ── NEWSLETTER ── */}
+    <p className="newsletter-section-title">Subscribe to the Siana Africa Newsletter</p>
     <div className="join-newsletter">
       <div className="newsletter-card">
 
