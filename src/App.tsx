@@ -252,16 +252,19 @@ export default function App() {
   const impactCards = [
   {
     icon: <Leaf size={24} strokeWidth={1.5} />,
+    miniTitle: 'Eco Resilience',
     title: 'Climate Smart Technologies',
     text: 'Introducing resilient farming practices that adapt to changing climates and protect long-term livelihoods.',
   },
   {
     icon: <Zap size={24} strokeWidth={1.5} />,
+    miniTitle: 'Financial Freedom',
     title: 'Diverse Income Sources',
     text: 'Empowering women to build multiple income streams for financial independence and stability.',
   },
   {
     icon: <Users size={24} strokeWidth={1.5} />,
+    miniTitle: 'Leadership & Skills',
     title: 'Women Empowerment',
     text: 'Equipping women with skills, confidence, and resources to lead change in their communities.',
   },
@@ -470,6 +473,24 @@ const galleryImages = [
           </blockquote>
         </div>
 
+        {/* CTA bridge — between image and core values */}
+        <div className="container">
+          <div className="wwa-cta">
+            <p className="wwa-cta__text">
+              Rooted in community and driven by purpose — discover how our values
+              shape every programme we run.
+            </p>
+            <div className="wwa-cta__actions">
+              <a href="#contact" className="btn btn--coral">
+                Get Involved <ArrowRight size={16} />
+              </a>
+              <a href="#mission" className="btn btn--forest-outline">
+                Explore Our Work
+              </a>
+            </div>
+          </div>
+        </div>
+
         {/* Core Values */}
         <div className="container">
           <div className="values-intro">
@@ -521,13 +542,19 @@ const galleryImages = [
     {/* ── Pilot Project ── */}
     <div className="impact-pilot">
       
-      <div className="impact-pilot__text">
+      <div className="impact-pilot__text-header">
         <p className="impact-label">Flagship Pilot · Namanga, Kenya</p>
 
         <h3 className="impact-pilot__title">
           Transforming Livelihoods in Namanga
         </h3>
+      </div>
 
+      <div className="impact-pilot__image">
+        <img src={pilotProjectImg} alt="Siana Africa community in Namanga" />
+      </div>
+
+      <div className="impact-pilot__text-body">
         <p className="impact-pilot__description">
           Our flagship programme partners with Maasai women in Namanga —
           introducing drought-resistant dragon fruit cultivation, building
@@ -540,17 +567,15 @@ const galleryImages = [
         </a>
       </div>
 
-      <div className="impact-pilot__image">
-        <img src={pilotProjectImg} alt="Siana Africa community in Namanga" />
-      </div>
-
     </div>
 
     {/* ── Impact Cards ── */}
     <div className="impact-cards">
       {impactCards.map((card) => (
         <div key={card.title} className="impact-card">
-          
+
+          <span className="impact-card__mini-title">{card.miniTitle}</span>
+
           <div className="impact-card__icon">
             {card.icon}
           </div>
@@ -558,6 +583,10 @@ const galleryImages = [
           <h4 className="impact-card__title">{card.title}</h4>
 
           <p className="impact-card__text">{card.text}</p>
+
+          <a href="#" className="impact-card__cta">
+            Discover More <ArrowRight size={14} />
+          </a>
 
         </div>
       ))}
@@ -696,13 +725,8 @@ const galleryImages = [
     {/* ── HERO SPLIT ── */}
     <div className="join-hero">
 
-      {/* LEFT IMAGE */}
-      <div className="join-hero__image">
-        <img src={sianaafrica5Img} alt="Siana Africa community women" />
-      </div>
-
-      {/* RIGHT CONTENT */}
-      <div className="join-hero__content">
+      {/* HEADER: eyebrow + divider + title */}
+      <div className="join-hero__header">
         <p className="join-eyebrow">JOIN THE MOVEMENT</p>
         <div className="brand-divider brand-divider--light" aria-hidden="true">
           <span className="brand-divider__line brand-divider__line--left" />
@@ -715,7 +739,15 @@ const galleryImages = [
         <h2 className="join-title">
           Be Part of Something Bigger
         </h2>
+      </div>
 
+      {/* IMAGE */}
+      <div className="join-hero__image">
+        <img src={sianaafrica5Img} alt="Siana Africa community women" />
+      </div>
+
+      {/* BODY: description + CTA */}
+      <div className="join-hero__body">
         <p className="join-text">
           Whether you're a skilled professional, a passionate volunteer, or an
           organisation that shares our values — there's a place for you in this
@@ -730,6 +762,7 @@ const galleryImages = [
     </div>
 
     {/* ── INVOLVEMENT CARDS ── */}
+    <p className="join-options-title">How You Can Help</p>
     <div className="join-options">
 
       <div className="join-card">

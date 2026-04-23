@@ -528,8 +528,8 @@
   .nav__cta       { display: none; }
   .nav__hamburger { display: flex; }
 
-  /* Nav logo stays linen: hero is always a dark image on mobile */
-  .nav { --nav-logo: var(--color-linen); }
+  /* Nav logo stays linen: hero is always a dark image on mobile (only when not yet scrolled) */
+  .nav:not(.nav--scrolled) { --nav-logo: var(--color-linen); }
 }
 
 @media (max-width: 480px) {
@@ -630,15 +630,24 @@
   flex-shrink: 0;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 900px) {
   .trust-strip__inner {
-    gap: 0.5rem;
-  }
-  .trust-stat {
-    padding-inline: 1.25rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem 0;
+    justify-items: center;
   }
   .trust-strip__divider {
     display: none;
+  }
+  .trust-stat {
+    padding-inline: 1.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .trust-stat {
+    padding-inline: 1rem;
   }
 }
 
@@ -779,6 +788,73 @@
   line-height: 1.45;
   text-shadow: 0 2px 20px rgba(0, 0, 0, 0.55);
   quotes: '\201C' '\201D';
+}
+
+/* ── Who We Are – CTA bridge (between image and core values) ── */
+
+.wwa-cta {
+  padding: 4.5rem 0 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  max-width: 600px;
+  margin-inline: auto;
+}
+
+.wwa-cta__text {
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 1.8vw, 1.45rem);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--color-text-muted);
+  line-height: 1.7;
+  margin: 0;
+}
+
+.wwa-cta__actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Forest-outline button — for use on light (linen) backgrounds */
+.btn--forest-outline {
+  background: transparent;
+  color: var(--color-forest);
+  border-color: var(--color-forest);
+}
+
+.btn--forest-outline:hover {
+  background: var(--color-forest);
+  color: var(--color-linen);
+  box-shadow: 0 8px 24px rgba(76, 93, 67, 0.22);
+}
+
+@media (max-width: 900px) {
+  .wwa-cta {
+    padding: 3.5rem 1rem 0.5rem;
+    gap: 1.75rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .wwa-cta {
+    padding: 2.75rem 0 0.5rem;
+    gap: 1.5rem;
+  }
+
+  .wwa-cta__actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .wwa-cta__actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 /* ── Core Values Section Wrapper ─────────────────────────── */
@@ -1049,12 +1125,23 @@
 .impact-pilot {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  align-items: center;
+  grid-template-areas:
+    "text-header image"
+    "text-body   image";
+  column-gap: 3rem;
+  row-gap: 0;
   margin-bottom: 5rem;
+  align-items: start;
 }
 
-.impact-pilot__text {
+.impact-pilot__text-header {
+  grid-area: text-header;
+  max-width: 500px;
+  padding-bottom: 1.25rem;
+}
+
+.impact-pilot__text-body {
+  grid-area: text-body;
   max-width: 500px;
 }
 
@@ -1080,6 +1167,10 @@
   color: var(--color-text-muted);
   margin-bottom: 1.5rem;
   line-height: 1.6;
+}
+
+.impact-pilot__image {
+  grid-area: image;
 }
 
 .impact-pilot__image img {
@@ -1177,22 +1268,112 @@
   font-size: 0.95rem;
   line-height: 1.6;
   max-width: 260px;
-  margin: 0 auto;
+  margin: 0 auto 1.5rem;
+  flex: 1; /* push CTA to bottom */
+}
+
+/* Mini-title eyebrow */
+.impact-card__mini-title {
+  display: inline-block;
+  font-family: var(--font-ui);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-sage);
+  background: rgba(168, 182, 154, 0.12);
+  border: 1px solid rgba(168, 182, 154, 0.25);
+  padding: 0.22rem 0.75rem;
+  border-radius: 100px;
+  margin-bottom: 1.25rem;
+}
+
+/* CTA link */
+.impact-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-sage);
+  text-decoration: none;
+  border-top: 1px solid rgba(168, 182, 154, 0.18);
+  padding-top: 1rem;
+  width: 100%;
+  justify-content: center;
+  transition: color 0.25s ease, gap 0.25s ease;
+}
+
+.impact-card__cta svg {
+  transition: transform 0.25s ease;
+}
+
+.impact-card:hover .impact-card__cta {
+  color: #fff;
+}
+
+.impact-card:hover .impact-card__cta svg {
+  transform: translateX(4px);
+}
+
+/* Make card a flex column so CTA stays at the bottom */
+.impact-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 
 @media (max-width: 900px) {
   .impact-pilot {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     text-align: center;
+    gap: 1.5rem;
   }
 
-  .impact-pilot__text {
+  .impact-pilot__text-header,
+  .impact-pilot__text-body {
+    max-width: 560px;
     margin: 0 auto;
+  }
+
+  .impact-pilot__image img {
+    max-height: 340px;
+    object-fit: cover;
+    object-position: center top;
   }
 
   .impact-cards {
     grid-template-columns: 1fr;
+    max-width: 480px;
+    margin-inline: auto;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 900px) {
+  /* Tablet: larger impact cards */
+  .impact-card {
+    padding: 2.5rem;
+  }
+
+  .impact-card__title {
+    font-size: 1.25rem;
+  }
+
+  .impact-card__text {
+    font-size: 1rem;
+    max-width: 100%;
+  }
+
+  .impact-pilot__image img {
+    max-height: 420px;
+  }
+
+  .impact-cards {
+    max-width: 600px;
   }
 }
 
