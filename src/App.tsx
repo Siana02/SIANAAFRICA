@@ -572,6 +572,104 @@ const galleryImages = [
 
 </section>
 
+      {/* ── Join The Movement Section ── */}
+<section className="join-section">
+
+  <div className="container">
+
+    {/* ── HERO SPLIT ── */}
+    <div className="join-hero">
+
+      {/* LEFT IMAGE */}
+      <div className="join-hero__image">
+        <img src={maasaiWomenImg} alt="Siana Africa community women" />
+      </div>
+
+      {/* RIGHT CONTENT */}
+      <div className="join-hero__content">
+        <p className="join-eyebrow">JOIN THE MOVEMENT</p>
+         <div className="brand-divider" aria-hidden="true">
+        <span className="brand-divider__line brand-divider__line--left" />
+        <span className="brand-divider__symbol">
+
+        <h2 className="join-title">
+          Be Part of Something Bigger
+        </h2>
+
+        <p className="join-text">
+          If you have the skills and passion to make a difference, we’d love to have you on this journey.
+          Whether volunteering part-time or building a long-term career in development,
+          Siana Africa offers a space where your ideas matter and your impact is real.
+        </p>
+
+        <a href="#contact" className="btn btn--coral">
+          Join Our Team <ArrowRight size={16} />
+        </a>
+      </div>
+
+    </div>
+
+    {/* ── INVOLVEMENT CARDS ── */}
+    <div className="join-options">
+
+      <div className="join-card">
+        <div className="join-card__icon">
+          <Users size={26} />
+        </div>
+        <h3>Partnerships</h3>
+        <p>
+          Collaborate with us to expand impact and build sustainable solutions together.
+        </p>
+      </div>
+
+      <div className="join-card">
+        <div className="join-card__icon">
+          <HeartHandshake size={26} />
+        </div>
+        <h3>Support Our Work</h3>
+        <p>
+          Become a backer and help fund initiatives that uplift communities across Kenya.
+        </p>
+      </div>
+    </div>
+
+    </div>
+
+    {/* ── NEWSLETTER + RESOURCES ── */}
+    <div className="join-newsletter">
+
+      <h3 className="newsletter-title">
+        Stay Connected
+      </h3>
+
+      <p className="newsletter-text">
+        Join the Siana Africa community. Get updates, stories, and insights
+        directly from the field.
+      </p>
+
+      {/* email input */}
+      <div className="newsletter-form">
+        <input type="email" placeholder="Enter your email" />
+        <button className="btn btn--coral">Subscribe</button>
+      </div>
+
+      {/* resources */}
+      <div className="newsletter-resources">
+        <a href="/assets/siana_africa_quarterly_newsletter_04-2025" className="resource-card">
+          Download 2025 Report
+        </a>
+
+        <a href="/assets/siana_africa_quarterly_newsletter_01-2026" className="resource-card">
+          Download 2026 Report
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
       
       {/* ── Design System Showcase ── */}
       <section id="design" className="section section--mist" aria-labelledby="design-title">
