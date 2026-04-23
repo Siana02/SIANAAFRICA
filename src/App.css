@@ -870,7 +870,7 @@
   background: linear-gradient(180deg, #1a2418, #111610);
   padding-bottom: 6rem;
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden removed — it was clipping card box-shadows and GSAP slide animations on mobile */
 }
 
 /* Subtle radial depth glow */
@@ -942,6 +942,7 @@
   width: calc(50% - 3rem);
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(168, 182, 154, 0.18);
+  border-top: 2.5px solid transparent; /* per-value accent overrides below */
   backdrop-filter: blur(8px);
   border-radius: 1.25rem;
   padding: 2rem 2rem 2.25rem;
@@ -957,6 +958,13 @@
     background 0.4s ease;
   z-index: 1;
 }
+
+/* Per-value top accent borders */
+.value-card--dignity      { border-top-color: rgba(76, 93, 67, 0.55); }
+.value-card--community    { border-top-color: rgba(201, 90, 123, 0.55); }
+.value-card--empowerment  { border-top-color: rgba(227, 110, 91, 0.6); }
+.value-card--integrity    { border-top-color: rgba(168, 182, 154, 0.55); }
+.value-card--sustainability { border-top-color: rgba(76, 93, 67, 0.55); }
 
 .value-card--left  { align-self: flex-start; }
 .value-card--right { align-self: flex-end; }
@@ -1075,22 +1083,24 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 3.25rem;
-  height: 3.25rem;
-  border-radius: 0.75rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 0.875rem;
   margin-bottom: 1.25rem;
+  border: 1px solid transparent; /* per-value border color set below */
   transition:
     background 0.35s ease,
     color 0.35s ease,
-    box-shadow 0.35s ease;
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
 }
 
 /* Per-value icon default colours — on dark bg use slightly brighter tints */
-.value-card--dignity .value-card__icon-wrap     { background: rgba(76, 93, 67, 0.22);     color: var(--color-sage);   }
-.value-card--community .value-card__icon-wrap   { background: rgba(201, 90, 123, 0.18);   color: #e891b0;             }
-.value-card--empowerment .value-card__icon-wrap { background: rgba(227, 110, 91, 0.18);   color: var(--color-coral);  }
-.value-card--integrity .value-card__icon-wrap   { background: rgba(168, 182, 154, 0.18);  color: var(--color-sage);   }
-.value-card--sustainability .value-card__icon-wrap { background: rgba(76, 93, 67, 0.22);  color: var(--color-sage);   }
+.value-card--dignity .value-card__icon-wrap     { background: rgba(76, 93, 67, 0.22);     color: var(--color-sage);   border-color: rgba(76, 93, 67, 0.3); }
+.value-card--community .value-card__icon-wrap   { background: rgba(201, 90, 123, 0.18);   color: #e891b0;             border-color: rgba(201, 90, 123, 0.28); }
+.value-card--empowerment .value-card__icon-wrap { background: rgba(227, 110, 91, 0.18);   color: var(--color-coral);  border-color: rgba(227, 110, 91, 0.3); }
+.value-card--integrity .value-card__icon-wrap   { background: rgba(168, 182, 154, 0.18);  color: var(--color-sage);   border-color: rgba(168, 182, 154, 0.28); }
+.value-card--sustainability .value-card__icon-wrap { background: rgba(76, 93, 67, 0.22);  color: var(--color-sage);   border-color: rgba(76, 93, 67, 0.3); }
 
 .value-card__title {
   font-family: var(--font-heading);
@@ -1113,14 +1123,44 @@
   .values-track__spine { display: none; }
 
   .values-track {
-    gap: 1.5rem;
+    gap: 1.25rem;
     padding: 1rem 0;
   }
 
   .value-card {
     width: 100%;
     align-self: stretch !important;
-    padding: 1.75rem;
+    padding: 1.5rem 1.5rem 1.75rem;
+    /* On mobile: replace top accent with a colored left border accent */
+    border-top: 1px solid rgba(168, 182, 154, 0.18);
+    border-left: 3px solid transparent;
+    border-radius: 1rem;
+  }
+
+  /* Per-value left accent on mobile */
+  .value-card--dignity      { border-left-color: rgba(76, 93, 67, 0.7); }
+  .value-card--community    { border-left-color: rgba(201, 90, 123, 0.7); }
+  .value-card--empowerment  { border-left-color: rgba(227, 110, 91, 0.75); }
+  .value-card--integrity    { border-left-color: rgba(168, 182, 154, 0.7); }
+  .value-card--sustainability { border-left-color: rgba(76, 93, 67, 0.7); }
+
+  /* Mobile: icon inline with title */
+  .value-card__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .value-card__icon-wrap {
+    margin-bottom: 0;
+    flex-shrink: 0;
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .value-card__title {
+    margin: 0;
   }
 
   .value-card--left::after,
