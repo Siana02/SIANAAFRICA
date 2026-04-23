@@ -1482,6 +1482,154 @@
 }
 
 
+/* ─────────────────────────────
+   JOIN SECTION
+──────────────────────────── */
+
+.join-section {
+  background: var(--color-linen);
+  padding: 6rem 0;
+}
+
+/* ── HERO SPLIT ── */
+
+.join-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  margin-bottom: 4rem;
+}
+
+.join-hero__image img {
+  width: 100%;
+  border-radius: 18px;
+  object-fit: cover;
+}
+
+.join-eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 0.6rem;
+}
+
+.join-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.join-text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+/* ── CARDS ── */
+
+.join-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.join-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 18px;
+  text-align: center;
+  transition: all 0.35s ease;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.join-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+}
+
+.join-card__icon {
+  margin-bottom: 1rem;
+  color: var(--color-forest);
+}
+
+/* ── NEWSLETTER ── */
+
+.join-newsletter {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.newsletter-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.newsletter-text {
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+  color: var(--color-text-muted);
+}
+
+/* form */
+.newsletter-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.newsletter-form input {
+  flex: 1;
+  padding: 0.7rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.newsletter-resources {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.resource-card {
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  background: white;
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+}
+
+.resource-card:hover {
+  background: var(--color-sage);
+  color: white;
+}
+
+/* ── RESPONSIVE ── */
+
+@media (max-width: 900px) {
+  .join-hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .join-options {
+    grid-template-columns: 1fr;
+  }
+
+  .newsletter-form {
+    flex-direction: column;
+  }
+
+  .newsletter-resources {
+    flex-direction: column;
+  }
+}
+
 /* ═══════════════════════════════════════════════════════════
    PALETTE SHOWCASE
    ═══════════════════════════════════════════════════════════ */
