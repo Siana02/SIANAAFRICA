@@ -132,10 +132,13 @@ export default function App() {
   /* ── Scroll-triggered animations (run after preloader + overflow cleared) ── */
   useEffect(() => {
     if (!preloaderDone) return
+
+    let ctx: ReturnType<typeof gsap.context> | undefined
+
     // Allow React to flush the DOM update (overflow: '' restored) before calculating positions
     const timer = setTimeout(() => {
-      const ctx = gsap.context(() => {
-        ScrollTrigger.refresh()
+      ScrollTrigger.refresh()
+      ctx = gsap.context(() => {
 
         gsap.from('.trust-stat', {
           scrollTrigger: { trigger: '.trust-strip', start: 'top 90%', once: true },
@@ -158,43 +161,54 @@ export default function App() {
           scrollTrigger: { trigger: '.impact-pilot', start: 'top 80%', once: true },
           x: 50, opacity: 0, duration: 0.9, ease: 'power3.out',
         })
+        // Use 'top bottom' so cards animate the moment they scroll into view
         gsap.from('.impact-card', {
-          scrollTrigger: { trigger: '.impact-cards', start: 'top 82%', once: true },
+          scrollTrigger: { trigger: '.impact-cards', start: 'top bottom', once: true },
           y: 50, opacity: 0, duration: 0.7, stagger: 0.15, ease: 'power3.out',
+          immediateRender: false,
         })
         gsap.from('.gallery-item', {
           scrollTrigger: { trigger: '.gallery-strip', start: 'top 88%', once: true },
           x: 70, opacity: 0, duration: 0.75, stagger: 0.12, ease: 'power3.out',
+          immediateRender: false,
         })
         gsap.from('.article-card', {
           scrollTrigger: { trigger: '.articles-grid', start: 'top 85%', once: true },
           y: 50, opacity: 0, duration: 0.8, stagger: 0.2, ease: 'power3.out',
+          immediateRender: false,
         })
         gsap.from('.join-hero__image', {
           scrollTrigger: { trigger: '.join-section', start: 'top 78%', once: true },
           x: -60, opacity: 0, duration: 0.95, ease: 'power3.out',
+          immediateRender: false,
         })
         gsap.from('.join-hero__content', {
           scrollTrigger: { trigger: '.join-section', start: 'top 78%', once: true },
           x: 60, opacity: 0, duration: 0.95, ease: 'power3.out',
+          immediateRender: false,
         })
         gsap.from('.join-card', {
           scrollTrigger: { trigger: '.join-options', start: 'top 88%', once: true },
           y: 45, opacity: 0, duration: 0.7, stagger: 0.15, ease: 'power3.out',
+          immediateRender: false,
         })
-        gsap.from('.join-newsletter', {
-          scrollTrigger: { trigger: '.join-newsletter', start: 'top 88%', once: true },
+        gsap.from('.newsletter-card', {
+          scrollTrigger: { trigger: '.newsletter-card', start: 'top 90%', once: true },
           y: 40, opacity: 0, duration: 0.8, ease: 'power3.out',
+          immediateRender: false,
         })
         gsap.from('.swatch', {
           scrollTrigger: { trigger: '.palette-grid', start: 'top 85%', once: true },
           scale: 0.8, opacity: 0, duration: 0.5, stagger: 0.07, ease: 'back.out(1.7)',
+          immediateRender: false,
         })
       })
-      return () => ctx.revert()
     }, 120)
 
-    return () => clearTimeout(timer)
+    return () => {
+      clearTimeout(timer)
+      ctx?.revert()
+    }
   }, [preloaderDone])
  
   const impactCards = [
@@ -360,7 +374,7 @@ const galleryImages = [
       <div className="trust-strip" aria-label="Key impact statistics">
         <div className="container trust-strip__inner">
           <div className="trust-stat">
-            <span className="trust-stat__number">500+</span>
+            <span className="trust-stat__number">100+</span>
             <span className="trust-stat__label">Women Reached</span>
           </div>
           <span className="trust-strip__divider" aria-hidden="true" />
@@ -704,35 +718,69 @@ const galleryImages = [
 
     </div>
 
-    {/* ── NEWSLETTER + RESOURCES ── */}
+    {/* ── NEWSLETTER ── */}
     <div className="join-newsletter">
+      <div className="newsletter-card">
 
-      <h3 className="newsletter-title">
-        Stay Connected
-      </h3>
+        {/* Left: value proposition */}
+        <div className="newsletter-card__left">
+          <span className="newsletter-badge">📬 Newsletter</span>
+          <h3 className="newsletter-title">Stay Close<br />to the Field</h3>
+          <p className="newsletter-tagline">
+            Join our growing community of supporters and receive stories,
+            updates, and reports — directly from Kenya.
+          </p>
+          <ul className="newsletter-features">
+            <li>Monthly field stories from Namanga</li>
+            <li>Programme impact updates</li>
+            <li>Community spotlights &amp; photos</li>
+            <li>First access to volunteer openings</li>
+          </ul>
+        </div>
 
-      <p className="newsletter-text">
-        Join our community of changemakers. Receive field stories, programme
-        updates, and impact reports — straight from Kenya.
-      </p>
+        {/* Right: form + downloads */}
+        <div className="newsletter-card__right">
+          <div className="newsletter-form-block">
+            <label htmlFor="newsletter-email" className="newsletter-label">
+              Your email address
+            </label>
+            <div className="newsletter-input-group">
+              <input
+                id="newsletter-email"
+                type="email"
+                placeholder="you@example.com"
+                aria-label="Email address"
+              />
+              <button className="btn btn--coral">Subscribe</button>
+            </div>
+            <p className="newsletter-privacy">
+              No spam, ever. Unsubscribe anytime.
+            </p>
+          </div>
 
-      {/* email input */}
-      <div className="newsletter-form">
-        <input type="email" placeholder="Your email address" aria-label="Email address" />
-        <button className="btn btn--coral">Subscribe</button>
+          <div className="newsletter-divider">
+            <span>Also available</span>
+          </div>
+
+          <div className="newsletter-resources">
+            <a href="/assets/siana_africa_quarterly_newsletter_04-2025" className="resource-card">
+              <span className="resource-card__icon">📄</span>
+              <span className="resource-card__text">
+                <strong>2025 Annual Report</strong>
+                <em>Year in review</em>
+              </span>
+            </a>
+            <a href="/assets/siana_africa_quarterly_newsletter_01-2026" className="resource-card">
+              <span className="resource-card__icon">📄</span>
+              <span className="resource-card__text">
+                <strong>2026 Impact Report</strong>
+                <em>Q1 Progress</em>
+              </span>
+            </a>
+          </div>
+        </div>
+
       </div>
-
-      {/* resources */}
-      <div className="newsletter-resources">
-        <a href="/assets/siana_africa_quarterly_newsletter_04-2025" className="resource-card">
-          📄 2025 Annual Report
-        </a>
-
-        <a href="/assets/siana_africa_quarterly_newsletter_01-2026" className="resource-card">
-          📄 2026 Impact Report
-        </a>
-      </div>
-
     </div>
 
   </div>
