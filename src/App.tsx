@@ -126,44 +126,90 @@ export default function App() {
       .from('.hero__title',       { y: 38, opacity: 0, duration: 0.85, ease: 'power3.out' }, '-=0.3')
       .from('.hero__description', { y: 22, opacity: 0, duration: 0.7,  ease: 'power3.out' }, '-=0.4')
       .from('.hero__actions',     { y: 16, opacity: 0, duration: 0.65, ease: 'power3.out' }, '-=0.35')
-
-    // ── Scroll-triggered section animations ───────────────────
-    gsap.from(missionRef.current, {
-      scrollTrigger: { trigger: missionRef.current, start: 'top 80%' },
-      y: 50, opacity: 0, duration: 0.9, ease: 'power3.out',
-    })
-    gsap.from('.value-card', {
-      scrollTrigger: { trigger: valuesTrackRef.current, start: 'top 80%' },
-      y: 60, opacity: 0, duration: 0.7, stagger: 0.15, ease: 'power3.out',
-    })
-    gsap.from('.swatch', {
-      scrollTrigger: { trigger: '.palette-grid', start: 'top 85%' },
-      scale: 0.8, opacity: 0, duration: 0.5, stagger: 0.07, ease: 'back.out(1.7)',
-    })
- gsap.from('.impact-card', {
-  scrollTrigger: {
-    trigger: '.impact-cards',
-    start: 'top 80%',
-  },
-  y: 50,
-  opacity: 0,
-  duration: 0.7,
-  stagger: 0.15,
-  ease: 'power3.out',
-})
-    gsap.from('.article-card', {
-  scrollTrigger: {
-    trigger: '.articles-grid',
-    start: 'top 85%',
-  },
-  y: 50,
-  opacity: 0,
-  duration: 0.8,
-  stagger: 0.2,
-  ease: 'power3.out',
-})
-    setPreloaderDone(true)
+      .call(() => setPreloaderDone(true))
   }, [])
+
+  /* ── Scroll-triggered animations (run after preloader + overflow cleared) ── */
+  useEffect(() => {
+    if (!preloaderDone) return
+
+    let ctx: ReturnType<typeof gsap.context> | undefined
+
+    // Allow React to flush the DOM update (overflow: '' restored) before calculating positions
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh()
+      ctx = gsap.context(() => {
+
+        gsap.from('.trust-stat', {
+          scrollTrigger: { trigger: '.trust-strip', start: 'top 90%', once: true },
+          y: 20, opacity: 0, duration: 0.6, stagger: 0.1, ease: 'power3.out',
+        })
+
+        gsap.from(missionRef.current, {
+          scrollTrigger: { trigger: missionRef.current, start: 'top 82%', once: true },
+          y: 50, opacity: 0, duration: 0.9, ease: 'power3.out',
+        })
+        gsap.from('.value-card', {
+          scrollTrigger: { trigger: valuesTrackRef.current, start: 'top 82%', once: true },
+          y: 60, opacity: 0, duration: 0.7, stagger: 0.15, ease: 'power3.out',
+        })
+        gsap.from('.impact-pilot__text', {
+          scrollTrigger: { trigger: '.impact-pilot', start: 'top 80%', once: true },
+          x: -50, opacity: 0, duration: 0.9, ease: 'power3.out',
+        })
+        gsap.from('.impact-pilot__image', {
+          scrollTrigger: { trigger: '.impact-pilot', start: 'top 80%', once: true },
+          x: 50, opacity: 0, duration: 0.9, ease: 'power3.out',
+        })
+        // Use 'top bottom' so cards animate the moment they scroll into view
+        gsap.from('.impact-card', {
+          scrollTrigger: { trigger: '.impact-cards', start: 'top bottom', once: true },
+          y: 50, opacity: 0, duration: 0.7, stagger: 0.15, ease: 'power3.out',
+          immediateRender: false,
+        })
+        gsap.from('.gallery-item', {
+          scrollTrigger: { trigger: '.gallery-strip', start: 'top 88%', once: true },
+          x: 70, opacity: 0, duration: 0.75, stagger: 0.12, ease: 'power3.out',
+          immediateRender: false,
+        })
+        gsap.from('.article-card', {
+          scrollTrigger: { trigger: '.articles-grid', start: 'top 85%', once: true },
+          y: 50, opacity: 0, duration: 0.8, stagger: 0.2, ease: 'power3.out',
+          immediateRender: false,
+        })
+        gsap.from('.join-hero__image', {
+          scrollTrigger: { trigger: '.join-section', start: 'top 78%', once: true },
+          x: -60, opacity: 0, duration: 0.95, ease: 'power3.out',
+          immediateRender: false,
+        })
+        gsap.from('.join-hero__content', {
+          scrollTrigger: { trigger: '.join-section', start: 'top 78%', once: true },
+          x: 60, opacity: 0, duration: 0.95, ease: 'power3.out',
+          immediateRender: false,
+        })
+        gsap.from('.join-card', {
+          scrollTrigger: { trigger: '.join-options', start: 'top 88%', once: true },
+          y: 45, opacity: 0, duration: 0.7, stagger: 0.15, ease: 'power3.out',
+          immediateRender: false,
+        })
+        gsap.from('.newsletter-card', {
+          scrollTrigger: { trigger: '.newsletter-card', start: 'top 90%', once: true },
+          y: 40, opacity: 0, duration: 0.8, ease: 'power3.out',
+          immediateRender: false,
+        })
+        gsap.from('.swatch', {
+          scrollTrigger: { trigger: '.palette-grid', start: 'top 85%', once: true },
+          scale: 0.8, opacity: 0, duration: 0.5, stagger: 0.07, ease: 'back.out(1.7)',
+          immediateRender: false,
+        })
+      })
+    }, 120)
+
+    return () => {
+      clearTimeout(timer)
+      ctx?.revert()
+    }
+  }, [preloaderDone])
  
   const impactCards = [
   {
@@ -301,28 +347,53 @@ const galleryImages = [
         {/* Text content */}
         <div className="container scene__body">
           <div className="hero__content">
-            <p className="hero__eyebrow">OUR MISSION</p>
+            <p className="hero__eyebrow">SIANA AFRICA · KENYA</p>
             <h1 className="hero__title" id="hero-title">
               Empowering Women.<br />
               Preserving Culture.<br />
-              <em>Promoting Sustainability Across Kenya.</em>
+              <em>Building a Sustainable Kenya.</em>
             </h1>
             <p className="hero__description">
-              SIANA Africa is a grassroots organisation devoted to uplifting women,
-              honouring Kenya's living heritage, and championing sustainable communities
-              for generations to come.
+              We walk alongside rural Kenyan women — equipping them with skills,
+              resources, and community to lead thriving lives and shape a
+              more just, sustainable future.
             </p>
             <div className="hero__actions">
-              <a href="#mission" className="btn btn--coral">
-                Support Our Work <ArrowRight size={16} />
+              <a href="#contact" className="btn btn--coral">
+                Donate Today <ArrowRight size={16} />
               </a>
-              <a href="#mission" className="btn btn--ghost">
+              <a href="#join-section" className="btn btn--ghost">
                 Join the Movement
               </a>
             </div>
           </div>
         </div>
       </section>
+
+      {/* ── Trust Strip ── */}
+      <div className="trust-strip" aria-label="Key impact statistics">
+        <div className="container trust-strip__inner">
+          <div className="trust-stat">
+            <span className="trust-stat__number">100+</span>
+            <span className="trust-stat__label">Women Reached</span>
+          </div>
+          <span className="trust-strip__divider" aria-hidden="true" />
+          <div className="trust-stat">
+            <span className="trust-stat__number">3</span>
+            <span className="trust-stat__label">Active Programmes</span>
+          </div>
+          <span className="trust-strip__divider" aria-hidden="true" />
+          <div className="trust-stat">
+            <span className="trust-stat__number">1</span>
+            <span className="trust-stat__label">Pilot Region · Namanga</span>
+          </div>
+          <span className="trust-strip__divider" aria-hidden="true" />
+          <div className="trust-stat">
+            <span className="trust-stat__number">100%</span>
+            <span className="trust-stat__label">Community-Led</span>
+          </div>
+        </div>
+      </div>
 
       {/* ── Who We Are + Core Values ── */}
       <section id="mission" className="who-section" aria-labelledby="wwa-title">
@@ -340,9 +411,9 @@ const galleryImages = [
             </div>
             <h2 className="wwa-title" id="wwa-title">A Movement Rooted in Purpose</h2>
             <p className="wwa-intro">
-              SIANA Africa is a grassroots organisation devoted to uplifting women,
-              honouring Kenya's living heritage, and championing sustainable communities
-              for generations to come.
+              Born from the belief that lasting change begins with women, SIANA Africa
+              works at the intersection of empowerment, culture, and sustainability —
+              creating pathways for Kenyan women to thrive on their own terms.
             </p>
           </div>
         </div>
@@ -356,7 +427,9 @@ const galleryImages = [
             loading="lazy"
           />
           <div className="wwa-image-block__overlay" aria-hidden="true" />
-          <p className="wwa-image-block__quote">"Empowering women across rural Kenya"</p>
+          <blockquote className="wwa-image-block__quote">
+            "When you empower a woman, you transform a community."
+          </blockquote>
         </div>
 
         {/* Core Values */}
@@ -403,7 +476,7 @@ const galleryImages = [
       </div>
 
       <h2 className="impact-title" id="impact-title">
-        Creating Sustainable Change
+        Where Your Support Goes
       </h2>
     </div>
 
@@ -411,18 +484,21 @@ const galleryImages = [
     <div className="impact-pilot">
       
       <div className="impact-pilot__text">
-        <p className="impact-label">Pilot Project</p>
+        <p className="impact-label">Flagship Pilot · Namanga, Kenya</p>
 
         <h3 className="impact-pilot__title">
-          Empowering Communities in Namanga
+          Transforming Livelihoods in Namanga
         </h3>
 
         <p className="impact-pilot__description">
-          Siana Africa partners with Maasai women in Namanga to strengthen agricultural productivity while fostering sustainable, women-led economic growth.
+          Our flagship programme partners with Maasai women in Namanga —
+          introducing drought-resistant dragon fruit cultivation, building
+          market linkages, and nurturing women-led cooperatives that generate
+          lasting income and community resilience.
         </p>
 
         <a href="#" className="btn btn--coral">
-          Learn More <ArrowRight size={16} />
+          Explore the Project <ArrowRight size={16} />
         </a>
       </div>
 
@@ -462,7 +538,7 @@ const galleryImages = [
     <div className="gallery-header">
       <p className="gallery-eyebrow">OUR STORY IN IMAGES</p>
 
-      <div className="brand-divider" aria-hidden="true">
+      <div className="brand-divider brand-divider--light" aria-hidden="true">
         <span className="brand-divider__line brand-divider__line--left" />
         <span className="brand-divider__symbol">
           <HeartHandshake size={22} strokeWidth={1.5} />
@@ -475,7 +551,8 @@ const galleryImages = [
       </h2>
 
       <p className="gallery-subtext">
-        A glimpse into the communities, landscapes, and work shaping Siana Africa.
+        Every image tells a story of resilience, dignity, and transformation.
+        These are the faces and places that inspire everything we do.
       </p>
     </div>
 
@@ -517,7 +594,8 @@ const galleryImages = [
       </h2>
 
       <p className="articles-subtext">
-        Insights, journeys, and reflections from the communities and people behind Siana Africa.
+        Real stories of courage and transformation — from the women, communities,
+        and journeys that define Siana Africa.
       </p>
     </div>
 
@@ -529,7 +607,7 @@ const galleryImages = [
           key={index}
           href={article.link}
           className="article-card"
-          aria-label={'Read article: ${article.title}'}
+          aria-label={`Read article: ${article.title}`}
         >
 
           {/* Image — pure visual space */}
@@ -573,7 +651,7 @@ const galleryImages = [
 </section>
 
       {/* ── Join The Movement Section ── */}
-<section className="join-section">
+<section id="join-section" className="join-section">
 
   <div className="container">
 
@@ -588,22 +666,26 @@ const galleryImages = [
       {/* RIGHT CONTENT */}
       <div className="join-hero__content">
         <p className="join-eyebrow">JOIN THE MOVEMENT</p>
-         <div className="brand-divider" aria-hidden="true">
-        <span className="brand-divider__line brand-divider__line--left" />
-        <span className="brand-divider__symbol">
+        <div className="brand-divider brand-divider--light" aria-hidden="true">
+          <span className="brand-divider__line brand-divider__line--left" />
+          <span className="brand-divider__symbol">
+            <HeartHandshake size={22} strokeWidth={1.5} />
+          </span>
+          <span className="brand-divider__line brand-divider__line--right" />
+        </div>
 
         <h2 className="join-title">
           Be Part of Something Bigger
         </h2>
 
         <p className="join-text">
-          If you have the skills and passion to make a difference, we’d love to have you on this journey.
-          Whether volunteering part-time or building a long-term career in development,
-          Siana Africa offers a space where your ideas matter and your impact is real.
+          Whether you're a skilled professional, a passionate volunteer, or an
+          organisation that shares our values — there's a place for you in this
+          movement. Your time, skills, and resources directly transform lives across Kenya.
         </p>
 
         <a href="#contact" className="btn btn--coral">
-          Join Our Team <ArrowRight size={16} />
+          Get Involved <ArrowRight size={16} />
         </a>
       </div>
 
@@ -616,9 +698,10 @@ const galleryImages = [
         <div className="join-card__icon">
           <Users size={26} />
         </div>
-        <h3>Partnerships</h3>
+        <h3>Strategic Partnerships</h3>
         <p>
-          Collaborate with us to expand impact and build sustainable solutions together.
+          Collaborate with us to co-create sustainable solutions and amplify
+          impact across rural Kenya.
         </p>
       </div>
 
@@ -626,44 +709,78 @@ const galleryImages = [
         <div className="join-card__icon">
           <HeartHandshake size={26} />
         </div>
-        <h3>Support Our Work</h3>
+        <h3>Fund Real Change</h3>
         <p>
-          Become a backer and help fund initiatives that uplift communities across Kenya.
+          Your donation directly funds skills training, agricultural programmes,
+          and women-led enterprises that last generations.
         </p>
       </div>
-    </div>
 
     </div>
 
-    {/* ── NEWSLETTER + RESOURCES ── */}
+    {/* ── NEWSLETTER ── */}
     <div className="join-newsletter">
+      <div className="newsletter-card">
 
-      <h3 className="newsletter-title">
-        Stay Connected
-      </h3>
+        {/* Left: value proposition */}
+        <div className="newsletter-card__left">
+          <span className="newsletter-badge">📬 Newsletter</span>
+          <h3 className="newsletter-title">Stay Close<br />to the Field</h3>
+          <p className="newsletter-tagline">
+            Join our growing community of supporters and receive stories,
+            updates, and reports — directly from Kenya.
+          </p>
+          <ul className="newsletter-features">
+            <li>Monthly field stories from Namanga</li>
+            <li>Programme impact updates</li>
+            <li>Community spotlights &amp; photos</li>
+            <li>First access to volunteer openings</li>
+          </ul>
+        </div>
 
-      <p className="newsletter-text">
-        Join the Siana Africa community. Get updates, stories, and insights
-        directly from the field.
-      </p>
+        {/* Right: form + downloads */}
+        <div className="newsletter-card__right">
+          <div className="newsletter-form-block">
+            <label htmlFor="newsletter-email" className="newsletter-label">
+              Your email address
+            </label>
+            <div className="newsletter-input-group">
+              <input
+                id="newsletter-email"
+                type="email"
+                placeholder="you@example.com"
+                aria-label="Email address"
+              />
+              <button className="btn btn--coral">Subscribe</button>
+            </div>
+            <p className="newsletter-privacy">
+              No spam, ever. Unsubscribe anytime.
+            </p>
+          </div>
 
-      {/* email input */}
-      <div className="newsletter-form">
-        <input type="email" placeholder="Enter your email" />
-        <button className="btn btn--coral">Subscribe</button>
+          <div className="newsletter-divider">
+            <span>Also available</span>
+          </div>
+
+          <div className="newsletter-resources">
+            <a href="/assets/siana_africa_quarterly_newsletter_04-2025" className="resource-card">
+              <span className="resource-card__icon">📄</span>
+              <span className="resource-card__text">
+                <strong>2025 Annual Report</strong>
+                <em>Year in review</em>
+              </span>
+            </a>
+            <a href="/assets/siana_africa_quarterly_newsletter_01-2026" className="resource-card">
+              <span className="resource-card__icon">📄</span>
+              <span className="resource-card__text">
+                <strong>2026 Impact Report</strong>
+                <em>Q1 Progress</em>
+              </span>
+            </a>
+          </div>
+        </div>
+
       </div>
-
-      {/* resources */}
-      <div className="newsletter-resources">
-        <a href="/assets/siana_africa_quarterly_newsletter_04-2025" className="resource-card">
-          Download 2025 Report
-        </a>
-
-        <a href="/assets/siana_africa_quarterly_newsletter_01-2026" className="resource-card">
-          Download 2026 Report
-        </a>
-      </div>
-
     </div>
 
   </div>
@@ -698,18 +815,24 @@ const galleryImages = [
             Typography
           </h2>
           <p className="section__body">
-            <strong>Playfair Display</strong> for expressive headings ·{' '}
-            <strong>Inter</strong> for clear, readable body text.
+            <strong>Cormorant Garamond</strong> for editorial display headings ·{' '}
+            <strong>Playfair Display</strong> for section &amp; card headings ·{' '}
+            <strong>DM Sans</strong> for UI &amp; labels ·{' '}
+            <strong>Inter</strong> for body text.
           </p>
 
           <div style={{ marginTop: '2rem' }}>
             <div className="type-sample">
-              <p className="type-sample__label">Heading – Playfair Display 700</p>
+              <p className="type-sample__label">Display – Cormorant Garamond 400</p>
               <h1 style={{ margin: 0 }}>Empowering Communities</h1>
             </div>
             <div className="type-sample">
-              <p className="type-sample__label">Subheading – Playfair Display 600</p>
+              <p className="type-sample__label">Section Heading – Playfair Display 600</p>
               <h2 style={{ margin: 0 }}>Preserving Kenya's Heritage</h2>
+            </div>
+            <div className="type-sample">
+              <p className="type-sample__label">Card Heading – Playfair Display 600</p>
+              <h3 style={{ margin: 0 }}>Stories of Resilience</h3>
             </div>
             <div className="type-sample">
               <p className="type-sample__label">Body – Inter 400</p>
@@ -725,11 +848,38 @@ const galleryImages = [
 
       {/* ── Footer ── */}
       <footer id="contact" className="footer">
-        <div className="container">
-          <p className="footer__logo">SIANA Africa</p>
-          <p className="footer__tagline">
-            Empowering Women. Preserving Culture. Promoting Sustainability Across Kenya.
-          </p>
+        <div className="container footer__inner">
+          <div className="footer__brand">
+            <p className="footer__logo">SIANA Africa</p>
+            <p className="footer__tagline">
+              Empowering Women. Preserving Culture.<br />
+              Promoting Sustainability Across Kenya.
+            </p>
+          </div>
+          <div className="footer__links">
+            <p className="footer__links-heading">Explore</p>
+            <ul role="list">
+              <li><a href="#mission">Our Mission</a></li>
+              <li><a href="#mission">Core Values</a></li>
+              <li><a href="#mission">Our Work</a></li>
+              <li><a href="#join-section">Get Involved</a></li>
+            </ul>
+          </div>
+          <div className="footer__contact">
+            <p className="footer__links-heading">Connect</p>
+            <p>Kenya · East Africa</p>
+            <a href="mailto:info@sianaafrica.org" className="footer__email">
+              info@sianaafrica.org
+            </a>
+            <a href="#contact" className="btn btn--coral btn--sm footer__donate">
+              Donate Now <ArrowRight size={14} />
+            </a>
+          </div>
+        </div>
+        <div className="footer__bottom">
+          <div className="container">
+            <p>© {new Date().getFullYear()} SIANA Africa. All rights reserved.</p>
+          </div>
         </div>
       </footer>
     </>
