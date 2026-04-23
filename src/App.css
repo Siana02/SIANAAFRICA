@@ -578,6 +578,71 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
+   TRUST STRIP — social proof numbers between hero and mission
+   ═══════════════════════════════════════════════════════════ */
+
+.trust-strip {
+  background: var(--color-forest);
+  padding-block: 1.75rem;
+  position: relative;
+  z-index: 2;
+}
+
+.trust-strip__inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: wrap;
+}
+
+.trust-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding-inline: 2.5rem;
+  text-align: center;
+}
+
+.trust-stat__number {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+  font-weight: 500;
+  color: var(--color-linen);
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.trust-stat__label {
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(231, 240, 229, 0.65);
+}
+
+.trust-strip__divider {
+  width: 1px;
+  height: 2.5rem;
+  background: rgba(231, 240, 229, 0.2);
+  flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+  .trust-strip__inner {
+    gap: 0.5rem;
+  }
+  .trust-stat {
+    padding-inline: 1.25rem;
+  }
+  .trust-strip__divider {
+    display: none;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
    WHO WE ARE + CORE VALUES
    ═══════════════════════════════════════════════════════════ */
 
@@ -747,9 +812,10 @@
 }
 
 .values-heading {
-  font-family: var(--font-heading);
-  font-size: clamp(1.5rem, 3vw, 2.25rem);
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 400;
+  letter-spacing: -0.01em;
   /* Changing from charcoal to Linen for high readability */
   color: var(--color-forest); 
   margin: 0.5rem 0 0;

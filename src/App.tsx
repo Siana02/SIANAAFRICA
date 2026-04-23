@@ -137,6 +137,11 @@ export default function App() {
       const ctx = gsap.context(() => {
         ScrollTrigger.refresh()
 
+        gsap.from('.trust-stat', {
+          scrollTrigger: { trigger: '.trust-strip', start: 'top 90%', once: true },
+          y: 20, opacity: 0, duration: 0.6, stagger: 0.1, ease: 'power3.out',
+        })
+
         gsap.from(missionRef.current, {
           scrollTrigger: { trigger: missionRef.current, start: 'top 82%', once: true },
           y: 50, opacity: 0, duration: 0.9, ease: 'power3.out',
@@ -350,6 +355,31 @@ const galleryImages = [
           </div>
         </div>
       </section>
+
+      {/* ── Trust Strip ── */}
+      <div className="trust-strip" aria-label="Key impact statistics">
+        <div className="container trust-strip__inner">
+          <div className="trust-stat">
+            <span className="trust-stat__number">500+</span>
+            <span className="trust-stat__label">Women Reached</span>
+          </div>
+          <span className="trust-strip__divider" aria-hidden="true" />
+          <div className="trust-stat">
+            <span className="trust-stat__number">3</span>
+            <span className="trust-stat__label">Active Programmes</span>
+          </div>
+          <span className="trust-strip__divider" aria-hidden="true" />
+          <div className="trust-stat">
+            <span className="trust-stat__number">1</span>
+            <span className="trust-stat__label">Pilot Region · Namanga</span>
+          </div>
+          <span className="trust-strip__divider" aria-hidden="true" />
+          <div className="trust-stat">
+            <span className="trust-stat__number">100%</span>
+            <span className="trust-stat__label">Community-Led</span>
+          </div>
+        </div>
+      </div>
 
       {/* ── Who We Are + Core Values ── */}
       <section id="mission" className="who-section" aria-labelledby="wwa-title">
