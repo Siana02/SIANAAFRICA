@@ -68,6 +68,7 @@ body {
   background-color: var(--color-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden; /* prevent sitewide horizontal scroll from off-screen GSAP states */
 }
 
 #root {

@@ -870,7 +870,9 @@
   background: linear-gradient(180deg, #1a2418, #111610);
   padding-bottom: 6rem;
   position: relative;
-  /* overflow: hidden removed — it was clipping card box-shadows and GSAP slide animations on mobile */
+  /* overflow: clip clips GSAP off-screen slide starts without creating a scroll container,
+     so card box-shadows still render correctly */
+  overflow: clip;
 }
 
 /* Subtle radial depth glow */
@@ -1124,7 +1126,7 @@
 
   .values-track {
     gap: 1.25rem;
-    padding: 1rem 0;
+    padding: 1rem 1rem; /* horizontal padding pushes cards inward from screen edges */
   }
 
   .value-card {
@@ -1135,6 +1137,7 @@
     border-top: 1px solid rgba(168, 182, 154, 0.18);
     border-left: 3px solid transparent;
     border-radius: 1rem;
+    box-sizing: border-box;
   }
 
   /* Per-value left accent on mobile */
