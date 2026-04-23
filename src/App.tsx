@@ -103,7 +103,7 @@ const navLinks = [
   { label: 'Home', href: '#' },
   { label: 'About', href: '#mission' },
   { label: 'Our Work', href: '#mission' },
-  { label: 'Blog', href: '#' },
+  { label: 'Blog', href: '#blog' },
   { label: 'Contact', href: '#contact' },
 ]
 
@@ -698,7 +698,7 @@ const galleryImages = [
 
 
       {/* ── Articles Section ── */}
-<section className="articles-section" aria-labelledby="articles-title">
+<section id="blog" className="articles-section" aria-labelledby="articles-title">
 
   <div className="container">
 
