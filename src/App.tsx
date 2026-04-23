@@ -24,7 +24,8 @@ import maasaiWomenImg from './assets/sianaafrica4.jpg'
 import dragonFruitImg from './assets/Handsholdingdragonfruit.png' 
 import journeyImg from './assets/journeyimage.jpg'
 import contactHeroImg from './assets/sianaafrica.png'
-import impactImg from './assets/sianaafrica5.png'
+import sianaafrica5Img from './assets/sianaafrica5.png'
+import pilotProjectImg from './assets/pilot-project.jpg' // TODO: add src/assets/pilot-project.jpg
 import './App.css'
 
 /* ─── Inline social icons (brand icons not in this lucide-react build) ── */
@@ -540,7 +541,7 @@ const galleryImages = [
       </div>
 
       <div className="impact-pilot__image">
-        <img src={impactImg} alt="Siana Africa community in Namanga" />
+        <img src={pilotProjectImg} alt="Siana Africa community in Namanga" />
       </div>
 
     </div>
@@ -697,7 +698,7 @@ const galleryImages = [
 
       {/* LEFT IMAGE */}
       <div className="join-hero__image">
-        <img src={maasaiWomenImg} alt="Siana Africa community women" />
+        <img src={sianaafrica5Img} alt="Siana Africa community women" />
       </div>
 
       {/* RIGHT CONTENT */}
