@@ -870,9 +870,10 @@
   background: linear-gradient(180deg, #1a2418, #111610);
   padding-bottom: 6rem;
   position: relative;
-  /* overflow: clip clips GSAP off-screen slide starts without creating a scroll container,
-     so card box-shadows still render correctly */
-  overflow: clip;
+  /* overflow-x: clip prevents horizontal scrollbar from GSAP off-screen states
+     without creating a scroll container; use overflow-x only so vertical
+     card box-shadows remain unclipped by the section boundary */
+  overflow-x: clip;
 }
 
 /* Subtle radial depth glow */
@@ -1126,7 +1127,7 @@
 
   .values-track {
     gap: 1.25rem;
-    padding: 1rem 1rem; /* horizontal padding pushes cards inward from screen edges */
+    padding: 0.5rem 0; /* let .container padding handle horizontal spacing; no extra inset needed */
   }
 
   .value-card {
@@ -1138,6 +1139,8 @@
     border-left: 3px solid transparent;
     border-radius: 1rem;
     box-sizing: border-box;
+    /* Ensure shadow is not hidden by any ancestor clip */
+    overflow: visible;
   }
 
   /* Per-value left accent on mobile */
@@ -1176,7 +1179,7 @@
     margin-bottom: 2.5rem;
   }
 
-  .values-dark-bg { padding-bottom: 4rem; }
+  .values-dark-bg { padding-bottom: 4rem; padding-top: 0.5rem; }
 }
 
 @media (min-width: 761px) and (max-width: 900px) {

@@ -148,18 +148,18 @@ export default function App() {
     const tl = gsap.timeline()
 
     if (!prefersReducedMotion) {
-      // Eyebrow slides in first
-      tl.from('.hero__eyebrow', { y: 18, opacity: 0, duration: 0.55, ease: 'power3.out' })
-      // Title: word-by-word reveal
+      // Eyebrow fades in first
+      tl.from('.hero__eyebrow', { opacity: 0, duration: 0.6, ease: 'power2.out' })
+      // Title: word-by-word fade in
         .from('.hero__word', {
-          y: 48, opacity: 0, duration: 0.7,
-          stagger: { each: 0.07, from: 'start' },
-          ease: 'power4.out',
+          opacity: 0, duration: 0.55,
+          stagger: { each: 0.08, from: 'start' },
+          ease: 'power2.out',
         }, '-=0.2')
-      // Description fades up as last word is finishing
-        .from('.hero__description', { y: 28, opacity: 0, duration: 0.8, ease: 'power3.out' }, '-=0.35')
-      // CTAs stagger in individually
-        .from('.hero__actions .btn', { y: 22, opacity: 0, duration: 0.65, stagger: 0.14, ease: 'power3.out' }, '-=0.4')
+      // Description fades in as last word is finishing
+        .from('.hero__description', { opacity: 0, duration: 0.75, ease: 'power2.out' }, '-=0.3')
+      // CTAs fade in individually
+        .from('.hero__actions .btn', { opacity: 0, duration: 0.6, stagger: 0.15, ease: 'power2.out' }, '-=0.35')
     }
 
     tl.call(() => setPreloaderDone(true))
@@ -185,13 +185,24 @@ export default function App() {
           scrollTrigger: { trigger: missionRef.current, start: 'top 82%', once: true },
           y: 55, opacity: 0, duration: 1.0, ease: 'power3.out',
         })
-        gsap.from('.value-card--left', {
-          scrollTrigger: { trigger: valuesTrackRef.current, start: 'top 80%', once: true },
-          x: -90, opacity: 0, scale: 0.94, duration: 1.0, stagger: 0.22, ease: 'power4.out',
+        const mm = gsap.matchMedia()
+        // Mobile: slide cards up from below (no horizontal movement to avoid edge clipping)
+        mm.add('(max-width: 760px)', () => {
+          gsap.from('.value-card', {
+            scrollTrigger: { trigger: valuesTrackRef.current, start: 'top 82%', once: true },
+            y: 40, opacity: 0, duration: 0.9, stagger: 0.18, ease: 'power4.out',
+          })
         })
-        gsap.from('.value-card--right', {
-          scrollTrigger: { trigger: valuesTrackRef.current, start: 'top 80%', once: true },
-          x: 90, opacity: 0, scale: 0.94, duration: 1.0, stagger: 0.22, ease: 'power4.out',
+        // Desktop: slide cards in from left/right sides
+        mm.add('(min-width: 761px)', () => {
+          gsap.from('.value-card--left', {
+            scrollTrigger: { trigger: valuesTrackRef.current, start: 'top 80%', once: true },
+            x: -90, opacity: 0, scale: 0.94, duration: 1.0, stagger: 0.22, ease: 'power4.out',
+          })
+          gsap.from('.value-card--right', {
+            scrollTrigger: { trigger: valuesTrackRef.current, start: 'top 80%', once: true },
+            x: 90, opacity: 0, scale: 0.94, duration: 1.0, stagger: 0.22, ease: 'power4.out',
+          })
         })
         gsap.from('.wwa-cta', {
           scrollTrigger: { trigger: '.wwa-cta', start: 'top 85%', once: true },
